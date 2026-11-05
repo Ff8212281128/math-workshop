@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کارگاه خلاقیت: هوش مصنوعی و کانوا برای دبیران ریاضی</title>
+    <style>
+        /* تنظیمات پایه و فونت */
+        :root {
+            --canva-purple: #8A3FFC;
+            --canva-turquoise: #00C4CC;
+            --text-dark: #2C2C2C;
+            --bg-light: #F9F9FB;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'B Nazanin', Tahoma, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.8;
+            font-size: 18px;
+            direction: rtl;
+            text-align: right;
+            padding-bottom: 50px;
+        }
+
+        /* هدر با گرادیانت بنفش و فیروزه‌ای */
+        header {
+            background: linear-gradient(135deg, var(--canva-purple) 0%, var(--canva-turquoise) 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 20px;
+            opacity: 0.9;
+            text-align: center;
+        }
+
+        /* دکمه شناور PDF */
+        .pdf-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, var(--canva-purple), var(--canva-turquoise));
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: transform 0.2s;
+        }
+        .pdf-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* کارت‌های اصلی */
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #E5E7EB;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #F3F4F6;
+            padding-bottom: 15px;
+        }
+
+        .card-header h2 {
+            color: var(--text-dark);
+            font-size: 24px;
+        }
+
+        /* آیکون‌های SVG با گرادیانت */
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(138, 63, 252, 0.1), rgba(0, 196, 204, 0.1));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .icon-box svg {
+            width: 30px;
+            height: 30px;
+            fill: url(#canvaGradient);
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* تب‌های تعاملی برای جریان‌های کاری */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: #F3F4F6;
+            color: var(--text-dark);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--canva-purple), var(--canva-turquoise));
+            color: white;
+            box-shadow: 0 4px 10px rgba(138, 63, 252, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            background: #F9F9FB;
+            padding: 25px;
+            border-radius: 15px;
+            border-right: 5px solid var(--canva-purple);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            position: relative;
+            padding-right: 30px;
+            margin-bottom: 15px;
+        }
+
+        .step-list li::before {
+            content: "✔";
+            position: absolute;
+            right: 0;
+            color: var(--canva-turquoise);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* جعبه نکته */
+        .callout {
+            background: linear-gradient(to left, rgba(0, 196, 204, 0.1), transparent);
+            border-right: 4px solid var(--canva-turquoise);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        /* بخش انیمیشن */
+        .animation-section {
+            background: linear-gradient(135deg, #2C2C2C, #1A1A1A);
+            color: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animation-section h2 {
+            color: var(--canva-turquoise);
+            margin-bottom: 15px;
+        }
+
+        .animation-section p {
+            color: #D1D5DB;
+        }
+
+        /* تنظیمات چاپ PDF */
+        @media print {
+            body { background: white; color: black; }
+            header { background: white; color: black; box-shadow: none; border-bottom: 2px solid #000; }
+            header h1, header p { color: black; text-shadow: none; }
+            .pdf-btn, .tabs { display: none !important; }
+            .tab-content { display: block !important; border: 1px solid #ccc; margin-bottom: 20px; page-break-inside: avoid; }
+            .card { box-shadow: none; border: 1px solid #ccc; }
+            .animation-section { background: white; color: black; border: 2px solid black; }
+            .animation-section h2 { color: black; }
+            .animation-section p { color: black; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- تعریف گرادیانت برای آیکون‌ها -->
+    <svg width="0" height="0">
+        <defs>
+            <linearGradient id="canvaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#8A3FFC" />
+                <stop offset="100%" stop-color="#00C4CC" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <button class="pdf-btn" onclick="window.print()">🖨️ ذخیره PDF</button>
+
+    <header>
+        <h1>کارگاه خلاقیت با کانوا و هوش مصنوعی</h1>
+        <p>ویژه دبیران ریاضی | از تولید محتوا تا طراحی گرافیک تعاملی</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- مقدمه -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </div>
+                <h2>چرا کانوا + هوش مصنوعی؟</h2>
+            </div>
+            <p>هوش مصنوعی در تولید متن و ایده عالی است، اما در طراحی گرافیک دقیق و قرار دادن متن‌های فارسی روی تصاویر ممکن است دچار اشتباه شود. از طرفی کانوا (Canva) یک ابزار فوق‌العاده برای طراحی است، اما شاید ایده‌پردازی اولیه زمان‌بر باشد. با ترکیب این دو، بهترین نتیجه را می‌گیرید.</p>
+        </div>
+
+        <!-- کارت جریان‌های کاری (تعاملی) -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-box">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                </div>
+                <h2>دو جریان کاری اصلی (Workflow)</h2>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'ai-to-canva')">۱. از هوش مصنوعی به کانوا</button>
+                <button class="tab-btn" onclick="openTab(event, 'canva-to-ai')">۲. از کانوا به هوش مصنوعی</button>
+            </div>
+
+            <!-- جریان اول -->
+            <div id="ai-to-canva" class="tab-content active">
+                <h3>تولید تصویر با AI و ویرایش در کانوا</h3>
+                <p>در این روش، ایده یا گرافیک اولیه را از هوش مصنوعی می‌گیریم و سپس آن را در کانوا فارسی‌سازی و ویرایش می‌کنیم.</p>
+                <ul class="step-list">
+                    <li><strong>گام ۱ (پرامپت):</strong> از هوش مصنوعی (مثل ChatGPT، Bing یا Midjourney) می‌خواهیم یک تصویر برای ما بسازد. مثال: «یک تصویر مینیمال از یک نمودار سهمی در فضای سه‌بعدی با رنگ‌های آبی و طوسی بساز.»</li>
+                    <li><strong>گام ۲ (دانلود):</strong> تصویر تولید شده را دانلود می‌کنیم.</li>
+                    <li><strong>گام ۳ (کانوا):</strong> تصویر را در یک پروژه جدید در کانوا آپلود می‌کنیم.</li>
+                    <li><strong>گام ۴ (ویرایش):</strong> با ابزارهای کانوا، متن فارسی (مثل فرمول‌ها)، لوگوی مدرسه یا توضیحات را روی تصویر اضافه می‌کنیم.</li>
+                </ul>
+                <div class="callout">
+                    💡 <strong>مثال ریاضی:</strong> از AI بخواهید یک تصویر از یک استاد ریاضی در حال نوشتن روی تخته سیاه بسازد. سپس در کانوا، یک حباب گفتار اضافه کنید و فرمول «مشتق» را داخل آن تایپ کنید.
+                </div>
+            </div>
+
+            <!-- جریان دوم -->
+            <div id="canva-to-ai" class="tab-content">
+                <h3>طراحی در کانوا و پردازش نهایی با AI</h3>
+                <p>در این روش، ما ساختار یا طرح اولیه را در کانوا می‌سازیم و از هوش مصنوعی می‌خواهیم برای آن محتوا تولید کند.</p>
+                <ul class="step-list">
+                    <li><strong>گام ۱ (طراحی اولیه):</strong> یک قالب (Template) ساده برای یک برگه امتحانی یا اسلاید در کانوا درست می‌کنیم (مثلاً ۴ کادر خالی برای سوال).</li>
+                    <li><strong>گام ۲ (خروجی):</strong> از طرح کانوا یک اسکرین‌شات (عکس) می‌گیریم.</li>
+                    <li><strong>گام ۳ (هوش مصنوعی):</strong> عکس را به هوش مصنوعی می‌دهیم و می‌گوییم: «این قالب برگه امتحان است. برای هر کادر، یک سوال از مبحث لگاریتم طراحی کن و پاسخ آن را بنویس.»</li>
+                    <li><strong>گام ۴ (نهایی‌سازی):</strong> سوالات تولید شده را کپی کرده و در کانوا جای‌گذاری می‌کنیم.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- بخش انیمیشن کانوا -->
+        <div class="animation-section">
+            <div class="card-header" style="border-bottom: none; margin-bottom: 10px;">
+                <div class="icon-box" style="background: rgba(0, 196, 204, 0.2);">
+                    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#00C4CC"/></svg>
+                </div>
+                <h2>قدرت پنهان: انیمیشن‌سازی در کانوا</h2>
+            </div>
+            <p>یکی از جذاب‌ترین ویژگی‌های کانوا که برای دبیران بسیار کاربردی است، بخش <strong>Animate (انیمیشن)</strong> است. شما می‌توانید:</p>
+            <ul class="step-list" style="margin-top: 15px;">
+                <li>فرمول‌های ریاضی را طوری تنظیم کنید که <strong>کم‌کم و گام به گام</strong> روی صفحه ظاهر شوند (مثلاً روند حل یک معادله).</li>
+                <li>اشکال هندسی را با حرکت (Motion) به هم وصل کنید تا مفهوم اثبات قضایا را نشان دهید.</li>
+                <li>از این انیمیشن‌ها یک ویدیو (MP4) بگیرید و آن را در فایل HTML تعاملی خود قرار دهید!</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        // کد تعویض تب‌ها
+        function openTab(evt, tabId) {
+            var contents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+            var buttons = document.getElementsByClassName("tab-btn");
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove("active");
+            }
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>

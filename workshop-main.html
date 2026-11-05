@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>کارگاه آموزشی مهندسی پرامپت و ساخت صفحات تعاملی وب برای دبیران ریاضی</title>
+    <style>
+        /* تنظیمات عمومی و فونت */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'B Nazanin', Tahoma, sans-serif;
+            background-color: #FFFFFF;
+            color: #1F2937;
+            line-height: 1.8;
+            font-size: 18px;
+            padding: 20px;
+            direction: rtl;
+            text-align: right;
+            overflow-x: hidden; /* جلوگیری از اسکرول افقی */
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+        }
+        /* هدر اصلی سند */
+        header {
+            border-bottom: 3px solid #0B1F3A;
+            padding-bottom: 20px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+        h1 {
+            color: #0B1F3A;
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .subtitle {
+            color: #6B7280;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .badge-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .badge {
+            background-color: #F0F4F8;
+            color: #0B1F3A;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 15px;
+            border: 1px solid #CBD5E1;
+            font-weight: bold;
+        }
+        /* ساختار پودمان‌ها */
+        .module {
+            background-color: #FFFFFF;
+            border: 2px solid #0B1F3A;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .module-header {
+            background-color: #0B1F3A;
+            color: #FFFFFF;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: -45px;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+        .module-header h2 {
+            font-size: 24px;
+            color: #FFFFFF;
+        }
+        h3 {
+            color: #0B1F3A;
+            font-size: 22px;
+            margin: 25px 0 12px 0;
+            border-right: 4px solid #0B1F3A;
+            padding-right: 10px;
+        }
+        h4 {
+            color: #0B1F3A;
+            font-size: 19px;
+            margin: 15px 0 8px 0;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        .secondary-text {
+            color: #6B7280;
+            font-size: 16px;
+        }
+        /* لیست‌ها */
+        ul, ol {
+            margin-right: 25px;
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        /* جعبه‌های نکته و پرامپت */
+        .callout {
+            background-color: #F8FAFC;
+            border-right: 4px solid #0B1F3A;
+            border-left: 1px solid #E2E8F0;
+            border-top: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
+            padding: 18px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .prompt-box {
+            background-color: #F1F5F9;
+            border: 1px dashed #0B1F3A;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: inherit;
+            margin: 15px 0;
+            color: #0B1F3A;
+        }
+        .prompt-title {
+            font-weight: bold;
+            color: #0B1F3A;
+            margin-bottom: 5px;
+            display: block;
+        }
+        /* جداول (اصلاح‌شده برای موبایل و صفحه‌نمایش) */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+            min-width: 600px; /* حداقل عرض برای خوانایی */
+        }
+        th, td {
+            border: 1px solid #CBD5E1;
+            padding: 12px 15px;
+            text-align: right;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+        th {
+            background-color: #0B1F3A;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #F8FAFC;
+        }
+        /* کدهای نمونه */
+        code, pre {
+            font-family: Consolas, Monaco, 'Courier New', monospace;
+            direction: ltr;
+            text-align: left;
+            background-color: #F1F5F9;
+            color: #0B1F3A;
+            border-radius: 4px;
+        }
+        code {
+            padding: 2px 6px;
+            font-size: 15px;
+            border: 1px solid #E2E8F0;
+        }
+        pre {
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid #CBD5E1;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        /* ویجت‌های تعاملی */
+        .interactive-widget {
+            background-color: #F8FAFC;
+            border: 1px solid #CBD5E1;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .btn {
+            background-color: #0B1F3A;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: inherit;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: inline-block;
+        }
+        .btn:hover {
+            background-color: #1E3A8A;
+        }
+        .answer-box {
+            display: none;
+            background-color: #FFFFFF;
+            border: 1px solid #0B1F3A;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        /* کنترل تب‌ها */
+        .tabs-container {
+            margin: 20px 0;
+        }
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid #0B1F3A;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background-color: #E2E8F0;
+            color: #0B1F3A;
+            border: none;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: 16px;
+            cursor: pointer;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            font-weight: bold;
+        }
+        .tab-btn.active {
+            background-color: #0B1F3A;
+            color: #FFFFFF;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            border-top: none;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* اسلایدر تابع ریاضی (اصلاح‌شده) */
+        .slider-control {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .slider-control label {
+            font-weight: bold;
+            color: #0B1F3A;
+        }
+        .slider-control input[type="range"] {
+            width: 100%;
+            max-width: 250px;
+            cursor: pointer;
+        }
+        .math-output {
+            font-size: 20px;
+            font-weight: bold;
+            color: #0B1F3A;
+            background-color: #FFFFFF;
+            padding: 10px 15px;
+            border: 1px solid #0B1F3A;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .svg-chart-container {
+            text-align: center;
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .svg-chart-container svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* دکمه شناور ذخیره PDF */
+        .pdf-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #0B1F3A;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'B Nazanin', Tahoma, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        .pdf-btn:hover {
+            background-color: #1E3A8A;
+        }
+
+        /* تنظیمات چاپ و خروجی PDF */
+        @media print {
+            body {
+                background-color: #FFFFFF;
+                color: #000000;
+                font-size: 13pt;
+                padding: 0;
+            }
+            .container {
+                max-width: 100%;
+                width: 100%;
+                padding: 0;
+            }
+            .module {
+                border: 1px solid #000000;
+                box-shadow: none;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+                padding: 15px;
+            }
+            .module-header {
+                background-color: #000000 !important;
+                color: #FFFFFF !important;
+                margin-top: 0;
+            }
+            .module-header h2 {
+                color: #FFFFFF !important;
+            }
+            .btn, .slider-control input[type="range"], .pdf-btn {
+                display: none !important;
+            }
+            .answer-box {
+                display: block !important;
+                border: 1px dashed #000000;
+            }
+            .tab-content {
+                display: block !important;
+                margin-bottom: 15px;
+                border: 1px solid #000000;
+            }
+            .tab-buttons {
+                display: none !important;
+            }
+            th {
+                background-color: #E2E8F0 !important;
+                color: #000000 !important;
+            }
+            a {
+                text-decoration: underline;
+                color: #000000;
+            }
+            pre, code {
+                border: 1px solid #666;
+                white-space: pre-wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- دکمه شناور برای تبدیل به PDF -->
+    <button class="pdf-btn" onclick="window.print()">🖨️ ذخیره PDF</button>
+
+    <div class="container">
+        <!-- هدر اصلی -->
+        <header>
+            <h1>کارگاه آموزشی مهندسی پرامپت و ساخت صفحات تعاملی وب</h1>
+            <div class="subtitle">ویژه دبیران ریاضی دوره دوم متوسطه</div>
+            <div class="badge-bar">
+                <span class="badge">پودمان ۱: پرامپت‌نویسی آموزشی</span>
+                <span class="badge">پودمان ۲: توسعه وب تعاملی</span>
+                <span class="badge">کاملاً آفلاین و آماده چاپ (PDF)</span>
+            </div>
+        </header>
+
+        <!-- پودمان اول -->
+        <section class="module">
+            <div class="module-header">
+                <h2>پودمان ۱: مهندسی پرامپت در آموزش ریاضی</h2>
+            </div>
+            
+            <h3>۱.۱ تعریف پرامپت (Prompt)</h3>
+            <p>
+                پرامپت (Prompt) به مجموعه دستورالعمل‌ها، سوالات یا متن‌های ورودی گفته می‌شود که به یک مدل هوش مصنوعی مولد (مانند ChatGPT یا Claude) داده می‌شود تا پاسخ یا خروجی مشخصی دریافت گردد. در آموزش ریاضی، پرامپت‌نویسی دقیق به دبیران اجازه می‌دهد طرح درس‌های پویا، سناریوهای حل مسئله، و بازخوردهای هدفمند تولید کنند.
+            </p>
+
+            <h3>۱.۲ اجزای اصلی یک پرامپت حرفه‌ای</h3>
+            <p>برای دریافت خروجی دقیق و آموزشی از هوش مصنوعی، یک پرامپت کامل باید شامل ۵ عنصر کلیدی باشد:</p>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>عنصر</th>
+                            <th>توضیح مفهومی</th>
+                            <th>مثال در ریاضی دبیرستان</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>نقش (Role)</strong></td>
+                            <td>تعیین هویت و سطح تخصصی هوش مصنوعی</td>
+                            <td>«تو یک استاد برجسته ریاضی و طراح آزمون‌های کشوری حسابان هستی.»</td>
+                        </tr>
+                        <tr>
+                            <td><strong>زمینه (Context)</strong></td>
+                            <td>تشریح موقعیت و پایه تحصیلی دانش‌آموزان</td>
+                            <td>«دانش‌آموزان پایه دوازدهم تجربی با مفهوم مشتق آشنا شده‌اند اما در مسائل بهینه‌سازی مشکل دارند.»</td>
+                        </tr>
+                        <tr>
+                            <td><strong>دستورالعمل (Instruction)</strong></td>
+                            <td>مأموریت دقیق و گام‌به‌گامی که باید انجام شود</td>
+                            <td>«۳ مسئله کاربردی ملموس از زندگی واقعی مرتبط با بهینه‌سازی سود و مساحت طراحی کن.»</td>
+                        </tr>
+                        <tr>
+                            <td><strong>محدودیت‌ها (Constraints)</strong></td>
+                            <td>نبایدها، فرمول‌ها و چارچوب‌های پاسخ</td>
+                            <td>«از محاسبات پیچیده عددی پرهیز کن و تمرکز را روی فهم مفهومی بگذار.»</td>
+                        </tr>
+                        <tr>
+                            <td><strong>فرمت خروجی (Output Format)</strong></td>
+                            <td>قالب ارائه‌ی پاسخ (جدول، لیست، کد)</td>
+                            <td>«پاسخ را در قالب یک جدول شامل مسئله، راهنمای گام‌به‌گام و کلید نهایی تنظیم کن.»</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>۱.۳ پرامپت‌های مبتنی بر نقش (Role-Based Prompts)</h3>
+            <p>تعیین نقش در پرامپت‌نویسی لحن، سطح عمق علمی و نحوه پاسخ‌دهی هوش مصنوعی را هدایت می‌کند. برای مثال:</p>
+            <ul>
+                <li><strong>نقش سقراطی:</strong> هوش مصنوعی پاسخ مستقیم نمی‌دهد، بلکه با پرسیدن سوالات هدایت‌کننده دانش‌آموز را به کشف پاسخ سوق می‌دهد.</li>
+                <li><strong>نقش طراح سوال:</strong> هوش مصنوعی سوالاتی با سطوح مختلف حیطه شناختی بلوم (دانش، فهم، کاربرد، تحلیل) تولید می‌کند.</li>
+                <li><strong>نقش دستیار تصحیح:</strong> هوش مصنوعی کارهای کلاسی دانش‌آموزان را بررسی کرده و راهکارهای اصلاحی ارائه می‌دهد.</li>
+            </ul>
+
+            <h3>۱.۴ نمونه‌های کاربردی در مباحث ریاضی دبیرستان</h3>
+            
+            <h4>الف) مبحث توابع (پایه دهم و یازدهم)</h4>
+            <div class="prompt-box">
+                <span class="prompt-title">📌 پرامپت نمونه برای تدریس مفهوم تابع:</span>
+                «به عنوان یک معلم مبتکر ریاضی، یک آنالوژی (شباهت‌سازی) ملموس و داستانی برای توضیح مفهوم دامنه، برد و ضابطه تابع f(x) برای دانش‌آموزان پایه دهم بنویس. از مثال دستگاه کارخانه یا دستگاه فروش خودکار استفاده کن و ۳ سوال درک مفاهیم در پایان آن بگنجان.»
+            </div>
+
+            <h4>ب) مبحث مشتق و بهینه‌سازی (پایه دوازدهم)</h4>
+            <div class="prompt-box">
+                <span class="prompt-title">📌 پرامپت نمونه برای کاربرد مشتق:</span>
+                «نقش یک مهندس طراحی صنعتی را ایفا کن. کاربرد مشتق را در بهینه‌سازی حجم یک قوطی کنسرو با حداقل مصرف ورق فلزی به زبان ساده توضیح بده. فرمول‌های مربوط به مساحت کل و حجم را قدم به قدم بنویس و نشان بده چرا مشتق برابر صفر نقطه بهینه را نشان می‌دهد.»
+            </div>
+
+            <h4>ج) مبحث هندسه و قضایا (پایه یازدهم)</h4>
+            <div class="prompt-box">
+                <span class="prompt-title">📌 پرامپت نمونه برای اثبات قضایای هندسه:</span>
+                «راهنمای تدریس قضیه سینوس‌ها در مثلثات را به صورت یک فعالیت گروهی کشفی (Discovery Learning) برای کلاس هندسه ۲ آماده کن. شامل وسایل لازم، گام‌های رسم مثلث، و سوالاتی که دانش‌آموزان را به رابطه sin(A)/a = sin(B)/b می‌رساند باشد.»
+            </div>
+
+            <div class="callout">
+                <strong>💡 مقایسه پرامپت ضعیف و قوی:</strong><br>
+                <span style="color: #DC2626;">❌ پرامپت ضعیف:</span> «چند سوال مشتق بده.»<br>
+                <span style="color: #166534;">✔️ پرامپت قوی:</span> «به عنوان طراح آزمون حسابان ۲، ۴ سوال چهارگزینه‌ای از مبحث نقاط بحرانی و عطف تابع طراحی کن. سوالات باید دارای بازخورد تشریحی برای گزینه‌های نادرست باشند.»
+            </div>
+        </section>
+
+        <!-- پودمان دوم -->
+        <section class="module">
+            <div class="module-header">
+                <h2>پودمان ۲: ساخت صفحات تعاملی وب (HTML/CSS/JS)</h2>
+            </div>
+
+            <h3>۲.۱ ساختار اساسی یک سند HTML</h3>
+            <p>زبان HTML ساختار اصلی صفحات وب را تشکیل می‌دهد. برای ساخت صفحات فارسی متناسب با خط راست به چپ (RTL)، رعایت ویژگی‌های <code>dir="rtl"</code> و کدگذاری <code>utf-8</code> الزامی است:</p>
+            
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="fa" dir="rtl"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;عنوان صفحه ریاضی&lt;/title&gt;
+    &lt;style&gt;
+        body { font-family: 'B Nazanin', Tahoma, sans-serif; background-color: #FFFFFF; }
+        h1 { color: #0B1F3A; }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;مفهوم مشتق در ریاضی&lt;/h1&gt;
+    &lt;p&gt;متن آموزشی...&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+            <h3>۲.۲ افزودن عناصر چندرسانه‌ای و پیوندها</h3>
+            <p>در وب آموزشی، استفاده از تصویر، صوت، ویدیو و لینک به تعامل بهتر دانش‌آموزان کمک می‌کند:</p>
+            <ul>
+                <li><strong>درج تصویر:</strong> <code>&lt;img src="parabola.png" alt="نمودار سهمی" width="300"&gt;</code></li>
+                <li><strong>درج پیوند (لینک):</strong> <code>&lt;a href="https://grows.medu.ir" target="_blank"&gt;شبکه ملی رشد&lt;/a&gt;</code></li>
+                <li><strong>درج صوت آموزشی:</strong> <code>&lt;audio controls src="explanation.mp3"&gt;&lt;/audio&gt;</code></li>
+                <li><strong>درج ویدیو:</strong> <code>&lt;video controls width="400" src="geometry.mp4"&gt;&lt;/video&gt;</code></li>
+            </ul>
+
+            <h3>۲.۳ مثال‌های تعاملی عملی با JavaScript</h3>
+            <p class="secondary-text">تمام تعاملات زیر با جاوااسکریپت خالص (Vanilla JS) و بدون نیاز به هیچ کتابخانه خارجی یا اتصال اینترنتی اجرا می‌شوند.</p>
+
+            <!-- تعامل ۱ -->
+            <h4>نمونه ۱: دکمه نمایش / مخفی‌سازی پاسخ تمرین (Show/Hide Answer)</h4>
+            <div class="interactive-widget">
+                <p><strong>مسئله:</strong> مشتق تابع <span dir="ltr">f(x) = 3x² + 5x - 2</span> را به دست آورید.</p>
+                <button class="btn" onclick="toggleAnswer('ans1')">مشاهده / مخفی‌سازی پاسخ تشریحی</button>
+                <div id="ans1" class="answer-box">
+                    <p><strong>پاسخ تشریحی:</strong></p>
+                    <p>با استفاده از قاعده توان در مشتق‌گیری:</p>
+                    <p style="direction: ltr; text-align: right; font-weight: bold; color: #0B1F3A;">f'(x) = 3(2x) + 5(1) - 0 = 6x + 5</p>
+                </div>
+            </div>
+
+            <!-- تعامل ۲ -->
+            <h4>نمونه ۲: تب‌بندی محتوای درسی (Tabbed Content)</h4>
+            <div class="interactive-widget">
+                <div class="tabs-container">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" onclick="openTab(event, 'tab-geometry')">هندسه تحلیلی</button>
+                        <button class="tab-btn" onclick="openTab(event, 'tab-algebra')">جبر و معادلات</button>
+                        <button class="tab-btn" onclick="openTab(event, 'tab-calculus')">حسابان و حد</button>
+                    </div>
+                    <div id="tab-geometry" class="tab-content active">
+                        <h4>مبحث هندسه: شیب خط و معادله خط</h4>
+                        <p>شیب خط برابر است با تغییرات عرض به تغییرات طول. اگر زاویه خط با جهت مثبت محور طول‌ها θ باشد، شیب برابر با tan(θ) است.</p>
+                    </div>
+                    <div id="tab-algebra" class="tab-content">
+                        <h4>مبحث جبر: ریشه‌های معادله درجه دوم</h4>
+                        <p>در معادله ax² + bx + c = 0، دلتا برابر است با Δ = b² - 4ac. اگر Δ > 0 باشد معادله دارای دو ریشه حقیقی متمایز است.</p>
+                    </div>
+                    <div id="tab-calculus" class="tab-content">
+                        <h4>مبحث حسابان: قضیه حد مبهم ۰/۰</h4>
+                        <p>برای رفع ابهام حد حالت صفر صفرم در توابع کسر چندجمله‌ای، از تجزیه عبارت‌ها و ساده کردن عامل صفرکننده (x - a) استفاده می‌شود.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تعامل ۳ -->
+            <h4>نمونه ۳: اسلایدر تعاملی ضریب تابع سهمی f(x) = a·x²</h4>
+            <div class="interactive-widget">
+                <p>با جابه‌جایی اسلایدر زیر، تغییر پارامتر a و ضریب دهانه سهمی را به صورت زنده مشاهده کنید:</p>
+                <div class="slider-control">
+                    <label for="paramA">مقدار ضریب a:</label>
+                    <input type="range" id="paramA" min="-5" max="5" step="0.5" value="1" oninput="updateParabola()">
+                    <span id="valA" style="font-weight: bold; font-size: 20px; color: #0B1F3A;">1</span>
+                </div>
+                <div class="math-output">
+                    ضابطه تابع فعلی: <span id="funcFormula" style="direction: ltr; display: inline-block;">f(x) = 1.0 x²</span>
+                </div>
+                <div class="svg-chart-container">
+                    <!-- عرض و ارتفاع SVG برای واکنش‌گرایی تغییر کرد -->
+                    <svg id="parabolaSvg" viewBox="-180 -120 360 240" style="width: 100%; max-width: 400px; height: auto; background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 4px;">
+                        <!-- محورهای مختصات -->
+                        <line x1="-170" y1="0" x2="170" y2="0" stroke="#6B7280" stroke-width="1.5" />
+                        <line x1="0" y1="-110" x2="0" y2="110" stroke="#6B7280" stroke-width="1.5" />
+                        <text x="155" y="-5" fill="#6B7280" font-size="12">X</text>
+                        <text x="8" y="-95" fill="#6B7280" font-size="12">Y</text>
+                        <!-- منحنی سهمی SVG -->
+                        <polyline id="parabolaPath" points="" fill="none" stroke="#0B1F3A" stroke-width="3" />
+                    </svg>
+                    <p id="parabolaStatus" class="secondary-text" style="margin-top: 8px;">دهانه سهمی به سمت بالا باز می‌شود.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- کدهای جاوااسکریپت تعاملی -->
+    <script>
+        // تعامل ۱
+        function toggleAnswer(elementId) {
+            var box = document.getElementById(elementId);
+            if (box.style.display === "block") {
+                box.style.display = "none";
+            } else {
+                box.style.display = "block";
+            }
+        }
+
+        // تعامل ۲
+        function openTab(evt, tabId) {
+            var contents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+            var buttons = document.getElementsByClassName("tab-btn");
+            for (var j = 0; j < buttons.length; j++) {
+                buttons[j].classList.remove("active");
+            }
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // تعامل ۳
+        function updateParabola() {
+            var a = parseFloat(document.getElementById("paramA").value);
+            document.getElementById("valA").innerText = a;
+            
+            var formulaText = "f(x) = " + a.toFixed(1) + " x²";
+            document.getElementById("funcFormula").innerText = formulaText;
+            
+            var points = [];
+            var scaleX = 15;
+            var scaleY = 10;
+            
+            for (var x = -10; x <= 10; x += 0.25) {
+                var y = a * x * x;
+                var svgX = x * scaleX;
+                var svgY = - (y * scaleY);
+                points.push(svgX.toFixed(1) + "," + svgY.toFixed(1));
+            }
+            
+            document.getElementById("parabolaPath").setAttribute("points", points.join(" "));
+            
+            var statusEl = document.getElementById("parabolaStatus");
+            if (a > 0) {
+                statusEl.innerText = "ضریب a مثبت است: دهانه سهمی به سمت بالا باز می‌شود (نقطه مینیمم دارد).";
+            } else if (a < 0) {
+                statusEl.innerText = "ضریب a منفی است: دهانه سهمی به سمت پایین باز می‌شود (نقطه ماکزیمم دارد).";
+            } else {
+                statusEl.innerText = "ضریب a صفر است: تابع به خط مستقیم y = 0 تبدیل شده است.";
+            }
+        }
+
+        // مقداردهی اولیه
+        window.onload = function() {
+            updateParabola();
+        };
+    </script>
+</body>
+</html>

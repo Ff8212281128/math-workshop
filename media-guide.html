@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="handbook">
+  <title>کارگاه آموزشی دبیران ریاضی: درج چندرسانه‌ای در صفحات وب (HTML5)</title>
+
+  <!-- Google Fonts: Vazirmatn and JetBrains Mono for web fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Handbook Base + User Requested Color Overrides */
+      --background: #FFFFFF;
+      --surface-container-low: #D1FAE5; /* Light Green requested for boxes */
+      --surface-container: #E8F9F1;     /* Soft Mint tint */
+      --surface-container-high: #A7F3D0;/* Crisp green accent container */
+      --surface-card: #FFFFFF;
+
+      /* Primary & Headings requested Deep Green */
+      --primary: #065F46;               /* Deep Green requested */
+      --on-primary: #FFFFFF;
+      --primary-dark: #044332;
+      --primary-light: #059669;
+      --primary-container: #D1FAE5;     /* Light Green */
+      --on-primary-container: #065F46;
+
+      /* Typography ink */
+      --on-surface: #111827;            /* Deep black/slate for high readability */
+      --on-surface-variant: #374151;    /* Slate 700 */
+      --muted-text: #4B5563;            /* Gray 600 */
+
+      /* Rules and borders requested Deep Green */
+      --outline: #065F46;               /* Deep Green borders */
+      --outline-variant: #A7F3D0;       /* Hairlines and subtle dividers */
+      --border-subtle: #E5E7EB;
+
+      /* Semantic tokens */
+      --positive: #059669;
+      --warning: #B45309;
+      --warning-bg: #FEF3C7;
+      --error: #DC2626;
+      --error-bg: #FEE2E2;
+      --on-error: #FFFFFF;
+
+      /* High-contrast code container tokens */
+      --code-bg: #0F172A;
+      --code-text: #F8FAFC;
+      --code-accent: #34D399;
+      --code-tag: #F472B6;
+      --code-attr: #93C5FD;
+      --code-val: #FDE047;
+
+      /* Focus indicator */
+      --focus: #065F46;
+      --focus-ring: 3px solid #10B981;
+
+      /* Typography fonts requested: B Nazanin with web fallbacks */
+      --font-headline: 'B Nazanin', 'Vazirmatn', Tahoma, sans-serif;
+      --font-body: 'B Nazanin', 'Vazirmatn', Tahoma, sans-serif;
+      --font-label: 'JetBrains Mono', 'Vazirmatn', monospace;
+      --font-code: 'JetBrains Mono', Consolas, monospace;
+
+      /* Handbook structural style effects */
+      --top-index-rule: 6px solid var(--primary);
+      --inset-rule: 5px solid var(--primary);
+      --card-border: 1.5px solid var(--outline);
+      --radius-sm: 4px;
+      --radius-md: 6px;
+
+      /* Spacing scale */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.25rem;
+      --space-2xl: 3.5rem;
+
+      /* Typography scale */
+      --display-size: clamp(1.85rem, 1.4rem + 1.8vw, 2.6rem);
+      --headline-size: clamp(1.35rem, 1.15rem + 0.9vw, 1.75rem);
+      --subhead-size: clamp(1.15rem, 1.02rem + 0.4vw, 1.35rem);
+      --body-size: clamp(1.05rem, 0.98rem + 0.2vw, 1.15rem);
+      --label-size: 0.85rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 200ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html, body {
+      overflow-x: clip;
+      margin: 0;
+      padding: 0;
+      background-color: var(--background);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.75;
+      direction: rtl;
+      text-align: right;
+    }
+
+    /* Page container */
+    .page-grid {
+      display: grid;
+      gap: var(--space-lg);
+      padding: var(--space-lg);
+      max-width: 1140px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    .page-grid * {
+      min-width: 0;
+    }
+
+    /* Handbook Top Index Bar */
+    .handbook-top-bar {
+      border-top: var(--top-index-rule);
+      background-color: var(--background);
+      padding-top: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    /* Header styling */
+    .workshop-header {
+      background-color: var(--surface-container-low);
+      border: var(--card-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-xl);
+      position: relative;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 700;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-sm);
+      background-color: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .badge-secondary {
+      background-color: var(--background);
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .workshop-title {
+      font-family: var(--font-headline);
+      font-size: var(--display-size);
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.25;
+      margin: 0 0 var(--space-sm) 0;
+    }
+
+    .workshop-subtitle {
+      font-size: var(--subhead-size);
+      color: var(--on-surface-variant);
+      margin: 0 0 var(--space-lg) 0;
+      max-width: 75ch;
+    }
+
+    .header-quick-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+      padding-top: var(--space-md);
+      border-top: 1px dashed var(--outline);
+    }
+
+    .stat-card {
+      background-color: var(--background);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+    }
+
+    .stat-label {
+      font-size: var(--label-size);
+      color: var(--muted-text);
+      display: block;
+      margin-bottom: var(--space-xs);
+    }
+
+    .stat-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Tab navigation */
+    .tab-nav-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background-color: var(--background);
+      padding-top: var(--space-sm);
+      padding-bottom: var(--space-sm);
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .tab-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .tab-btn {
+      font-family: var(--font-headline);
+      font-size: 1.05rem;
+      font-weight: 700;
+      padding: var(--space-sm) var(--space-md);
+      background-color: var(--surface-container-low);
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+      border-bottom: none;
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+    }
+
+    .tab-btn:hover {
+      background-color: var(--surface-container-high);
+    }
+
+    .tab-btn[aria-selected="true"] {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+      box-shadow: 0 2px 0 var(--primary);
+    }
+
+    .tab-btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px #10B981;
+    }
+
+    /* Tab Panels */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn var(--dur-short) var(--ease-out);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Content Cards & Sections */
+    .section-card {
+      background-color: var(--background);
+      border: var(--card-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+      border-bottom: 2px solid var(--surface-container-low);
+      padding-bottom: var(--space-sm);
+    }
+
+    .section-num-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      background-color: var(--primary);
+      color: var(--on-primary);
+      font-family: var(--font-label);
+      font-size: 1.25rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-family: var(--font-headline);
+      font-size: var(--headline-size);
+      font-weight: 800;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    /* Inset Callouts (Handbook signature: 5px border on right for RTL) */
+    .callout-box {
+      background-color: var(--surface-container-low);
+      border-right: var(--inset-rule);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: var(--space-md) var(--space-lg);
+      margin: var(--space-lg) 0;
+    }
+
+    .callout-box.warning-callout {
+      background-color: var(--warning-bg);
+      border-right: 5px solid var(--warning);
+    }
+
+    .callout-box.error-callout {
+      background-color: var(--error-bg);
+      border-right: 5px solid var(--error);
+    }
+
+    .callout-title {
+      font-family: var(--font-headline);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: var(--space-xs);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .callout-title.primary-title { color: var(--primary); }
+    .callout-title.warning-title { color: var(--warning); }
+    .callout-title.error-title { color: var(--error); }
+
+    /* Comparison Grids */
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+      gap: var(--space-lg);
+      margin: var(--space-lg) 0;
+    }
+
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+      gap: var(--space-md);
+      margin: var(--space-lg) 0;
+    }
+
+    .feature-card {
+      background-color: var(--background);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-sm);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .feature-card.highlight {
+      background-color: var(--surface-container-low);
+    }
+
+    .feature-card-header {
+      font-family: var(--font-headline);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    /* Math Examples & Demos */
+    .demo-wrapper {
+      background-color: var(--background);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      margin: var(--space-lg) 0;
+      overflow: hidden;
+    }
+
+    .demo-toolbar {
+      background-color: var(--surface-container-low);
+      border-bottom: 1px solid var(--outline);
+      padding: var(--space-sm) var(--space-md);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .demo-title {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .demo-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .btn-action {
+      font-family: var(--font-headline);
+      font-size: 0.95rem;
+      font-weight: 700;
+      background-color: var(--primary);
+      color: var(--on-primary);
+      border: 1px solid var(--primary-dark);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      transition: background-color var(--dur-micro) var(--ease-out);
+    }
+
+    .btn-action:hover {
+      background-color: var(--primary-light);
+    }
+
+    .btn-action:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px #10B981;
+    }
+
+    .btn-outline {
+      background-color: var(--background);
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--surface-container-high);
+    }
+
+    .demo-body {
+      padding: var(--space-lg);
+      background-color: var(--background);
+    }
+
+    /* Code Display Box */
+    .code-container {
+      background-color: var(--code-bg);
+      color: var(--code-text);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      margin-top: var(--space-md);
+      font-family: var(--font-code);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      direction: ltr;
+      text-align: left;
+      overflow-x: auto;
+      border: 1px solid var(--primary);
+      position: relative;
+    }
+
+    .code-container.hidden {
+      display: none;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: var(--space-xs);
+      margin-bottom: var(--space-sm);
+      font-size: 0.8rem;
+      color: #94A3B8;
+      font-family: var(--font-label);
+    }
+
+    .code-tag { color: var(--code-tag); font-weight: bold; }
+    .code-attr { color: var(--code-attr); }
+    .code-val { color: var(--code-val); }
+    .code-comment { color: #64748B; font-style: italic; }
+
+    .btn-copy {
+      background-color: #334155;
+      color: #F8FAFC;
+      border: none;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: var(--font-label);
+    }
+
+    .btn-copy:hover {
+      background-color: var(--primary-light);
+    }
+
+    /* Math Formula and Vectors */
+    .math-callout {
+      background-color: var(--surface-container);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+    }
+
+    .math-inline {
+      font-family: var(--font-code);
+      background-color: var(--surface-container-low);
+      padding: 2px 6px;
+      border-radius: 3px;
+      border: 1px solid var(--outline-variant);
+      direction: ltr;
+      display: inline-block;
+    }
+
+    /* Step-by-Step GitHub List */
+    .step-list {
+      list-style: none;
+      padding: 0;
+      margin: var(--space-lg) 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .step-item {
+      display: flex;
+      gap: var(--space-md);
+      align-items: flex-start;
+      background-color: var(--background);
+      border: 1px solid var(--outline);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+    }
+
+    .step-badge {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+      font-family: var(--font-label);
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-family: var(--font-headline);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-top: 0;
+      margin-bottom: var(--space-xs);
+    }
+
+    /* Interactive Parabola Slider Simulator */
+    .parabola-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      background-color: var(--surface-container-low);
+      padding: var(--space-md);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-md);
+      border: 1px solid var(--outline);
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .control-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .slider-input {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    /* Interactive Base64 Calculator */
+    .calculator-box {
+      background-color: var(--surface-container-low);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+      margin: var(--space-lg) 0;
+    }
+
+    .calc-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: var(--space-md);
+      align-items: end;
+      margin-bottom: var(--space-md);
+    }
+
+    .input-field {
+      padding: var(--space-sm);
+      border: 1.5px solid var(--primary);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-label);
+      font-size: 1rem;
+      width: 100%;
+      background-color: var(--background);
+      color: var(--on-surface);
+    }
+
+    .calc-result-box {
+      background-color: var(--background);
+      border: 1.5px solid var(--outline);
+      border-radius: var(--radius-sm);
+      padding: var(--space-md);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .calc-metric-title {
+      font-size: 0.85rem;
+      color: var(--muted-text);
+      display: block;
+    }
+
+    .calc-metric-val {
+      font-family: var(--font-label);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Windows Explorer Double Extension Diagram */
+    .explorer-window {
+      background-color: var(--background);
+      border: 1.5px solid var(--primary);
+      border-radius: var(--radius-sm);
+      margin: var(--space-md) 0;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .explorer-titlebar {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      padding: var(--space-xs) var(--space-md);
+      font-family: var(--font-label);
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .explorer-content {
+      padding: var(--space-md);
+    }
+
+    .file-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-sm);
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: var(--font-label);
+      font-size: 0.95rem;
+    }
+
+    .file-row:last-child {
+      border-bottom: none;
+    }
+
+    .file-status-bad {
+      color: var(--error);
+      font-weight: 700;
+    }
+
+    .file-status-good {
+      color: var(--positive);
+      font-weight: 700;
+    }
+
+    /* Table styles */
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--space-md) 0;
+      font-size: 0.98rem;
+    }
+
+    .custom-table th, .custom-table td {
+      border: 1px solid var(--outline);
+      padding: var(--space-sm) var(--space-md);
+      text-align: right;
+    }
+
+    .custom-table th {
+      background-color: var(--primary);
+      color: var(--on-primary);
+      font-family: var(--font-headline);
+      font-weight: 700;
+    }
+
+    .custom-table tr:nth-child(even) {
+      background-color: var(--surface-container-low);
+    }
+
+    /* Checklist */
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: var(--space-md) 0;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-xs) 0;
+      cursor: pointer;
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Footer */
+    .workshop-footer {
+      border-top: var(--top-index-rule);
+      padding: var(--space-lg) 0;
+      margin-top: var(--space-2xl);
+      text-align: center;
+      color: var(--muted-text);
+      font-size: 0.95rem;
+    }
+
+    /* Toast notification */
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary);
+      color: var(--on-primary);
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--dur-short) var(--ease-out);
+    }
+
+    .toast-msg.show {
+      opacity: 1;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      .page-grid {
+        padding: var(--space-sm);
+      }
+      .workshop-header {
+        padding: var(--space-md);
+      }
+      .calc-inputs {
+        grid-template-columns: 1fr;
+      }
+      .tab-btn {
+        flex: 1 1 auto;
+        text-align: center;
+        justify-content: center;
+      }
+      .section-card {
+        padding: var(--space-md);
+      }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-grid">
+    <!-- Top Index Rule -->
+    <div class="handbook-top-bar"></div>
+
+    <!-- Workshop Header -->
+    <header class="workshop-header">
+      <div class="badge-row">
+        <span class="badge">کارگاه تخصصی متوسطه دوم</span>
+        <span class="badge badge-secondary">دبیرخانه کشوری ریاضی</span>
+        <span class="badge badge-secondary">توسعه محتوای الکترونیکی استاندارد</span>
+      </div>
+      <h1 class="workshop-title">راهنمای جامع درج و مدیریت رسانه‌ها در فایل‌های HTML</h1>
+      <p class="workshop-subtitle">
+        تکنیک‌ها، استانداردها و نکات کلیدی برای دبیران ریاضی جهت بارگذاری ایمن و حرفه‌ای تصاویر هندسی، صوت‌های آموزشی و ویدیوهای تدریس در صفحات وب و ارائه‌های کلاسی.
+      </p>
+
+      <div class="header-quick-stats">
+        <div class="stat-card">
+          <span class="stat-label">هدف کارگاه</span>
+          <span class="stat-value">تولید محتوای آفلاین و آنلاین بدون نقص</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">رسانه‌های تحت پوشش</span>
+          <span class="stat-value">تصویر (SVG/PNG)، صوت (MP3)، ویدیو (MP4)</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">سطح مهارت مورد نیاز</span>
+          <span class="stat-value">مقدماتی تا متوسط (بدون نیاز به کدنویسی پیشرفته)</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav-wrapper" aria-label="بخش‌های کارگاه">
+      <ul class="tab-list" role="tablist">
+        <li role="presentation">
+          <button id="tab-btn-local" class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-local" onclick="switchTab('local')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+            ۱. دسترسی محلی (آفلاین)
+          </button>
+        </li>
+        <li role="presentation">
+          <button id="tab-btn-cloud" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-cloud" onclick="switchTab('cloud')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+            ۲. هاست ابری و Base64
+          </button>
+        </li>
+        <li role="presentation">
+          <button id="tab-btn-github" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-github" onclick="switchTab('github')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m9.17 14.83-4.24 4.24"></path></svg>
+            ۳. گیت‌هاب پیجز (GitHub Pages)
+          </button>
+        </li>
+        <li role="presentation">
+          <button id="tab-btn-sandbox" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-sandbox" onclick="switchTab('sandbox')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            ۴. آزمایشگاه زنده رسانه‌های ریاضی
+          </button>
+        </li>
+        <li role="presentation">
+          <button id="tab-btn-tools" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-tools" onclick="switchTab('tools')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+            ۵. ابزارهای تشخیصی و ماشین‌حساب دبیر
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- MAIN PANELS -->
+    <main>
+
+      <!-- PANEL 1: LOCAL ACCESS (OFFLINE) -->
+      <section id="panel-local" class="tab-panel active" role="tabpanel" aria-labelledby="tab-btn-local">
+        <article class="section-card">
+          <header class="section-header">
+            <div class="section-num-badge">۱</div>
+            <div>
+              <h2 class="section-title">دسترسی محلی (آفلاین) و آدرس‌دهی نسبی</h2>
+              <p style="margin: 0; color: var(--muted-text); font-size: 0.95rem;">چگونه اسلایدهای ریاضی را بدون وابستگی به اینترنت در کلاس درس اجرا کنیم؟</p>
+            </div>
+          </header>
+
+          <p>
+            در کلاس‌های درس، بردهای هوشمند و اتاق‌های کامپیوتر مدارس، اتصال پایدار به اینترنت اغلب در دسترس نیست. بنابراین ایمن‌ترین شیوه برای ارائه فایل‌های درس ریاضی، استفاده از <strong>روش محلی (آفلاین)</strong> با <strong>مسیردهی نسبی (Relative Path)</strong> است.
+          </p>
+
+          <div class="callout-box">
+            <h3 class="callout-title primary-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              تفاوت حیاتی مسیر نسبی و مسیر مطلق
+            </h3>
+            <p style="margin-bottom: var(--space-xs);">
+              <strong>مسیر مطلق محلی (اشتباه رایج):</strong> آدرسی که با درایو کامپیوتر شروع می‌شود؛ مانند:
+              <bdi dir="ltr" class="math-inline">src="C:\Users\Teacher\Desktop\math\parabola.png"</bdi><br>
+              این آدرس فقط و فقط روی لپ‌تاپ خودتان کار می‌کند! به محض اینکه پوشه را روی فلش‌مموری کپی کنید یا در کامپیوتر مدرسه باز کنید، تمام تصاویر و ویدیوها ناپدید می‌شوند چون کامپیوتر مدرسه چنین نام کاربری و درایوی ندارد.
+            </p>
+            <p style="margin-bottom: 0;">
+              <strong>مسیر نسبی (استاندارد جهانی):</strong> آدرسی که مبدأ آن همان پوشه‌ای است که فایل HTML در آن قرار دارد؛ مانند:
+              <bdi dir="ltr" class="math-inline">src="parabola.png"</bdi> یا <bdi dir="ltr" class="math-inline">src="images/parabola.png"</bdi>.<br>
+              این ساختار در هر کامپیوتری، در هر سیستم‌عاملی و با هر حرف درایوی کاملاً سالم اجرا می‌شود.
+            </p>
+          </div>
+
+          <h3 style="color: var(--primary); font-family: var(--font-headline); margin-top: var(--space-xl);">
+            جدول ساختار مسیردهی استاندارد برای دبیران ریاضی
+          </h3>
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>موقعیت فایل رسانه نسبت به فایل HTML</th>
+                <th>نحوه کدنویسی مسیر (src)</th>
+                <th>مثال برای محتوای ریاضی</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>رسانه دقیقاً در کنار فایل HTML قرار دارد</td>
+                <td><bdi dir="ltr" class="math-inline">src="filename.ext"</bdi></td>
+                <td><bdi dir="ltr">src="parabola.png"</bdi> (نمودار سهمی)</td>
+              </tr>
+              <tr>
+                <td>رسانه در یک پوشه فرعی داخلی قرار دارد</td>
+                <td><bdi dir="ltr" class="math-inline">src="foldername/filename.ext"</bdi></td>
+                <td><bdi dir="ltr">src="audio/delta-formula.mp3"</bdi> (صوت بررسی دلتا)</td>
+              </tr>
+              <tr>
+                <td>رسانه در یک پوشه بالاتر (پدر) قرار دارد</td>
+                <td><bdi dir="ltr" class="math-inline">src="../filename.ext"</bdi></td>
+                <td><bdi dir="ltr">src="../assets/trig-circle.svg"</bdi> (دایره مثلثاتی)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Warning: Mobile Browser Limitation -->
+          <div class="callout-box warning-callout">
+            <h3 class="callout-title warning-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              هشدار مهم: محدودیت اجرای صوت و ویدیو در تبلت و موبایل
+            </h3>
+            <p>
+              اگر فایل HTML حاوی برچسب‌های <bdi dir="ltr" class="math-inline">&lt;audio&gt;</bdi> یا <bdi dir="ltr" class="math-inline">&lt;video&gt;</bdi> را مستقیماً از طریق فایل‌منیجر گوشی (اندروید یا iOS) باز کنید، مرورگرهای موبایل به دلیل پروتکل امنیتی سندباکس (<bdi dir="ltr">file:// CORS Sandbox</bdi>) اغلب از بارگذاری صوت و تصویر محلی جلوگیری می‌کنند و پلیر خاکستری یا غیرفعال نمایش داده می‌شود!
+            </p>
+            <p style="margin-bottom: 0;">
+              <strong>راهکار کارگاهی:</strong> برای ارائه در کلاس، ترجیحاً از <strong>لپ‌تاپ یا کامپیوتر مجهز به ویندوز/مک/لینوکس</strong> استفاده فرمایید. در صورت الزام به استفاده از تبلت، باید پروژه را از طریق هاست یا گیت‌هاب پیجز (بخش ۳) باز نمایید.
+            </p>
+          </div>
+
+          <!-- Trap: Double Extension -->
+          <div class="callout-box error-callout">
+            <h3 class="callout-title error-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+              تله مهلک «پسوند دوگانه در ویندوز» (Double-Extension Trap)
+            </h3>
+            <p>
+              بسیاری از همکاران محترم گلایه می‌کنند: «کد من کاملاً درست است، فایل صوتی هم در همان پوشه است، اما دکمه پخش غیرفعال است!»<br>
+              علت این خطا تنظیمی پیش‌فرض در ویندوز به نام <strong>«Hide extensions for known file types»</strong> است.
+            </p>
+
+            <div class="explorer-window">
+              <div class="explorer-titlebar">
+                <span>Windows Explorer — نمایش شبیه‌سازی شده خطا</span>
+                <span>پوشه پروژه ریاضی ۱۱</span>
+              </div>
+              <div class="explorer-content">
+                <div class="file-row">
+                  <span>نامی که دبیر در ویندوز مشاهده می‌کند:</span>
+                  <span class="file-status-bad">Sound.mp3</span>
+                </div>
+                <div class="file-row">
+                  <span>نام واقعی ذخیره شده روی دیسک (پنهان):</span>
+                  <span class="file-status-bad">Sound.mp3.mp3</span>
+                </div>
+                <div class="file-row">
+                  <span>کدی که دبیر در HTML نوشته:</span>
+                  <bdi dir="ltr">src="Sound.mp3"</bdi>
+                </div>
+                <div class="file-row">
+                  <span>نتیجه در مرورگر:</span>
+                  <span class="file-status-bad">خطای ۴۰۴ و عدم پخش صدا!</span>
+                </div>
+              </div>
+            </div>
+
+            <p style="margin-bottom: var(--space-xs);"><strong>چگونه در ویندوز این مشکل را ریشه‌ای حل کنیم؟</strong></p>
+            <ol style="margin-top: 0; padding-right: var(--space-lg);">
+              <li>وارد پوشه فایل‌های خود در ویندوز (<bdi dir="ltr">File Explorer</bdi>) شوید.</li>
+              <li>از منوی بالای پنجره روی برگه <strong>View (مشاهده)</strong> کلیک کنید.</li>
+              <li>در ویندوز ۱۰ گزینه <strong>File name extensions</strong> را تیک بزنید (در ویندوز ۱۱: روی <bdi dir="ltr">View &gt; Show &gt; File name extensions</bdi> بزنید).</li>
+              <li>اکنون نام‌های پنهان آشکار می‌شوند؛ پسوند اضافی <bdi dir="ltr">.mp3</bdi> یا <bdi dir="ltr">.jpg</bdi> تکراری را حذف فرمایید.</li>
+            </ol>
+          </div>
+
+          <!-- Code Example: Local Math Parabola Image -->
+          <div class="demo-wrapper">
+            <div class="demo-toolbar">
+              <div class="demo-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+                نمونه استاندارد: درج تصویر محلی سهمی درجه دوم
+              </div>
+              <div class="demo-actions">
+                <button class="btn-action btn-outline" onclick="toggleCode('code-local-image')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                  نمایش / مخفی‌سازی کد HTML
+                </button>
+              </div>
+            </div>
+            <div class="demo-body">
+              <p style="margin-top: 0;">پیش‌نمایش رندر شده در صفحه وب (بر اساس نمودار تابع <bdi dir="ltr" class="math-inline">f(x) = x&sup2; - 4x + 3</bdi>):</p>
+              
+              <!-- SVG Parabola illustration embedded locally -->
+              <div style="background-color: var(--surface-container-low); padding: var(--space-md); border-radius: var(--radius-sm); border: 1px solid var(--outline); text-align: center;">
+                <svg width="100%" height="240" viewBox="-50 -10 380 220" style="max-width: 480px; display: inline-block;" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="نمودار سهمی ریاضی">
+                  <!-- Grid lines -->
+                  <defs>
+                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#D1FAE5" stroke-width="1"/>
+                    </pattern>
+                  </defs>
+                  <rect x="0" y="0" width="300" height="200" fill="#FFFFFF" stroke="#065F46" stroke-width="1.5" rx="4"/>
+                  
+                  <!-- Axes -->
+                  <line x1="20" y1="150" x2="280" y2="150" stroke="#065F46" stroke-width="2" />
+                  <line x1="100" y1="20" x2="100" y2="190" stroke="#065F46" stroke-width="2" />
+                  <polygon points="280,150 272,146 272,154" fill="#065F46" />
+                  <polygon points="100,20 96,28 104,28" fill="#065F46" />
+                  <text x="285" y="154" font-family="JetBrains Mono" font-size="12" fill="#065F46">x</text>
+                  <text x="96" y="15" font-family="JetBrains Mono" font-size="12" fill="#065F46">y</text>
+                  
+                  <!-- Parabola Curve: f(x) = x^2 - 4x + 3. Scale: 1 unit = 25px. Origin at (100, 150) -->
+                  <!-- x = 0 -> y = 3 (100, 75). x = 1 -> y = 0 (125, 150). x = 2 -> y = -1 (150, 175). x = 3 -> y = 0 (175, 150). x = 4 -> y = 3 (200, 75) -->
+                  <path d="M 60,30 Q 150,290 240,30" fill="none" stroke="#059669" stroke-width="3.5" />
+                  
+                  <!-- Vertex and Roots dots -->
+                  <circle cx="125" cy="150" r="4" fill="#DC2626" />
+                  <text x="120" y="140" font-family="JetBrains Mono" font-size="11" fill="#DC2626">x=1</text>
+                  
+                  <circle cx="175" cy="150" r="4" fill="#DC2626" />
+                  <text x="175" y="140" font-family="JetBrains Mono" font-size="11" fill="#DC2626">x=3</text>
+                  
+                  <circle cx="150" cy="175" r="5" fill="#065F46" />
+                  <text x="160" y="185" font-family="JetBrains Mono" font-size="11" font-weight="bold" fill="#065F46">رأس: (2, -1)</text>
+                  
+                  <!-- Symmetry Axis line -->
+                  <line x1="150" y1="30" x2="150" y2="190" stroke="#065F46" stroke-width="1.5" stroke-dasharray="4" />
+                  <text x="155" y="45" font-family="Vazirmatn" font-size="10" fill="#065F46">محور تقارن: x = 2</text>
+                </svg>
+                <div style="font-size: 0.9rem; color: var(--muted-text); margin-top: var(--space-xs);">
+                  شکل ۱-۱: نمودار تابع درجه دوم و عناصر کلیدی (محور تقارن، رأس و صفرهای تابع)
+                </div>
+              </div>
+
+              <!-- Collapsible Code Snippet -->
+              <div id="code-local-image" class="code-container hidden">
+                <div class="code-header">
+                  <span>HTML (مسیر محلی نسبی)</span>
+                  <button class="btn-copy" onclick="copySnippet('snippet-local-img')">کپی کد</button>
+                </div>
+                <pre id="snippet-local-img" style="margin: 0;"><code><span class="code-comment">&lt;!-- فایل HTML و تصویر در کنار هم یا در پوشه images قرار دارند --&gt;</span>
+&lt;<span class="code-tag">figure</span>&gt;
+  &lt;<span class="code-tag">img</span> 
+    <span class="code-attr">src</span>=<span class="code-val">"images/parabola-quadratic.png"</span> 
+    <span class="code-attr">alt</span>=<span class="code-val">"نمودار تابع درجه دوم f(x) = x^2 - 4x + 3 با ریشه‌های ۱ و ۳"</span> 
+    <span class="code-attr">width</span>=<span class="code-val">"480"</span> 
+    <span class="code-attr">height</span>=<span class="code-val">"240"</span> 
+    <span class="code-attr">loading</span>=<span class="code-val">"lazy"</span>&gt;
+  &lt;<span class="code-tag">figcaption</span>&gt;نمودار سهمی ریاضی ۱۱ تجربی / حسابان ۱&lt;/<span class="code-tag">figcaption</span>&gt;
+&lt;/<span class="code-tag">figure</span>&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- PANEL 2: CLOUD HOSTING & BASE64 -->
+      <section id="panel-cloud" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-cloud">
+        <article class="section-card">
+          <header class="section-header">
+            <div class="section-num-badge">۲</div>
+            <div>
+              <h2 class="section-title">هاست‌های ابری و فرمت یکپارچه Base64</h2>
+              <p style="margin: 0; color: var(--muted-text); font-size: 0.95rem;">کجا و چگونه فایل‌های رسانه‌ای را میزبانی و در کد HTML فراخوانی کنیم؟</p>
+            </div>
+          </header>
+
+          <p>
+            وقتی می‌خواهید آزمون آنلاین، جزوه تکمیلی یا تمرینات ریاضی را از طریق پیام‌رسان‌ها (شاد، تلگرام، ایتا) یا وب‌سایت مدرسه در اختیار دانش‌آموزان بگذارید، دو رویکرد پیش روی شماست: <strong>درون‌ریزی مستقیم به فرمت Base64</strong> یا <strong>آپلود در هاست‌های ابری</strong>.
+          </p>
+
+          <!-- Part A: Base64 Inlining -->
+          <h3 style="color: var(--primary); font-family: var(--font-headline); margin-top: var(--space-xl); display: flex; align-items: center; gap: var(--space-xs);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            بخش الف: کدگذاری Base64 چیست و چه زمانی به کار می‌آید؟
+          </h3>
+          <p>
+            کدگذاری Base64 بایت‌های باینری تصویر یا صوت را به رشته‌ای از کاراکترهای اسکی متنی (ASCII) تبدیل می‌کند. این متن درون خصوصیت <bdi dir="ltr" class="math-inline">src</bdi> با پیشوند <bdi dir="ltr" class="math-inline">data:image/png;base64,...</bdi> قرار می‌گیرد.
+          </p>
+
+          <div class="card-grid-2">
+            <div class="feature-card highlight">
+              <div class="feature-card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--positive);" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                مزایای Base64 برای معلمان
+              </div>
+              <ul style="margin: 0; padding-right: var(--space-md); font-size: 0.95rem;">
+                <li><strong>کاملاً تک‌فایلی:</strong> تصویر درون خود فایل HTML ذخیره می‌شود؛ نیازی به پوشه جداگانه تصاویر نیست.</li>
+                <li><strong>ارسال بی‌دردسر:</strong> اگر فایل HTML را برای همکار یا دانش‌آموز بفرستید، هیچ عکسی گم نمی‌شود.</li>
+                <li><strong>آفلاین ۱۰۰٪:</strong> بدون اتصال به اینترنت در تمام دستگاه‌ها فوراً بارگذاری می‌شود.</li>
+              </ul>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-card-header" style="color: var(--error);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                معایب و خطرات مهلک Base64
+              </div>
+              <ul style="margin: 0; padding-right: var(--space-md); font-size: 0.95rem;">
+                <li><strong>افزایش ۳۳ درصدی حجم:</strong> تبدیل داده باینری به کاراکتر متنی دقیقاً ۳۳٪ حجم فایل را باد می‌کند!</li>
+                <li><strong>فاجعه برای صوت و ویدیو:</strong> یک ویدیوی ۱۰ مگابایتی تبدیل به بیش از ۱۳ مگابایت متن خام می‌شود؛ ویرایشگر کد قفل می‌کند و مرورگر کرش می‌کند!</li>
+                <li><strong>قانون طلایی دبیران:</strong> حجم تصاویر Base64 را همواره زیر ۳۲ کیلوبایت نگه دارید (صرفاً برای آیکون‌ها، لوگوها یا فرمول‌های بسیار سبک).</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Part B: Cloud Services -->
+          <h3 style="color: var(--primary); font-family: var(--font-headline); margin-top: var(--space-xl); display: flex; align-items: center; gap: var(--space-xs);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg>
+            بخش ب: سرویس‌های میزبانی ابری (داخلی و بین‌المللی)
+          </h3>
+          <p>
+            برای رسانه‌های باکیفیت و ویدیوهای طولانی، باید فایل را در یک سرور ابری معتبر قرار دهید. در ادامه دسته‌بندی سرویس‌های پیشنهادی برای معلمان ریاضی آورده شده است:
+          </p>
+
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>نوع رسانه</th>
+                <th>سرویس‌های ایرانی (سرعت بالا در شبکه ملی)</th>
+                <th>سرویس‌های بین‌المللی</th>
+                <th>نحوه درج در کد HTML</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ویدیوهای تدریس ریاضی</strong> (کیفیت بالا / حجم بالا)</td>
+                <td>
+                  <strong>آپارات (aparat.com):</strong> ترافیک نیم‌بها برای دانش‌آموزان، بدون قطعی روی اینترنت ملی، تولید کد امبد آسان
+                </td>
+                <td>
+                  <strong>یوتیوب (youtube.com):</strong> استاندارد جهانی با پخش‌کننده واکنش‌گرا
+                </td>
+                <td>استفاده از برچسب <bdi dir="ltr" class="math-inline">&lt;iframe&gt;</bdi> امبد شده</td>
+              </tr>
+              <tr>
+                <td><strong>تصاویر، نمودارها و پادکست‌های صوتی</strong></td>
+                <td>
+                  <strong>یوآپلود (uupload.ir):</strong> آپلود ماندگار تصاویر و صوت‌ها<br>
+                  <strong>فایلز دات آی‌آر (files.ir):</strong> آپلود سریع انواع فایل با لینک مستقیم
+                </td>
+                <td>
+                  <strong>ایمگور (imgur.com):</strong> مخصوص تصاویر سبک و باکیفیت
+                </td>
+                <td>استفاده از <bdi dir="ltr" class="math-inline">&lt;img src="..."&gt;</bdi> یا <bdi dir="ltr" class="math-inline">&lt;audio src="..."&gt;</bdi></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Part C: The Direct Link Rule -->
+          <div class="callout-box error-callout">
+            <h3 class="callout-title error-title">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+              قانون زرین: تفاوت «لینک مستقیم (Direct Link)» با «صفحه دانلود»
+            </h3>
+            <p>
+              این شایع‌ترین دلیلی است که معلمان در بارگذاری آنلاین تصاویر شکست می‌خورند:
+            </p>
+            <div style="background-color: var(--background); padding: var(--space-md); border-radius: var(--radius-sm); border: 1px solid var(--outline); margin: var(--space-sm) 0;">
+              <p style="margin: 0 0 var(--space-xs) 0;">
+                <span class="file-status-bad">&#10008; آدرس اشتباه (صفحه دانلود/پیش‌نمایش):</span><br>
+                <bdi dir="ltr" class="math-inline">src="uupload.ir/view/parabola-1403"</bdi><br>
+                <small style="color: var(--muted-text);">چرا کار نمی‌کند؟ چون این آدرس به یک صفحه وب حاوی تبلیغات و دکمه دانلود اشاره دارد، نه فایل خالص عکس!</small>
+              </p>
+              <hr style="border: 0; border-top: 1px dashed var(--border-subtle); margin: var(--space-sm) 0;">
+              <p style="margin: 0;">
+                <span class="file-status-good">&#10004; آدرس صحیح (لینک مستقیم):</span><br>
+                <bdi dir="ltr" class="math-inline">src="https://example.com/uploads/parabola-1403.png"</bdi><br>
+                <small style="color: var(--muted-text);">چرا کار می‌کند؟ چون مستقیماً به بایت‌های فایل ختم می‌شود و در انتهای آن پسوند <bdi dir="ltr">.png</bdi> یا <bdi dir="ltr">.mp3</bdi> یا <bdi dir="ltr">.mp4</bdi> وجود دارد.</small>
+              </p>
+            </div>
+            <p style="margin-bottom: 0;">
+              <strong>تکنیک دریافت لینک مستقیم:</strong> پس از آپلود در سایت‌هایی مانند یوآپلود، روی عکس راست‌کلیک کرده و گزینه <strong>Copy image address</strong> را بزنید یا کادری که عنوان «لینک مستقیم برای وبسایت» دارد را کپی نمایید.
+            </p>
+          </div>
+
+          <!-- Code Example: Audio and Aparat Embed -->
+          <div class="demo-wrapper">
+            <div class="demo-toolbar">
+              <div class="demo-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                نمونه استاندارد: درج صوت آنلاین و امبد ویدیوی آپارات
+              </div>
+              <div class="demo-actions">
+                <button class="btn-action btn-outline" onclick="toggleCode('code-cloud-media')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                  نمایش / مخفی‌سازی کد HTML
+                </button>
+              </div>
+            </div>
+            <div class="demo-body">
+              <p style="margin-top: 0;">در کد زیر، دو نمونه از درج بهینه رسانه‌های آنلاین آورده شده است:</p>
+              <div id="code-cloud-media" class="code-container">
+                <div class="code-header">
+                  <span>HTML (صوت با لینک مستقیم ابری + ویدیوی امبد آپارات)</span>
+                  <button class="btn-copy" onclick="copySnippet('snippet-cloud-media')">کپی کد</button>
+                </div>
+                <pre id="snippet-cloud-media" style="margin: 0;"><code><span class="code-comment">&lt;!-- ۱. درج صوت آموزشی تدریس دلتا با لینک مستقیم ابری --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-val">"audio-lesson-box"</span>&gt;
+  &lt;<span class="code-tag">h4</span>&gt;توضیح صوتی: بررسی علامت دلتا در معادله درجه دوم&lt;/<span class="code-tag">h4</span>&gt;
+  &lt;<span class="code-tag">audio</span> <span class="code-attr">controls</span> <span class="code-attr">preload</span>=<span class="code-val">"metadata"</span>&gt;
+    &lt;<span class="code-tag">source</span> <span class="code-attr">src</span>=<span class="code-val">"https://example.com/audio/discriminant-analysis.mp3"</span> <span class="code-attr">type</span>=<span class="code-val">"audio/mpeg"</span>&gt;
+    مرورگر شما از پخش این فایل صوتی پشتیبانی نمی‌کند.
+  &lt;/<span class="code-tag">audio</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;
+
+<span class="code-comment">&lt;!-- ۲. درج ویدیوی تدریس مقاطع مخروطی از هاست آپارات به شیوه امبد --&gt;</span>
+&lt;<span class="code-tag">div</span> <span class="code-attr">class</span>=<span class="code-val">"video-container"</span>&gt;
+  &lt;<span class="code-tag">iframe</span> 
+    <span class="code-attr">src</span>=<span class="code-val">"https://example.com/video/embed/parabola-conic-sections"</span> 
+    <span class="code-attr">width</span>=<span class="code-val">"640"</span> 
+    <span class="code-attr">height</span>=<span class="code-val">"360"</span> 
+    <span class="code-attr">frameborder</span>=<span class="code-val">"0"</span> 
+    <span class="code-attr">allow</span>=<span class="code-val">"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"</span> 
+    <span class="code-attr">allowfullscreen</span>&gt;
+  &lt;/<span class="code-tag">iframe</span>&gt;
+&lt;/<span class="code-tag">div</span>&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- PANEL 3: GITHUB PAGES -->
+      <section id="panel-github" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-github">
+        <article class="section-card">
+          <header class="section-header">
+            <div class="section-num-badge">۳</div>
+            <div>
+              <h2 class="section-title">انتشار رایگان و پایدار پروژه با گیت‌هاب پیجز (GitHub Pages)</h2>
+              <p style="margin: 0; color: var(--muted-text); font-size: 0.95rem;">چگونه اسلایدها و ابزارهای ریاضی خود را به یک وب‌سایت دائمی با دامنه اختصاصی تبدیل کنیم؟</p>
+            </div>
+          </header>
+
+          <p>
+            سرویس <strong>GitHub Pages</strong> بدون پرداخت حتی یک ریال، پروژه‌های HTML/CSS/JS شما را به همراه تصاویر، صوت‌ها و ویدیوها میزبانی کرده و یک آدرس اینترنتی با پروتکل امن HTTPS و سرعت بالا به شما اختصاص می‌دهد.
+          </p>
+
+          <!-- Step by Step Tutorial -->
+          <h3 style="color: var(--primary); font-family: var(--font-headline); margin-top: var(--space-xl);">
+            راهنمای ۵ مرحله‌ای استقرار پروژه ریاضی روی گیت‌هاب
+          </h3>
+
+          <ol class="step-list">
+            <li class="step-item">
+              <div class="step-badge">۱</div>
+              <div class="step-content">
+                <h4 class="step-title">ساخت حساب کاربری و ریپازیتوری جدید (New Repository)</h4>
+                <p style="margin: 0;">
+                  در سایت <bdi dir="ltr">github.com</bdi> یک حساب رایگان بسازید. سپس روی دکمه سبز <strong>New</strong> کلیک کنید. یک نام انگلیسی مانند <bdi dir="ltr" class="math-inline">math11-parabola-lesson</bdi> انتخاب کرده و حتماً گزینه <strong>Public (عمومی)</strong> را فعال بگذارید.
+                </p>
+              </div>
+            </li>
+
+            <li class="step-item">
+              <div class="step-badge">۲</div>
+              <div class="step-content">
+                <h4 class="step-title">نام‌گذاری فایل اصلی پروژه به index.html (نکته طلایی)</h4>
+                <p style="margin: 0;">
+                  سرورهای وب گیت‌هاب به طور پیش‌فرض به دنبال فایلی به نام <bdi dir="ltr" class="math-inline">index.html</bdi> می‌گردند. اگر نام فایل خود را <bdi dir="ltr">dars.html</bdi> بگذارید، صفحه اصلی باز نمی‌شود! فایل اصلی را دقیقاً با حروف کوچک به نام <bdi dir="ltr" class="math-inline">index.html</bdi> نام‌گذاری کنید.
+                </p>
+              </div>
+            </li>
+
+            <li class="step-item">
+              <div class="step-badge">۳</div>
+              <div class="step-content">
+                <h4 class="step-title">آپلود فایل‌ها و پوشه‌های رسانه (Add file &gt; Upload files)</h4>
+                <p style="margin: 0;">
+                  روی دکمه <strong>Add file</strong> و سپس <strong>Upload files</strong> کلیک کنید. فایل <bdi dir="ltr">index.html</bdi> و پوشه‌های <bdi dir="ltr">images</bdi> یا <bdi dir="ltr">audio</bdi> را مستقیماً داخل مرورگر بکشید و رها کنید (Drag &amp; Drop). سپس روی دکمه سبز <strong>Commit changes</strong> کلیک فرمایید.
+                </p>
+              </div>
+            </li>
+
+            <li class="step-item">
+              <div class="step-badge">۴</div>
+              <div class="step-content">
+                <h4 class="step-title">فعال‌سازی سرویس Pages در تنظیمات (Settings &gt; Pages)</h4>
+                <p style="margin: 0;">
+                  از منوی بالای ریپازیتوری روی چرخ‌دنده <strong>Settings</strong> بزنید. در ستون کناری، روی گزینه <strong>Pages</strong> کلیک کنید. در بخش <bdi dir="ltr">Build and deployment</bdi> زیر عنوان <em>Branch</em>، شاخه <bdi dir="ltr" class="math-inline">main</bdi> (یا <bdi dir="ltr">master</bdi>) و پوشه <bdi dir="ltr" class="math-inline">/ (root)</bdi> را برگزیده و دکمه <strong>Save</strong> را بزنید.
+                </p>
+              </div>
+            </li>
+
+            <li class="step-item">
+              <div class="step-badge">۵</div>
+              <div class="step-content">
+                <h4 class="step-title">دریافت آدرس عمومی سایت و اشتراک با دانش‌آموزان</h4>
+                <p style="margin: 0;">
+                  پس از ۱ تا ۲ دقیقه، یک کادر سبز رنگ ظاهر شده و آدرس نهایی سایت شما را نمایش می‌دهد:<br>
+                  <bdi dir="ltr" class="math-inline">https://username.github.io/math11-parabola-lesson/</bdi><br>
+                  این آدرس را می‌توانید در گروه کلاسی، کانال شاد یا وب‌سایت مدرسه قرار دهید تا همه با موبایل یا کامپیوتر به درس دسترسی داشته باشند.
+                </p>
+              </div>
+            </li>
+          </ol>
+
+          <!-- Limits of GitHub Pages -->
+          <div class="callout-box">
+            <h3 class="callout-title primary-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              سقف‌ها و محدودیت‌های قانونی گیت‌هاب پیجز که دبیران باید بدانند
+            </h3>
+            <p>
+              سرویس گیت‌هاب فوق‌العاده سخاوتمند است، اما محدودیت‌های مهندسی مشخصی دارد:
+            </p>
+
+            <div class="card-grid-3">
+              <div class="feature-card highlight">
+                <span class="calc-metric-title">سقف کل مخزن (Repository)</span>
+                <span class="calc-metric-val">۱ گیگابایت (1 GB)</span>
+                <small style="color: var(--muted-text);">برای کل فایل‌های HTML، استایل‌ها و تصاویر درس کافی و ایده‌آل است.</small>
+              </div>
+
+              <div class="feature-card highlight">
+                <span class="calc-metric-title">سقف سخت‌گیرانه هر فایل تک</span>
+                <span class="calc-metric-val" style="color: var(--error);">۱۰۰ مگابایت (100 MB)</span>
+                <small style="color: var(--muted-text);">گیت‌هاب اجازه آپلود فایل بالاتر از ۱۰۰ مگابایت را نمی‌دهد. ویدیوهای طولانی ۴K را نباید در گیت‌هاب آپلود کرد.</small>
+              </div>
+
+              <div class="feature-card highlight">
+                <span class="calc-metric-title">پهنای باند ماهانه رایگان</span>
+                <span class="calc-metric-val">۱۰۰ گیگابایت (100 GB/mo)</span>
+                <small style="color: var(--muted-text);">برای مشاهده و مرور هزاران دانش‌آموز در طول ماه کاملاً کافی است.</small>
+              </div>
+            </div>
+
+            <p style="margin: var(--space-md) 0 0 0; font-weight: 700; color: var(--primary);">
+              فرمول برنده دبیران ریاضی: کدهای HTML و نمودارهای SVG در گیت‌هاب + ویدیوهای سنگین تدریس در آپارات (امبد با iframe).
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <!-- PANEL 4: INTERACTIVE MATH MEDIA SANDBOX -->
+      <section id="panel-sandbox" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-sandbox">
+        <article class="section-card">
+          <header class="section-header">
+            <div class="section-num-badge">۴</div>
+            <div>
+              <h2 class="section-title">آزمایشگاه زنده چندرسانه‌ای ریاضی (Interactive Sandbox)</h2>
+              <p style="margin: 0; color: var(--muted-text); font-size: 0.95rem;">تست زنده تعامل تصویر پویا، صوت فرکانسی ریاضی و شبیه‌ساز پخش ویدیو</p>
+            </div>
+          </header>
+
+          <!-- 4.1 Interactive Parabola Visualizer -->
+          <div class="demo-wrapper">
+            <div class="demo-toolbar">
+              <div class="demo-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+                آزمایشگاه ۱: سهمی پویا و محاسبه خودکار دلتا و رأس در تصویر SVG
+              </div>
+              <div class="demo-actions">
+                <button class="btn-action btn-outline" onclick="toggleCode('code-demo-parabola')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                  نمایش / مخفی‌سازی کد HTML
+                </button>
+              </div>
+            </div>
+            <div class="demo-body">
+              <p style="margin-top: 0;">
+                با جابجایی لغزنده‌های ضرایب معادله <bdi dir="ltr" class="math-inline">f(x) = ax&sup2; + bx + c</bdi>، نمودار تصویر به صورت بلادرنگ بازترکیب شده و مشخصات هندسی محاسبه می‌گردد:
+              </p>
+
+              <div class="parabola-controls">
+                <div class="control-group">
+                  <label for="coeff-a" class="control-label">ضریب a (جهت و گستردگی دهانه): <span id="val-a" style="font-family: var(--font-label); font-weight: bold;">1</span></label>
+                  <input type="range" id="coeff-a" class="slider-input" min="-3" max="3" step="0.5" value="1" oninput="updateParabola()">
+                </div>
+                <div class="control-group">
+                  <label for="coeff-b" class="control-label">ضریب b (جابجایی افقی): <span id="val-b" style="font-family: var(--font-label); font-weight: bold;">-4</span></label>
+                  <input type="range" id="coeff-b" class="slider-input" min="-6" max="6" step="1" value="-4" oninput="updateParabola()">
+                </div>
+                <div class="control-group">
+                  <label for="coeff-c" class="control-label">ضریب c (عرض از مبدأ): <span id="val-c" style="font-family: var(--font-label); font-weight: bold;">3</span></label>
+                  <input type="range" id="coeff-c" class="slider-input" min="-5" max="5" step="1" value="3" oninput="updateParabola()">
+                </div>
+              </div>
+
+              <!-- Interactive Dynamic SVG Display -->
+              <div style="background-color: var(--surface-container-low); padding: var(--space-md); border-radius: var(--radius-sm); border: 1.5px solid var(--outline); text-align: center;">
+                <svg id="interactive-parabola-svg" width="100%" height="260" viewBox="-40 -20 380 240" style="max-width: 520px; display: inline-block;" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Dynamic Parabola Canvas injected by JS -->
+                </svg>
+
+                <div id="parabola-math-output" style="margin-top: var(--space-sm); font-size: 0.95rem; font-weight: 700; color: var(--primary);">
+                  <!-- Realtime equation and delta -->
+                </div>
+              </div>
+
+              <div id="code-demo-parabola" class="code-container hidden">
+                <div class="code-header">
+                  <span>HTML + SVG (نمودار برداری مقیاس‌پذیر در صفحه وب)</span>
+                  <button class="btn-copy" onclick="copySnippet('snippet-demo-parabola')">کپی کد</button>
+                </div>
+                <pre id="snippet-demo-parabola" style="margin: 0;"><code>&lt;<span class="code-tag">svg</span> <span class="code-attr">width</span>=<span class="code-val">"100%"</span> <span class="code-attr">height</span>=<span class="code-val">"260"</span> <span class="code-attr">viewBox</span>=<span class="code-val">"-40 -20 380 240"</span> <span class="code-attr">xmlns</span>=<span class="code-val">"http://www.w3.org/2000/svg"</span>&gt;
+  &lt;<span class="code-comment">&lt;!-- محورهای مختصات --&gt;</span>
+  &lt;<span class="code-tag">line</span> <span class="code-attr">x1</span>=<span class="code-val">"20"</span> <span class="code-attr">y1</span>=<span class="code-val">"120"</span> <span class="code-attr">x2</span>=<span class="code-val">"280"</span> <span class="code-attr">y2</span>=<span class="code-val">"120"</span> <span class="code-attr">stroke</span>=<span class="code-val">"#065F46"</span> <span class="code-attr">stroke-width</span>=<span class="code-val">"2"</span>/&gt;
+  &lt;<span class="code-tag">line</span> <span class="code-attr">x1</span>=<span class="code-val">"150"</span> <span class="code-attr">y1</span>=<span class="code-val">"20"</span> <span class="code-attr">x2</span>=<span class="code-val">"150"</span> <span class="code-attr">y2</span>=<span class="code-val">"200"</span> <span class="code-attr">stroke</span>=<span class="code-val">"#065F46"</span> <span class="code-attr">stroke-width</span>=<span class="code-val">"2"</span>/&gt;
+  &lt;<span class="code-comment">&lt;!-- مسیر خم سهمی با ضابطه f(x) = ax^2 + bx + c --&gt;</span>
+  &lt;<span class="code-tag">path</span> <span class="code-attr">d</span>=<span class="code-val">"M 50,30 Q 150,250 250,30"</span> <span class="code-attr">fill</span>=<span class="code-val">"none"</span> <span class="code-attr">stroke</span>=<span class="code-val">"#059669"</span> <span class="code-attr">stroke-width</span>=<span class="code-val">"3"</span>/&gt;
+&lt;/<span class="code-tag">svg</span>&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4.2 Interactive Math Audio Synthesizer -->
+          <div class="demo-wrapper">
+            <div class="demo-toolbar">
+              <div class="demo-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+                آزمایشگاه ۲: پخش‌کننده صوتی تدریس دلتا با بازخورد آکوستیک زنده
+              </div>
+              <div class="demo-actions">
+                <button class="btn-action btn-outline" onclick="toggleCode('code-demo-audio')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                  نمایش / مخفی‌سازی کد HTML
+                </button>
+              </div>
+            </div>
+            <div class="demo-body">
+              <p style="margin-top: 0;">
+                در این بخش نحوه عملکرد یک فایل صوتی آموزشی شبیه‌سازی شده است. با کلیک بر روی حالت‌های دلتا، الگوریتم وب‌آدیو آوای صوتی تدریس و فرکانس تأیید را به صورت زنده پخش می‌کند:
+              </p>
+
+              <div style="background-color: var(--surface-container-low); padding: var(--space-md); border-radius: var(--radius-sm); border: 1.5px solid var(--outline);">
+                <div style="display: flex; flex-wrap: wrap; gap: var(--space-sm); align-items: center; margin-bottom: var(--space-md);">
+                  <button class="btn-action" onclick="playMathAudioTone('positive')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    پخش توضیح صوتی: دلتا مثبت (۲ ریشه حقیقی)
+                  </button>
+                  <button class="btn-action" style="background-color: var(--warning);" onclick="playMathAudioTone('zero')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    پخش توضیح صوتی: دلتا صفر (ریشه مضاعف)
+                  </button>
+                  <button class="btn-action" style="background-color: var(--error);" onclick="playMathAudioTone('negative')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    پخش توضیح صوتی: دلتا منفی (فاقد ریشه)
+                  </button>
+                </div>
+
+                <div id="audio-status-box" style="padding: var(--space-sm); background-color: var(--background); border: 1px solid var(--outline); border-radius: var(--radius-sm); font-size: 0.95rem; display: flex; align-items: center; gap: var(--space-sm);">
+                  <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background-color: var(--positive);"></span>
+                  <span id="audio-status-text">برای پخش صوت تدریس دلتا، یکی از دکمه‌های بالا را انتخاب فرمایید.</span>
+                </div>
+              </div>
+
+              <div id="code-demo-audio" class="code-container hidden">
+                <div class="code-header">
+                  <span>HTML (برچسب استاندارد صوت در HTML5)</span>
+                  <button class="btn-copy" onclick="copySnippet('snippet-demo-audio')">کپی کد</button>
+                </div>
+                <pre id="snippet-demo-audio" style="margin: 0;"><code>&lt;<span class="code-comment">&lt;!-- برچسب صوت با دکمه‌های استاندارد مرورگر (Play/Pause/Volume) --&gt;</span>
+&lt;<span class="code-tag">audio</span> <span class="code-attr">controls</span> <span class="code-attr">preload</span>=<span class="code-val">"auto"</span> <span class="code-attr">style</span>=<span class="code-val">"width: 100%; max-width: 450px;"</span>&gt;
+  &lt;<span class="code-tag">source</span> <span class="code-attr">src</span>=<span class="code-val">"audio/math-delta-explanation.mp3"</span> <span class="code-attr">type</span>=<span class="code-val">"audio/mpeg"</span>&gt;
+  &lt;<span class="code-tag">source</span> <span class="code-attr">src</span>=<span class="code-val">"audio/math-delta-explanation.ogg"</span> <span class="code-attr">type</span>=<span class="code-val">"audio/ogg"</span>&gt;
+  متأسفانه مرورگر شما قادر به پخش فایل صوتی ریاضی نیست.
+&lt;/<span class="code-tag">audio</span>&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4.3 Interactive Math Video Simulator -->
+          <div class="demo-wrapper">
+            <div class="demo-toolbar">
+              <div class="demo-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="20" height="15" x="2" y="5" rx="2"></rect><polyline points="8 10 12 12.5 8 15 8 10"></polyline></svg>
+                آزمایشگاه ۳: شبیه‌ساز پخش ویدیوی تدریس هندسه و مقاطع مخروطی
+              </div>
+              <div class="demo-actions">
+                <button class="btn-action btn-outline" onclick="toggleCode('code-demo-video')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                  نمایش / مخفی‌سازی کد HTML
+                </button>
+              </div>
+            </div>
+            <div class="demo-body">
+              <p style="margin-top: 0;">
+                شبیه‌ساز رفتار برچسب <bdi dir="ltr" class="math-inline">&lt;video controls&gt;</bdi> به همراه پوستر اولیه (<bdi dir="ltr">poster</bdi>) و زیرنویس آموزشی:
+              </p>
+
+              <div style="background-color: var(--code-bg); border-radius: var(--radius-sm); overflow: hidden; max-width: 580px; margin: 0 auto; border: 2px solid var(--primary);">
+                <!-- Simulated Video Canvas -->
+                <div style="position: relative; height: 260px; background: linear-gradient(135deg, #064E3B 0%, #0F172A 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #FFFFFF; text-align: center; padding: var(--space-md);">
+                  <div id="video-cone-animation" style="margin-bottom: var(--space-sm);">
+                    <svg width="120" height="120" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                      <polygon points="50,10 90,85 10,85" fill="none" stroke="#34D399" stroke-width="3"/>
+                      <ellipse cx="50" cy="85" rx="40" ry="10" fill="none" stroke="#34D399" stroke-width="2"/>
+                      <ellipse id="cone-cut" cx="50" cy="50" rx="20" ry="6" fill="#D1FAE5" opacity="0.6" stroke="#FFFFFF" stroke-width="2"/>
+                      <line x1="50" y1="10" x2="50" y2="85" stroke="#FFFFFF" stroke-dasharray="3" stroke-width="1.5"/>
+                    </svg>
+                  </div>
+                  <div style="font-family: var(--font-headline); font-size: 1.15rem; font-weight: bold;">
+                    ویدیو تدریس: برش‌های مخروط دوگانه و پیدایش سهمی
+                  </div>
+                  <div id="video-time-display" style="font-family: var(--font-label); font-size: 0.85rem; color: #94A3B8; margin-top: 4px;">
+                    زمان: ۰۰:۱۴ / ۰۳:۴۵ | کیفیت: 1080p Full HD
+                  </div>
+                </div>
+
+                <!-- Video Controls Mockup -->
+                <div style="background-color: #1E293B; padding: var(--space-xs) var(--space-md); display: flex; align-items: center; justify-content: space-between;">
+                  <button id="btn-video-play" class="btn-action" style="padding: 4px 12px; font-size: 0.85rem;" onclick="simulateVideoToggle()">
+                    <span id="video-play-text">توقف موقت (Pause)</span>
+                  </button>
+                  <div style="font-family: var(--font-label); font-size: 0.85rem; color: #34D399;">
+                    وضعیت: <span id="video-state-text">در حال پخش شبیه‌سازی تدریس</span>
+                  </div>
+                </div>
+              </div>
+
+              <div id="code-demo-video" class="code-container hidden">
+                <div class="code-header">
+                  <span>HTML (برچسب استاندارد ویدیو در HTML5 همراه با پوستر و تنظیم ابعاد)</span>
+                  <button class="btn-copy" onclick="copySnippet('snippet-demo-video')">کپی کد</button>
+                </div>
+                <pre id="snippet-demo-video" style="margin: 0;"><code>&lt;<span class="code-tag">video</span> 
+  <span class="code-attr">controls</span> 
+  <span class="code-attr">width</span>=<span class="code-val">"640"</span> 
+  <span class="code-attr">height</span>=<span class="code-val">"360"</span> 
+  <span class="code-attr">poster</span>=<span class="code-val">"images/conic-sections-poster.jpg"</span> 
+  <span class="code-attr">preload</span>=<span class="code-val">"metadata"</span>&gt;
+  &lt;<span class="code-tag">source</span> <span class="code-attr">src</span>=<span class="code-val">"video/conic-sections-lesson.mp4"</span> <span class="code-attr">type</span>=<span class="code-val">"video/mp4"</span>&gt;
+  &lt;<span class="code-tag">source</span> <span class="code-attr">src</span>=<span class="code-val">"video/conic-sections-lesson.webm"</span> <span class="code-attr">type</span>=<span class="code-val">"video/webm"</span>&gt;
+  مرورگر شما از پخش مستقیم ویدیو پشتیبانی نمی‌کند.
+&lt;/<span class="code-tag">video</span>&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- PANEL 5: TEACHER TOOLKIT & CALCULATORS -->
+      <section id="panel-tools" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-tools">
+        <article class="section-card">
+          <header class="section-header">
+            <div class="section-num-badge">۵</div>
+            <div>
+              <h2 class="section-title">جعبه‌ابزار تشخیصی و ماشین‌حساب دبیر ریاضی</h2>
+              <p style="margin: 0; color: var(--muted-text); font-size: 0.95rem;">ابزارهای هوشمند برای بررسی درستی لینک‌ها و محاسبه اضافه حجم Base64</p>
+            </div>
+          </header>
+
+          <!-- 5.1 Interactive Base64 Size Calculator -->
+          <div class="calculator-box">
+            <h3 style="color: var(--primary); font-family: var(--font-headline); margin-top: 0; display: flex; align-items: center; gap: var(--space-xs);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line></svg>
+              ماشین‌حساب هوشمند محاسبه تورم حجم Base64 (+۳۳٪)
+            </h3>
+            <p style="font-size: 0.95rem;">
+              حجم فایل رسانه خود را وارد کنید تا سیستم به صورت خودکار حجم نهایی کد HTML را محاسبه کرده و سازگاری آن را ارزیابی کند:
+            </p>
+
+            <div class="calc-inputs">
+              <div class="control-group">
+                <label for="calc-file-size" class="control-label">حجم فایل اولیه:</label>
+                <input type="number" id="calc-file-size" class="input-field" value="25" min="1" max="100000" oninput="calculateBase64Size()">
+              </div>
+              <div class="control-group">
+                <label for="calc-unit" class="control-label">واحد اندازه:</label>
+                <select id="calc-unit" class="input-field" onchange="calculateBase64Size()">
+                  <option value="KB">کیلوبایت (KB)</option>
+                  <option value="MB">مگابایت (MB)</option>
+                </select>
+              </div>
+              <button class="btn-action" style="height: 44px;" onclick="calculateBase64Size()">محاسبه بلادرنگ</button>
+            </div>
+
+            <div class="calc-result-box">
+              <div>
+                <span class="calc-metric-title">حجم فایل اولیه:</span>
+                <span id="res-original" class="calc-metric-val">۲۵.۰۰ KB</span>
+              </div>
+              <div>
+                <span class="calc-metric-title">حجم پس از تبدیل Base64 (+۳۳.۳٪):</span>
+                <span id="res-base64" class="calc-metric-val">۳۳.۲۵ KB</span>
+              </div>
+              <div>
+                <span class="calc-metric-title">میزان بایت‌های اضافه تولید شده:</span>
+                <span id="res-overhead" class="calc-metric-val" style="color: var(--warning);">+۸.۲۵ KB</span>
+              </div>
+            </div>
+
+            <div id="res-verdict-box" style="margin-top: var(--space-md); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm); font-weight: 700; border: 1.5px solid var(--outline);">
+              <!-- Injected by calculateBase64Size -->
+            </div>
+          </div>
+
+          <!-- 5.2 Direct Link Checker Simulator -->
+          <h3 style="color: var(--primary); font-family: var(--font-headline); margin-top: var(--space-xl); display: flex; align-items: center; gap: var(--space-xs);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+            شبیه‌ساز تشخیص «لینک مستقیم» در برابر «لینک صفحه فرود»
+          </h3>
+          <p style="font-size: 0.95rem;">
+            روی نمونه‌های زیر کلیک کنید تا متوجه شوید مرورگر با هر نوع لینک چه واکنشی نشان می‌دهد:
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-md); margin-bottom: var(--space-lg);">
+            <button class="btn-action btn-outline" style="justify-content: flex-start; text-align: right; padding: var(--space-md);" onclick="testLinkType('bad')">
+              <span style="color: var(--error); font-weight: bold; font-size: 1.1rem; display: block;">&#10008; آزمون لینک صفحه دانلود:</span>
+              <span style="font-size: 0.85rem; font-family: var(--font-label); color: var(--muted-text); display: block; margin-top: 4px;">uupload.ir/view/parabola-exam</span>
+            </button>
+            <button class="btn-action" style="justify-content: flex-start; text-align: right; padding: var(--space-md);" onclick="testLinkType('good')">
+              <span style="font-weight: bold; font-size: 1.1rem; display: block;">&#10004; آزمون لینک مستقیم:</span>
+              <span style="font-size: 0.85rem; font-family: var(--font-label); color: #E0E7FF; display: block; margin-top: 4px;">example.com/uploads/parabola-exam.png</span>
+            </button>
+          </div>
+
+          <div id="link-tester-result" style="background-color: var(--surface-container-low); padding: var(--space-md); border-radius: var(--radius-sm); border: 1.5px solid var(--outline); min-height: 90px; display: flex; align-items: center;">
+            <p style="margin: 0; color: var(--muted-text);">روی یکی از دکمه‌های آزمون بالا کلیک کنید تا رفتار موتور رندر مرورگر شبیه‌سازی شود.</p>
+          </div>
+
+          <!-- 5.3 Workshop Final Pre-Flight Checklist -->
+          <h3 style="color: var(--primary); font-family: var(--font-headline); margin-top: var(--space-xl); display: flex; align-items: center; gap: var(--space-xs);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            چک‌لیست ۱۰ ماده‌ای دبیر ریاضی پیش از ورود به کلاس درس
+          </h3>
+          <p style="font-size: 0.95rem;">
+            پیش از ارائه فایل در کلاس یا ارسال برای دانش‌آموزان، موارد زیر را بررسی و تیک بزنید:
+          </p>
+
+          <ul class="check-list">
+            <li class="check-item"><input type="checkbox" id="chk-1" onchange="updateChecklistProgress()"><label for="chk-1">همه آدرس‌ها نسبی هستند و هیچ آدرس مطلقی با <bdi dir="ltr">C:\</bdi> در کد وجود ندارد.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-2" onchange="updateChecklistProgress()"><label for="chk-2">تنظیم نمایش پسوندها در ویندوز فعال شده و تله <bdi dir="ltr">Sound.mp3.mp3</bdi> رفع شده است.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-3" onchange="updateChecklistProgress()"><label for="chk-3">برای تصاویر و نمودارهای ریاضی برچسب <bdi dir="ltr">&lt;img&gt;</bdi> دارای خصوصیت <bdi dir="ltr">alt</bdi> توصیفی است.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-4" onchange="updateChecklistProgress()"><label for="chk-4">پلیرهای صوتی و تصویری حتماً دارای صفت <bdi dir="ltr">controls</bdi> برای کنترل پخش توسط معلم هستند.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-5" onchange="updateChecklistProgress()"><label for="chk-5">تصاویر درون‌ریزی شده به شیوه Base64 حجمی کمتر از ۳۲ کیلوبایت دارند.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-6" onchange="updateChecklistProgress()"><label for="chk-6">لینک‌های هاست‌های ابری (یوآپلود و ...) مستقیماً به پسوند فایل (<bdi dir="ltr">.png, .mp3</bdi>) ختم می‌شوند.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-7" onchange="updateChecklistProgress()"><label for="chk-7">فایل اصلی پروژه روی گیت‌هاب حتماً <bdi dir="ltr">index.html</bdi> با حروف کوچک نام‌گذاری شده است.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-8" onchange="updateChecklistProgress()"><label for="chk-8">هیچ فایل ویدیویی سنگین‌تر از ۱۰۰ مگابایت در مخزن گیت‌هاب قرار داده نشده است.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-9" onchange="updateChecklistProgress()"><label for="chk-9">برای ارائه‌های مبتنی بر موبایل/تبلت از نسخه وب آنلاین (گیت‌هاب پیجز) استفاده شده است.</label></li>
+            <li class="check-item"><input type="checkbox" id="chk-10" onchange="updateChecklistProgress()"><label for="chk-10">یک نسخه پشتیبان از کل پوشه پروژه روی فلش‌مموری کلاس درس ذخیره شده است.</label></li>
+          </ul>
+
+          <div style="background-color: var(--surface-container-low); padding: var(--space-sm) var(--space-md); border-radius: var(--radius-sm); border: 1px solid var(--outline); font-weight: 700; color: var(--primary);">
+            پیشرفت بررسی: <span id="checklist-progress-text">۰ از ۱۰ مورد آماده است</span>
+          </div>
+        </article>
+      </section>
+
+    </main>
+
+    <!-- Workshop Footer -->
+    <footer class="workshop-footer">
+      <div style="font-weight: 700; color: var(--primary); margin-bottom: var(--space-xs);">
+        دبیرخانه راهبری کشوری درس ریاضی — کارگروه ارتقای شایستگی‌های فناوری معلمان
+      </div>
+      <div>
+        این راهنما به عنوان سند مرجع کارگاهی بر اساس استانداردهای وب کنسرسیوم (W3C) و فناوری‌های نوین وب طراحی شده است.
+      </div>
+      <div style="font-size: 0.85rem; margin-top: var(--space-sm); color: var(--muted-text);">
+        قلم متن: B Nazanin (با نگاشت پشتیبان وزیرمتن) | پالت رنگی: زمینه سفید، کادرهای سبز روشن (#D1FAE5) و عناوین سبز تیره (#065F46)
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast element -->
+  <div id="toast" class="toast-msg" role="status" aria-live="polite">کد در حافظه کپی شد!</div>
+
+  <!-- Notebook API Shim for standalone persistence -->
+  <api-shim></api-shim>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    /* Tab Navigation Logic */
+    function switchTab(tabId) {
+      // Deactivate all tabs
+      var tabButtons = document.querySelectorAll('.tab-btn');
+      var tabPanels = document.querySelectorAll('.tab-panel');
+
+      for (var i = 0; i < tabButtons.length; i++) {
+        tabButtons[i].setAttribute('aria-selected', 'false');
+      }
+
+      for (var j = 0; j < tabPanels.length; j++) {
+        tabPanels[j].classList.remove('active');
+      }
+
+      // Activate selected tab
+      var activeBtn = document.getElementById('tab-btn-' + tabId);
+      var activePanel = document.getElementById('panel-' + tabId);
+
+      if (activeBtn) {
+        activeBtn.setAttribute('aria-selected', 'true');
+      }
+      if (activePanel) {
+        activePanel.classList.add('active');
+      }
+
+      // If switched to sandbox, re-render the dynamic parabola
+      if (tabId === 'sandbox') {
+        updateParabola();
+      }
+    }
+
+    /* Toggle Show/Hide Code Snippets */
+    function toggleCode(codeElementId) {
+      var codeBox = document.getElementById(codeElementId);
+      if (!codeBox) return;
+
+      if (codeBox.classList.contains('hidden')) {
+        codeBox.classList.remove('hidden');
+      } else {
+        codeBox.classList.add('hidden');
+      }
+    }
+
+    /* Copy Code Snippets to Clipboard with Toast Notification */
+    function copySnippet(snippetId) {
+      var snippetEl = document.getElementById(snippetId);
+      if (!snippetEl) return;
+
+      var textToCopy = snippetEl.innerText || snippetEl.textContent;
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(showToast).catch(function() {
+          fallbackCopyText(textToCopy);
+        });
+      } else {
+        fallbackCopyText(textToCopy);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      var textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-9999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast();
+      } catch (err) {
+        // Silent fallback
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function showToast() {
+      var toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.classList.add('show');
+      setTimeout(function() {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    /* Interactive Parabola Dynamic Renderer */
+    function updateParabola() {
+      var aInput = document.getElementById('coeff-a');
+      var bInput = document.getElementById('coeff-b');
+      var cInput = document.getElementById('coeff-c');
+
+      if (!aInput || !bInput || !cInput) return;
+
+      var a = parseFloat(aInput.value);
+      var b = parseFloat(bInput.value);
+      var c = parseFloat(cInput.value);
+
+      // Avoid a = 0 for parabola
+      if (a === 0) {
+        a = 0.5;
+        aInput.value = "0.5";
+      }
+
+      document.getElementById('val-a').textContent = a;
+      document.getElementById('val-b').textContent = b;
+      document.getElementById('val-c').textContent = c;
+
+      // Calculate Vertex: x_v = -b / (2a), y_v = c - b^2 / (4a)
+      var xv = -b / (2 * a);
+      var yv = a * xv * xv + b * xv + c;
+      var delta = b * b - 4 * a * c;
+
+      // Coordinate Transform: Center (150, 110). Scale: 1 unit = 20px
+      var originX = 150;
+      var originY = 110;
+      var scale = 20;
+
+      // Build Path points for SVG
+      var pathD = "";
+      var step = 0.2;
+      var first = true;
+
+      for (var x = -6; x <= 6; x += step) {
+        var y = a * x * x + b * x + c;
+        var svgX = originX + x * scale;
+        var svgY = originY - y * scale; // invert Y for screen coords
+
+        if (first) {
+          pathD += "M " + svgX.toFixed(1) + "," + svgY.toFixed(1);
+          first = false;
+        } else {
+          pathD += " L " + svgX.toFixed(1) + "," + svgY.toFixed(1);
+        }
+      }
+
+      var vertexSvgX = originX + xv * scale;
+      var vertexSvgY = originY - yv * scale;
+
+      var svgContent = `
+        <rect x="0" y="0" width="300" height="220" fill="#FFFFFF" stroke="#065F46" stroke-width="1.5" rx="4"/>
+        <!-- Axes -->
+        <line x1="15" y1="${originY}" x2="285" y2="${originY}" stroke="#065F46" stroke-width="1.5"/>
+        <line x1="${originX}" y1="15" x2="${originX}" y2="205" stroke="#065F46" stroke-width="1.5"/>
+        <text x="288" y="${originY + 4}" font-family="JetBrains Mono" font-size="11" fill="#065F46">x</text>
+        <text x="${originX - 4}" y="12" font-family="JetBrains Mono" font-size="11" fill="#065F46">y</text>
+        
+        <!-- Parabola Curve -->
+        <path d="${pathD}" fill="none" stroke="#059669" stroke-width="3" />
+        
+        <!-- Vertex Point -->
+        <circle cx="${vertexSvgX.toFixed(1)}" cy="${vertexSvgY.toFixed(1)}" r="5" fill="#DC2626"/>
+        <text x="${(vertexSvgX + 8).toFixed(1)}" y="${(vertexSvgY - 8).toFixed(1)}" font-family="JetBrains Mono" font-size="10" font-weight="bold" fill="#DC2626">
+          S(${xv.toFixed(1)}, ${yv.toFixed(1)})
+        </text>
+      `;
+
+      var svgEl = document.getElementById('interactive-parabola-svg');
+      if (svgEl) {
+        svgEl.innerHTML = svgContent;
+      }
+
+      var deltaDesc = "";
+      if (delta > 0) {
+        deltaDesc = "دلتا مثبت (Δ = " + delta.toFixed(1) + "): نمودار دو ریشه حقیقی دارد و محور xها را در دو نقطه قطع می‌کند.";
+      } else if (delta === 0) {
+        deltaDesc = "دلتا صفر (Δ = 0): نمودار دارای ریشه مضاعف بوده و بر محور xها مماس است.";
+      } else {
+        deltaDesc = "دلتا منفی (Δ = " + delta.toFixed(1) + "): نمودار فاقد ریشه حقیقی است و محور xها را قطع نمی‌کند.";
+      }
+
+      var outputEl = document.getElementById('parabola-math-output');
+      if (outputEl) {
+        var signB = b >= 0 ? "+ " + b : "- " + Math.abs(b);
+        var signC = c >= 0 ? "+ " + c : "- " + Math.abs(c);
+        outputEl.innerHTML = `معادله سهمی: <bdi dir="ltr">f(x) = ${a}x² ${signB}x ${signC}</bdi><br><span style="font-size: 0.88rem; font-weight: normal; color: var(--on-surface);">${deltaDesc}</span>`;
+      }
+    }
+
+    /* Web Audio API Tone Synthesizer for Math Audio Demo */
+    function playMathAudioTone(type) {
+      try {
+        var AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        var ctx = new AudioContext();
+
+        var statusText = document.getElementById('audio-status-text');
+
+        if (type === 'positive') {
+          // Play two pleasant harmonious ascending tones for 2 roots
+          playNote(ctx, 440, 0, 0.25);
+          playNote(ctx, 659.25, 0.28, 0.4);
+          if (statusText) {
+            statusText.innerHTML = "<strong>در حال پخش صوت:</strong> «بررسی دلتا بزرگتر از صفر — معادله دارای دو ریشه متمایز x₁ و x₂ بوده و سهمی محور افقی را دو بار قطع می‌کند.»";
+          }
+        } else if (type === 'zero') {
+          // Play single stable tone for double root
+          playNote(ctx, 523.25, 0, 0.5);
+          if (statusText) {
+            statusText.innerHTML = "<strong>در حال پخش صوت:</strong> «بررسی دلتا برابر صفر — سهمی بر محور طول‌ها مماس بوده و نقطه تماس همان رأس سهمی با ریشه مضاعف است.»";
+          }
+        } else {
+          // Play descending caution tone for negative delta
+          playNote(ctx, 392, 0, 0.25);
+          playNote(ctx, 293.66, 0.28, 0.45);
+          if (statusText) {
+            statusText.innerHTML = "<strong>در حال پخش صوت:</strong> «بررسی دلتا منفی — معادله فاقد جواب در مجموعه اعداد حقیقی است؛ کل سهمی بالا یا پایین محور xها معلق است.»";
+          }
+        }
+      } catch (e) {
+        // Web audio fallback
+      }
+    }
+
+    function playNote(ctx, freq, startTime, duration) {
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
+
+      gain.gain.setValueAtTime(0.01, ctx.currentTime + startTime);
+      gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + startTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(ctx.currentTime + startTime);
+      osc.stop(ctx.currentTime + startTime + duration);
+    }
+
+    /* Video Player Simulation Toggle */
+    var isVideoPlaying = true;
+    function simulateVideoToggle() {
+      var playText = document.getElementById('video-play-text');
+      var stateText = document.getElementById('video-state-text');
+      var coneCut = document.getElementById('cone-cut');
+
+      isVideoPlaying = !isVideoPlaying;
+
+      if (isVideoPlaying) {
+        if (playText) playText.textContent = "توقف موقت (Pause)";
+        if (stateText) stateText.textContent = "در حال پخش شبیه‌سازی تدریس";
+        if (coneCut) coneCut.setAttribute('opacity', '0.7');
+      } else {
+        if (playText) playText.textContent = "ادامه پخش (Play)";
+        if (stateText) stateText.textContent = "ویدیو متوقف شد (Paused)";
+        if (coneCut) coneCut.setAttribute('opacity', '0.2');
+      }
+    }
+
+    /* Base64 Overhead Calculator */
+    function calculateBase64Size() {
+      var sizeInput = document.getElementById('calc-file-size');
+      var unitSelect = document.getElementById('calc-unit');
+      if (!sizeInput || !unitSelect) return;
+
+      var rawVal = parseFloat(sizeInput.value);
+      if (isNaN(rawVal) || rawVal <= 0) rawVal = 1;
+
+      var unit = unitSelect.value;
+      var sizeInKB = unit === 'MB' ? rawVal * 1024 : rawVal;
+
+      // Base64 expansion is mathematically 4 / 3 = 1.333333
+      var base64KB = sizeInKB * (4 / 3);
+      var overheadKB = base64KB - sizeInKB;
+
+      var resOriginal = document.getElementById('res-original');
+      var resBase64 = document.getElementById('res-base64');
+      var resOverhead = document.getElementById('res-overhead');
+      var verdictBox = document.getElementById('res-verdict-box');
+
+      if (resOriginal) {
+        resOriginal.textContent = rawVal.toFixed(2) + " " + unit;
+      }
+      if (resBase64) {
+        if (unit === 'MB') {
+          resBase64.textContent = (base64KB / 1024).toFixed(2) + " MB";
+        } else {
+          resBase64.textContent = base64KB.toFixed(2) + " KB";
+        }
+      }
+      if (resOverhead) {
+        if (unit === 'MB') {
+          resOverhead.textContent = "+" + (overheadKB / 1024).toFixed(2) + " MB";
+        } else {
+          resOverhead.textContent = "+" + overheadKB.toFixed(2) + " KB";
+        }
+      }
+
+      if (verdictBox) {
+        if (sizeInKB <= 32) {
+          verdictBox.style.backgroundColor = "var(--surface-container-low)";
+          verdictBox.style.borderColor = "var(--positive)";
+          verdictBox.style.color = "var(--primary)";
+          verdictBox.innerHTML = "نتیجه ارزیابی مهندسی: <strong>بسیار مناسب برای Base64</strong>. حجم زیر سقف توصیه‌شده ۳۲ کیلوبایت است و می‌توانید به راحتی آن را مستقیماً در فایل HTML درج کنید.";
+        } else if (sizeInKB <= 120) {
+          verdictBox.style.backgroundColor = "var(--warning-bg)";
+          verdictBox.style.borderColor = "var(--warning)";
+          verdictBox.style.color = "var(--warning)";
+          verdictBox.innerHTML = "نتیجه ارزیابی مهندسی: <strong>هشدار حجم متوسط</strong>. فایل بیش از ۳۲ کیلوبایت است؛ تنها در صورتی که نیاز قطعی به ارسال یک فایل منفرد دارید استفاده کنید، در غیر این صورت بهتر است عکس را در کنار فایل یا در هاست قرار دهید.";
+        } else {
+          verdictBox.style.backgroundColor = "var(--error-bg)";
+          verdictBox.style.borderColor = "var(--error)";
+          verdictBox.style.color = "var(--error)";
+          verdictBox.innerHTML = "نتیجه ارزیابی مهندسی: <strong>اکیداً ممنوع برای Base64!</strong> حجم این رسانه بیش از حد بالاست (" + (sizeInKB >= 1024 ? (sizeInKB/1024).toFixed(1) + " مگابایت" : sizeInKB.toFixed(0) + " کیلوبایت") + "). قرار دادن این حجم به صورت متن Base64 سرعت لود را به شدت کاهش داده و ویرایشگر را مختل می‌کند. حتماً از هاست ابری (یوآپلود/آپارات) یا گیت‌هاب پیجز استفاده فرمایید.";
+        }
+      }
+    }
+
+    /* Direct Link vs Landing Page Link Simulator */
+    function testLinkType(type) {
+      var testerBox = document.getElementById('link-tester-result');
+      if (!testerBox) return;
+
+      if (type === 'bad') {
+        testerBox.style.backgroundColor = "var(--error-bg)";
+        testerBox.style.borderColor = "var(--error)";
+        testerBox.innerHTML = `
+          <div>
+            <div style="font-weight: bold; color: var(--error); margin-bottom: 4px;">
+              خطای بارگذاری تصویر: تصویر نمایش داده نشد! (Broken Image Icon)
+            </div>
+            <div style="font-size: 0.9rem; color: var(--on-surface);">
+              <strong>علت فنی:</strong> آدرس <bdi dir="ltr">uupload.ir/view/parabola-exam</bdi> یک صفحه اینترنتی حاوی هدر، منو و بنرهای تبلیغاتی است (<bdi dir="ltr">text/html</bdi>). مرورگر وقتی در تگ <bdi dir="ltr">&lt;img&gt;</bdi> به جای بایت‌های تصویر با کدهای HTML مواجه می‌شود، از نمایش آن سر باز می‌زند.
+            </div>
+          </div>
+        `;
+      } else {
+        testerBox.style.backgroundColor = "var(--surface-container-low)";
+        testerBox.style.borderColor = "var(--positive)";
+        testerBox.innerHTML = `
+          <div>
+            <div style="font-weight: bold; color: var(--positive); margin-bottom: 4px;">
+              بارگذاری موفقیت‌آمیز: تصویر نمودار با بالاترین کیفیت رندر شد!
+            </div>
+            <div style="font-size: 0.9rem; color: var(--on-surface);">
+              <strong>علت فنی:</strong> این آدرس <bdi dir="ltr">https://example.com/uploads/parabola-exam.png</bdi> مستقیماً به استریم بایت‌های خالص عکس اشاره می‌کند و مرورگر بلافاصله هدر <bdi dir="ltr">Content-Type: image/png</bdi> را دریافت و نمودار سهمی را رسم می‌نماید.
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    /* Checklist Progress Tracker */
+    function updateChecklistProgress() {
+      var count = 0;
+      var total = 10;
+      for (var i = 1; i <= total; i++) {
+        var chk = document.getElementById('chk-' + i);
+        if (chk && chk.checked) {
+          count++;
+        }
+      }
+
+      var textEl = document.getElementById('checklist-progress-text');
+      if (textEl) {
+        textEl.textContent = count + " از " + total + " مورد آماده است (" + Math.round((count / total) * 100) + "٪ آمادگی ارائه کلاس)";
+      }
+    }
+
+    // Initialize defaults on DOM load
+    document.addEventListener('DOMContentLoaded', function() {
+      updateParabola();
+      calculateBase64Size();
+    });
+  </script>
+</body>
+</html>

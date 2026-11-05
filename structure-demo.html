@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آموزش تعاملی ساختار HTML</title>
+    <style>
+        /* تنظیمات ظاهری */
+        body {
+            font-family: 'B Nazanin', Tahoma, sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            padding: 20px;
+            color: #1F2937;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            color: #0B1F3A;
+            margin-bottom: 5px;
+        }
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background-color: #0B1F3A;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn:hover { background-color: #1E3A8A; }
+        .btn.reset { background-color: #DC2626; }
+        
+        /* چیدمان دو ستونه */
+        .workspace {
+            display: flex;
+            gap: 20px;
+            height: 65vh;
+        }
+        .panel {
+            flex: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+        }
+        .panel-header {
+            background-color: #E2E8F0;
+            padding: 10px 15px;
+            font-weight: bold;
+            color: #0B1F3A;
+            border-bottom: 2px solid #CBD5E1;
+        }
+        
+        /* کادر کد (سمت راست) */
+        .code-area {
+            background-color: #0B1F3A;
+            color: #E2E8F0;
+            padding: 20px;
+            font-family: Consolas, Monaco, monospace;
+            direction: ltr;
+            text-align: left;
+            font-size: 16px;
+            overflow-y: auto;
+            flex: 1;
+            line-height: 1.6;
+        }
+        .code-area span {
+            cursor: pointer;
+            color: #38BDF8; /* رنگ آبی روشن برای تگ‌ها */
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+        .code-area span:hover {
+            color: #FDE047; /* زرد در صورت هاور */
+        }
+        
+        /* کادر پیش‌نمایش (سمت چپ) */
+        .preview-area {
+            background-color: #FFFFFF;
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .preview-area .dynamic-content {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px dashed #CBD5E1;
+            border-radius: 8px;
+            min-height: 150px;
+        }
+
+        /* جعبه توضیحات */
+        .explanation-box {
+            margin-top: 20px;
+            background-color: #F1F5F9;
+            border-right: 5px solid #0B1F3A;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+        .explanation-box h3 {
+            margin-top: 0;
+            color: #0B1F3A;
+        }
+
+        /* استایل‌های عناصر اضافه‌شده */
+        .demo-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px solid #CBD5E1;
+        }
+        .demo-btn {
+            background-color: #0B1F3A;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 10px;
+        }
+        .demo-audio {
+            margin-top: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* موبایل */
+        @media (max-width: 768px) {
+            .workspace {
+                flex-direction: column;
+                height: auto;
+            }
+            .code-area, .preview-area {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>کارگاه ساختار HTML</h1>
+        <p>روی تگ‌های آبی‌رنگ در کدها کلیک کنید تا توضیح آن‌ها را ببینید.</p>
+    </div>
+
+    <!-- دکمه‌های ابزار -->
+    <div class="toolbar">
+        <button class="btn" onclick="addImage()">➕ افزودن تصویر (img)</button>
+        <button class="btn" onclick="addAudio()">➕ افزودن صدا (audio)</button>
+        <button class="btn" onclick="addButton()">➕ افزودن دکمه (button)</button>
+        <button class="btn reset" onclick="resetPreview()">🔄 پاک کردن کادر پیش‌نمایش</button>
+    </div>
+
+    <!-- محیط کدنویسی و پیش‌نمایش -->
+    <div class="workspace">
+        <!-- ستون راست: کدها -->
+        <div class="panel">
+            <div class="panel-header">📝 کدهای HTML</div>
+            <div class="code-area" id="codeDisplay">
+&lt;<span onclick="showExplain('html')">&lt;html&gt;</span>&gt;<br>
+&nbsp;&nbsp;&lt;<span onclick="showExplain('head')">&lt;head&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span onclick="showExplain('style')">&lt;style&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>/* کدهای ظاهر (رنگ، فونت) */</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span onclick="showExplain('style')">&lt;style&gt;</span>&gt;<br>
+&nbsp;&nbsp;&lt;/<span onclick="showExplain('head')">&lt;head&gt;</span>&gt;<br>
+<br>
+&nbsp;&nbsp;&lt;<span onclick="showExplain('body')">&lt;body&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span onclick="showExplain('h1')">&lt;h1&gt;</span>&gt;عنوان اصلی&lt;/<span onclick="showExplain('h1')">&lt;h1&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span onclick="showExplain('p')">&lt;p&gt;</span>&gt;متن توضیحات&lt;/<span onclick="showExplain('p')">&lt;p&gt;</span>&gt;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span id="dynamicCode"></span>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span onclick="showExplain('script')">&lt;script&gt;</span>&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i>// کدهای هوش و تعامل (JavaScript)</i><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span onclick="showExplain('script')">&lt;script&gt;</span>&gt;<br>
+&nbsp;&nbsp;&lt;/<span onclick="showExplain('body')">&lt;/body&gt;</span>&gt;<br>
+&lt;/<span onclick="showExplain('html')">&lt;/html&gt;</span>&gt;
+            </div>
+        </div>
+
+        <!-- ستون چپ: پیش‌نمایش -->
+        <div class="panel">
+            <div class="panel-header">🖥️ آنچه کاربر می‌بیند (پیش‌نمایش)</div>
+            <div class="preview-area">
+                <h1 style="color: #0B1F3A; margin-top: 0;">عنوان اصلی</h1>
+                <p>متن توضیحات</p>
+                
+                <div class="dynamic-content" id="previewDisplay">
+                    <span style="color: #6B7280;">عناصر اضافه‌شده توسط دکمه‌ها اینجا ظاهر می‌شوند...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- جعبه توضیحات -->
+    <div class="explanation-box" id="explainBox">
+        <h3 id="explainTitle"></h3>
+        <p id="explainText"></p>
+    </div>
+
+    <script>
+        // دیکشنری توضیحات برای هر تگ
+        const explanations = {
+            'html': { title: 'تگ <html>', text: 'ریشه و دیوارهای اصلی خانه است. به مرورگر می‌گوید که این یک سند HTML است.' },
+            'head': { title: 'تگ <head>', text: 'اطلاعات پشت صحنه است. هیچ چیزی از آن روی صفحه نمایش داده نمی‌شود، اما تنظیمات مهمی مثل عنوان تب مرورگر و فونت‌ها را در خود دارد.' },
+            'style': { title: 'تگ <style>', text: 'مسئول زیبایی است! رنگ‌ها، فونت‌ها، حاشیه‌ها و اندازه‌ها در اینجا تعریف می‌شوند. به این بخش CSS هم می‌گویند.' },
+            'body': { title: 'تگ <body>', text: 'اتاق‌های خانه! هر چیزی که کاربر روی صفحه می‌بیند (مثل متن‌ها، عکس‌ها، جدول‌ها و دکمه‌ها) باید داخل این تگ قرار بگیرد.' },
+            'h1': { title: 'تگ <h1>', text: 'عنوان بزرگ و اصلی صفحه است. تگ‌های h2 تا h6 برای عنوان‌های کوچک‌تر استفاده می‌شوند.' },
+            'p': { title: 'تگ <p>', text: 'مخفف Paragraph است و برای نوشتن پاراگراف‌های متنی استفاده می‌شود.' },
+            'script': { title: 'تگ <script>', text: 'مغز متفکر صفحه! کدهای جاوااسکریپت اینجا نوشته می‌شوند تا صفحه تعاملی شود. مثلاً وقتی روی یک دکمه کلیک می‌کنید، کدهای این بخش اجرا می‌شوند.' }
+        };
+
+        // نمایش توضیحات
+        function showExplain(tag) {
+            const box = document.getElementById('explainBox');
+            const title = document.getElementById('explainTitle');
+            const text = document.getElementById('explainText');
+
+            if (explanations[tag]) {
+                title.innerHTML = explanations[tag].title;
+                text.innerHTML = explanations[tag].text;
+                box.style.display = 'block';
+                
+                // اسکرول نرم به سمت جعبه توضیحات
+                box.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        }
+
+        // تابع اضافه کردن تصویر
+        function addImage() {
+            document.getElementById('dynamicCode').innerHTML += `&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span style="color:#38BDF8">&lt;img&gt;</span> src="math.jpg" alt="نمودار"&gt;<br>`;
+            
+            const preview = document.getElementById('previewDisplay');
+            preview.innerHTML = ''; 
+            const imgSvg = `<svg class="demo-img" width="200" height="120" viewBox="0 0 200 120" style="background:#fff; border:1px solid #ddd;">
+                <polyline points="10,10 100,110 190,10" fill="none" stroke="#0B1F3A" stroke-width="3"/>
+                <text x="10" y="20" font-family="Tahoma" font-size="12" fill="#6B7280">نمودار سهمی</text>
+            </svg><br>`;
+            preview.innerHTML += imgSvg;
+        }
+
+        // تابع اضافه کردن صدا (با نام فایل Sound.mp3)
+        function addAudio() {
+            // نمایش کد در سمت راست
+            document.getElementById('dynamicCode').innerHTML += `&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span style="color:#38BDF8">&lt;audio&gt;</span> controls src="Sound.mp3"&gt;&lt;/audio&gt;<br>`;
+            
+            // ایجاد تگ صوتی در پیش‌نمایش سمت چپ
+            const preview = document.getElementById('previewDisplay');
+            preview.innerHTML = ''; 
+            
+            const audioElement = document.createElement('audio');
+            audioElement.className = 'demo-audio';
+            audioElement.controls = true;
+            
+            const sourceElement = document.createElement('source');
+            sourceElement.src = 'Sound.mp3'; // نام فایل شما با S بزرگ
+            sourceElement.type = 'audio/mpeg';
+            
+            audioElement.appendChild(sourceElement);
+            audioElement.innerHTML += 'مرورگر شما از صدا پشتیبانی نمی‌کند.';
+            
+            preview.appendChild(audioElement);
+        }
+
+        // تابع اضافه کردن دکمه
+        function addButton() {
+            document.getElementById('dynamicCode').innerHTML += `&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span style="color:#38BDF8">&lt;button&gt;</span> onclick="alert('سلام!')"&gt;کلیک کن&lt;/button&gt;<br>`;
+            
+            const preview = document.getElementById('previewDisplay');
+            preview.innerHTML = '';
+            const btn = document.createElement('button');
+            btn.className = 'demo-btn';
+            btn.innerText = 'کلیک کن (نمایش پاسخ)';
+            btn.onclick = function() { alert("این دکمه توسط جاوااسکریپت (تگ script) فعال شده است!"); };
+            preview.appendChild(btn);
+        }
+
+        // پاک کردن پیش‌نمایش
+        function resetPreview() {
+            document.getElementById('previewDisplay').innerHTML = '<span style="color: #6B7280;">عناصر اضافه‌شده توسط دکمه‌ها اینجا ظاهر می‌شوند...</span>';
+            document.getElementById('dynamicCode').innerHTML = '';
+        }
+    </script>
+</body>
+</html>

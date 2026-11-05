@@ -1,0 +1,2585 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="artifact-type" content="narrative">
+<meta name="design-style" content="carbon">
+<title>کاربردهای عملی گیتهاب برای دبیران ریاضی | کارگاه تخصصی توسعه حرفه‌ای</title>
+
+<!-- Fonts & External Dependencies -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.2/dist/katex.min.css">
+
+<style>
+/* Font-Face Definition for B Nazanin */
+@font-face {
+  font-family: 'B Nazanin';
+  src: url('https://db.onlinewebfonts.com/t/3671adca6f650c92b83f906e49656986.woff2') format('woff2'),
+       url('https://db.onlinewebfonts.com/t/3671adca6f650c92b83f906e49656986.woff') format('woff'),
+       url('https://db.onlinewebfonts.com/t/3671adca6f650c92b83f906e49656986.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'B Nazanin';
+  src: url('https://db.onlinewebfonts.com/t/3671adca6f650c92b83f906e49656986.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Carbon Palette customized strictly to requested #FFFFFF, #F5F5F5 / #E0E0E0, #333333 */
+  --background: #ffffff;
+  --surface-container-low: #f5f5f5;
+  --surface-container: #f5f5f5;
+  --surface-container-high: #e0e0e0;
+  --surface-card-subtle: #fafafa;
+  --surface-dark: #222222;
+
+  /* Ink / Text tokens */
+  --on-surface: #333333;
+  --on-surface-variant: #555555;
+  --on-surface-dark: #111111;
+  --on-surface-inverse: #ffffff;
+
+  /* Rules & Outlines */
+  --outline: #888888;
+  --outline-variant: #e0e0e0;
+  --outline-strong: #333333;
+
+  /* Accent & Status */
+  --primary: #222222;
+  --on-primary: #ffffff;
+  --primary-container: #e0e0e0;
+  --on-primary-container: #111111;
+  --secondary: #555555;
+  --tertiary: #1b7340;
+  --positive: #1b7340;
+  --warning: #b25e00;
+  --error: #b71c1c;
+  --on-error: #ffffff;
+  --focus: #111111;
+
+  /* Data Series for charts and graphs */
+  --data-1: #222222;
+  --data-2: #555555;
+  --data-3: #1b7340;
+  --data-4: #888888;
+  --data-context: #bbbbbb;
+
+  /* Typography */
+  --font-headline: 'B Nazanin', 'Vazirmatn', Tahoma, sans-serif;
+  --font-body: 'B Nazanin', 'Vazirmatn', Tahoma, sans-serif;
+  --font-label: 'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Type Scale */
+  --display-size: clamp(2rem, 1.4rem + 2.5vw, 3.25rem);
+  --headline-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem);
+  --subhead-size: clamp(1.2rem, 1.05rem + 0.5vw, 1.45rem);
+  --body-size: clamp(1.05rem, 0.98rem + 0.25vw, 1.15rem);
+  --label-size: 0.85rem;
+
+  /* Spacing Scale (4pt base) */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.375rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* Shape & Metrics */
+  --rounded: 0.125rem;
+  --rounded-lg: 0.25rem;
+  --rounded-full: 9999px;
+
+  /* Visual Rules & Effects */
+  --rule: 1px solid var(--outline-variant);
+  --rule-strong: 2px solid var(--outline-strong);
+  --indicator: 3px solid var(--outline-strong);
+  --shadow-float: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Animation & Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--on-surface);
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+header {
+  position: static !important;
+}
+
+/* BiDi Isolation for Math and Code */
+bdi, .ltr-text, code, pre, .mono-data {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: left;
+}
+
+.katex {
+  direction: ltr !important;
+  unicode-bidi: isolate;
+}
+
+/* Page Container Grid */
+.page-grid {
+  display: grid;
+  gap: var(--space-xl);
+  padding: var(--space-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.page-grid * {
+  min-width: 0;
+}
+
+/* Typography styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  color: var(--on-surface-dark);
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+h1 { font-size: var(--display-size); }
+h2 { font-size: var(--headline-size); }
+h3 { font-size: var(--subhead-size); }
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+  color: var(--on-surface);
+  max-width: 75ch;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+  padding-inline-start: var(--space-xl);
+}
+
+li {
+  margin-bottom: var(--space-xs);
+}
+
+/* Carbon UI Components */
+.layer {
+  background: var(--surface-container);
+  border-radius: var(--rounded);
+  padding: var(--space-lg);
+  border: var(--rule);
+}
+
+.layer-nested {
+  background: var(--background);
+  border: var(--rule);
+  padding: var(--space-md);
+  border-radius: var(--rounded);
+}
+
+.section-header {
+  border-bottom: var(--rule-strong);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.section-number {
+  font-family: var(--font-label);
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-2xs) var(--space-sm);
+  font-family: var(--font-label);
+  font-size: var(--label-size);
+  background: var(--surface-container-high);
+  color: var(--on-surface-dark);
+  border-radius: var(--rounded);
+  font-weight: 500;
+}
+
+.badge-dark {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+/* Button Component */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 1px solid var(--primary);
+  border-radius: var(--rounded);
+  cursor: pointer;
+  transition: background var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+  text-decoration: none;
+  min-height: 42px;
+}
+
+.btn:hover {
+  background: var(--on-surface-dark);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  background: var(--background);
+  color: var(--on-surface-dark);
+  border: 1px solid var(--outline);
+}
+
+.btn-secondary:hover {
+  background: var(--surface-container-high);
+}
+
+.btn-sm {
+  padding: var(--space-2xs) var(--space-sm);
+  font-size: 0.9rem;
+  min-height: 34px;
+}
+
+/* Code & Pre */
+pre {
+  background: var(--surface-dark);
+  color: var(--on-surface-inverse);
+  padding: var(--space-md);
+  border-radius: var(--rounded);
+  overflow-x: auto;
+  font-family: var(--font-label);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  border-top: 3px solid var(--outline-variant);
+}
+
+code {
+  font-family: var(--font-label);
+  font-size: 0.9em;
+  padding: 0.15em 0.35em;
+  background: var(--surface-container-high);
+  color: var(--on-surface-dark);
+  border-radius: var(--rounded);
+}
+
+pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: 0.9rem;
+}
+
+/* Placeholders for visuals and diagrams */
+.placeholder-box {
+  border: 1px dashed var(--outline);
+  background: var(--surface-card-subtle);
+  padding: var(--space-md);
+  border-radius: var(--rounded);
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.placeholder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--space-xs);
+  border-bottom: var(--rule);
+}
+
+.placeholder-title {
+  font-family: var(--font-label);
+  font-size: var(--label-size);
+  color: var(--on-surface-variant);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: 600;
+}
+
+/* Grid Layouts */
+.grid-2col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-md);
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: var(--space-md);
+}
+
+/* Form inputs */
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-headline);
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: var(--space-2xs);
+  color: var(--on-surface-dark);
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background: var(--background);
+  border: 1px solid var(--outline);
+  border-radius: var(--rounded);
+  color: var(--on-surface);
+  min-height: 40px;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.slider-container input[type="range"] {
+  flex-grow: 1;
+  accent-color: var(--primary);
+}
+
+.slider-val {
+  font-family: var(--font-label);
+  min-width: 50px;
+  font-weight: 600;
+  text-align: center;
+  background: var(--surface-container-high);
+  padding: var(--space-2xs) var(--space-xs);
+  border-radius: var(--rounded);
+}
+
+/* Interactive Canvas Container */
+.canvas-wrap {
+  position: relative;
+  background: var(--background);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--rounded);
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+canvas {
+  width: 100%;
+  height: 280px;
+  display: block;
+}
+
+/* Header Masthead */
+.masthead {
+  border-bottom: 3px double var(--outline-strong);
+  padding-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.masthead-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-sm);
+}
+
+.nav-pills {
+  display: flex;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+  border-bottom: var(--rule);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.nav-pill {
+  padding: var(--space-xs) var(--space-md);
+  background: var(--surface-container);
+  color: var(--on-surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--rounded);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.nav-pill:hover, .nav-pill.active {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+}
+
+/* Toast alert notification */
+#toast-notification {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--surface-dark);
+  color: var(--on-surface-inverse);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--rounded);
+  font-family: var(--font-headline);
+  font-size: 1rem;
+  box-shadow: var(--shadow-float);
+  opacity: 0;
+  transition: transform var(--dur-short) var(--ease-out), opacity var(--dur-short) var(--ease-out);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  border: 1px solid var(--outline);
+}
+
+#toast-notification.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Exam Paper styling for Section 3 */
+.exam-paper {
+  background: var(--background);
+  border: 2px solid var(--outline-strong);
+  padding: var(--space-lg);
+  font-family: var(--font-body);
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.exam-header-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--space-md);
+}
+
+.exam-header-table td {
+  border: 1px solid var(--outline-strong);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 0.95rem;
+}
+
+.exam-question-item {
+  border-bottom: 1px dotted var(--outline);
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}
+
+.question-num {
+  font-weight: bold;
+  min-width: 32px;
+  height: 32px;
+  background: var(--surface-container);
+  border: 1px solid var(--outline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--rounded);
+}
+
+.question-text {
+  flex-grow: 1;
+}
+
+.question-score {
+  font-family: var(--font-label);
+  font-size: 0.85rem;
+  background: var(--surface-container-high);
+  padding: var(--space-3xs) var(--space-xs);
+  border-radius: var(--rounded);
+  white-space: nowrap;
+}
+
+/* Responsive queries */
+@media (max-width: 820px) {
+  .grid-2col, .grid-3col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-grid {
+    padding: var(--space-sm);
+    gap: var(--space-lg);
+  }
+  .masthead-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn {
+    width: 100%;
+  }
+}
+
+@media print {
+  body {
+    background: var(--background);
+    color: var(--on-surface-dark);
+  }
+  .no-print, .nav-pills, .btn, #toast-notification {
+    display: none !important;
+  }
+  .page-grid {
+    padding: 0;
+    max-width: 100%;
+  }
+  .exam-paper {
+    border: 1px solid var(--on-surface-dark);
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="page-grid">
+
+  <!-- MASTHEAD & TITLE -->
+  <header class="masthead">
+    <div class="masthead-meta">
+      <span class="badge badge-dark">کارگاه توسعه حرفه‌ای دبیران ریاضی دبیرستان</span>
+      <span class="badge">پایه‌های دهم، یازدهم و دوازدهم</span>
+      <span class="badge">ویرایش آموزشی استاندارد</span>
+      <span class="badge">مدت کارگاه: ۹۰ دقیقه</span>
+    </div>
+    <h1>کاربردهای عملی گیتهاب برای دبیران ریاضی</h1>
+    <p style="font-size: 1.25rem; font-weight: 600; color: var(--on-surface-dark); margin-bottom: var(--space-sm);">
+      راهنمای جامع توانمندسازی معلمان ریاضی: از کاربرگ‌های تعاملی تحت وب و انیمیشن‌های پایتون Manim تا آزمون‌سازهای استاندارد LaTeX و مدیریت منابع اشتراکی
+    </p>
+
+    <!-- Quick Navigation Bar -->
+    <nav class="nav-pills no-print" aria-label="فهرست پرش سریع کارگاه">
+      <a href="#intro" class="nav-pill active">مقدمه و ارزش گیتهاب</a>
+      <a href="#section-1" class="nav-pill">۱. کاربرگ تعاملی (Pages)</a>
+      <a href="#section-2" class="nav-pill">۲. انیمیشن ریاضی (Manim)</a>
+      <a href="#section-3" class="nav-pill">۳. قالب‌های آزمون (LaTeX)</a>
+      <a href="#section-4" class="nav-pill">۴. مخازن منتخب (Awesome)</a>
+      <a href="#section-5" class="nav-pill">۵. یادداشت دیجیتال (Markdown)</a>
+      <a href="#conclusion" class="nav-pill">نتیجه‌گیری و بهره‌وری</a>
+      <a href="#resources" class="nav-pill">منابع و لینک‌های مفید</a>
+    </nav>
+  </header>
+
+  <!-- INTRODUCTION SECTION -->
+  <section id="intro" class="layer">
+    <div class="section-header">
+      <div>
+        <span class="section-number">مقدمه کارگاه</span>
+        <h2>چرا گیتهاب فراتر از کدنویسی برای دبیران ریاضی حیاتی است؟</h2>
+      </div>
+      <span class="badge">رویکرد نوین آموزش ریاضی</span>
+    </div>
+
+    <p>
+      بسیاری از دبیران ریاضی تصور می‌کنند پلتفرم <strong>گیت‌هاب (GitHub)</strong> صرفاً فضایی مختص مهندسان نرم‌افزار و برنامه‌نویسان تجاری است. اما در واقعیت تدریس قرن بیست‌ویکم، گیت‌هاب قدرتمندترین «زیرساخت ابری، اشتراکی و مادام‌العمر» برای طراحان آموزش ریاضی است. معلمان ریاضی همواره با حجم انبوهی از کاربرگ‌ها، فرمول‌های پیچیده، نمونه‌سوالات امتحانی، شکل‌های هندسی و محتواهای چندرسانه‌ای سروکار دارند.
+    </p>
+
+    <div class="grid-3col" style="margin-top: var(--space-md);">
+      <div class="layer-nested">
+        <h3 style="display:flex; align-items:center; gap:var(--space-xs);">
+          <i data-lucide="folder-sync"></i>
+          پایان کابوس نگارش فایل‌ها
+        </h3>
+        <p style="font-size: 0.95rem;">
+          دیگر نیازی به ذخیره فایل‌های گیج‌کننده‌ای مانند <code dir="ltr">azmoon_final_v2_eslah_shode.docx</code> نیست! سیستم نسخه‌بندی گیت به شما امکان می‌دهد تمام تاریخچه تغییرات سوالات را به صورت شفاف و برگشت‌پذیر داشته باشید.
+        </p>
+      </div>
+
+      <div class="layer-nested">
+        <h3 style="display:flex; align-items:center; gap:var(--space-xs);">
+          <i data-lucide="globe"></i>
+          انتشار فوری و رایگان در وب
+        </h3>
+        <p style="font-size: 0.95rem;">
+          با قابلیت GitHub Pages، می‌توانید در کسری از ثانیه شبیه‌سازی‌های تعاملی، نمودارهای پویا و کاربرگ‌های کلاسی خود را روی اینترنت قرار داده و لینک آن را در اختیار دانش‌آموزان بگذارید؛ بدون هزینه سرور و هاست.
+        </p>
+      </div>
+
+      <div class="layer-nested">
+        <h3 style="display:flex; align-items:center; gap:var(--space-xs);">
+          <i data-lucide="users"></i>
+          فرهنگ تدریس باز و اشتراکی
+        </h3>
+        <p style="font-size: 0.95rem;">
+          دبیران ریاضی سراسر کشور می‌توانند در یک گروه آموزشی، سوالات آزمون‌ها و تمرین‌های غنی را به اشتراک بگذارند، همفکری کنند و با ارسال Pull Request بهترین جزوات را به صورت مشارکتی تولید نمایند.
+        </p>
+      </div>
+    </div>
+
+    <!-- Visual Schematic Placeholder -->
+    <div class="placeholder-box">
+      <div class="placeholder-header">
+        <span class="placeholder-title">
+          <i data-lucide="workflow"></i>
+          نمودار شماتیک: چرخه زیستی محتوای آموزشی دبیر ریاضی در گیت‌هاب
+        </span>
+        <span class="badge">فرآیند ۴ مرحله‌ای</span>
+      </div>
+      <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: var(--space-md); padding: var(--space-md) 0; text-align: center;">
+        <div style="background: var(--background); border: 1px solid var(--outline); padding: var(--space-sm) var(--space-md); border-radius: var(--rounded); min-width: 180px;">
+          <div style="font-weight: bold; margin-bottom: 4px;">۱. ایده و طراحی سرفصل</div>
+          <div style="font-size: 0.85rem; color: var(--on-surface-variant);">تدوین در قالب Markdown و LaTeX</div>
+        </div>
+        <i data-lucide="arrow-left" style="transform: rotate(180deg);"></i>
+        <div style="background: var(--background); border: 1px solid var(--outline); padding: var(--space-sm) var(--space-md); border-radius: var(--rounded); min-width: 180px;">
+          <div style="font-weight: bold; margin-bottom: 4px;">۲. ساخت تعاملی و Vibe-Coding</div>
+          <div style="font-size: 0.85rem; color: var(--on-surface-variant);">تولید کاربرگ HTML و انیمیشن Manim</div>
+        </div>
+        <i data-lucide="arrow-left" style="transform: rotate(180deg);"></i>
+        <div style="background: var(--background); border: 1px solid var(--outline); padding: var(--space-sm) var(--space-md); border-radius: var(--rounded); min-width: 180px;">
+          <div style="font-weight: bold; margin-bottom: 4px;">۳. میزبانی در GitHub Pages</div>
+          <div style="font-size: 0.85rem; color: var(--on-surface-variant);">انتشار با لینک اختصاصی رایگان</div>
+        </div>
+        <i data-lucide="arrow-left" style="transform: rotate(180deg);"></i>
+        <div style="background: var(--background); border: 1px solid var(--outline); padding: var(--space-sm) var(--space-md); border-radius: var(--rounded); min-width: 180px;">
+          <div style="font-weight: bold; margin-bottom: 4px;">۴. بازخورد کلاسی و بهبود</div>
+          <div style="font-size: 0.85rem; color: var(--on-surface-variant);">ثبت Issues و مشارکت با همکاران</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 1: INTERACTIVE WORKSHEETS & GITHUB PAGES -->
+  <section id="section-1" class="layer">
+    <div class="section-header">
+      <div>
+        <span class="section-number">بخش اول</span>
+        <h2>کاربرگ‌های تعاملی ریاضی با GitHub Pages و رویکرد Vibe-Coding</h2>
+      </div>
+      <span class="badge badge-dark">میزبانی رایگان وب</span>
+    </div>
+
+    <p>
+      سرویس <strong>GitHub Pages</strong> این امکان را فراهم می‌کند که هر مخزن گیت‌هاب ظرف چند ثانیه به یک وب‌سایت کامپایل‌شده تبدیل شود. در گذشته، ایجاد یک شبیه‌ساز نمودار یا کاربرگ تعاملی نیازمند ماه‌ها یادگیری عمیق زبان JavaScript و فریم‌ورک‌های وب بود. اما امروزه با ظهور پدیده <strong>وایب-کدینگ (Vibe-Coding)</strong>، دبیر ریاضی می‌تواند شهود آموزشی خود را به صورت توضیحات فارسی یا انگلیسی در مدل‌های هوش مصنوعی (مانند Gemini یا Claude) بنویسد؛ کد کامل و زیبای HTML/CSS/JS درجا آماده می‌شود و دبیر فقط آن را در شاخه <code dir="ltr">main</code> گیت‌هاب قرار می‌دهد!
+    </p>
+
+    <p>
+      همان‌گونه که <em>شین پیج (Shane Page)</em> در راهنمای آموزشی خود برای معلمان تاکید کرده است، ساخت کاربرگ‌های تعاملی ریاضی، درک دانش‌آموز از اثر پارامترها بر نمودارها را از حالت حفظ‌کردن فرمول به تجربه مستقیم چشمی تبدیل می‌کند.
+    </p>
+
+    <!-- INTERACTIVE DEMO: QUADRATIC FUNCTION EXPLORER -->
+    <div class="layer-nested" style="margin-top: var(--space-md);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:var(--space-md); border-bottom:var(--rule); padding-bottom:var(--space-xs);">
+        <h3 style="margin:0;">
+          <i data-lucide="sliders" style="vertical-align:middle;"></i>
+          کاربرگ زنده تعاملی: کاوشگر تابع درجه دوم <span id="formula-katex"></span>
+        </h3>
+        <span class="badge">شبیه‌ساز مستقیم GitHub Pages</span>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Controls Column -->
+        <div>
+          <p style="font-size:0.95rem; color:var(--on-surface-variant);">
+            ضرایب زیر را با اسلایدر تغییر دهید تا تاثیر لحظه‌ای آن بر دهانه، راس سهمی و نقاط برخورد با محورها را مشاهده نمایید:
+          </p>
+
+          <div class="form-group">
+            <label class="form-label" for="slider-a">ضریب <bdi dir="ltr">a</bdi> (جهت و تقعر دهانه سهمی):</label>
+            <div class="slider-container">
+              <input type="range" id="slider-a" min="-4" max="4" step="0.2" value="1" oninput="updateQuadratic()">
+              <span id="val-a" class="slider-val">1.0</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="slider-b">ضریب <bdi dir="ltr">b</bdi> (جابجایی افقی و شیب در مبدا):</label>
+            <div class="slider-container">
+              <input type="range" id="slider-b" min="-6" max="6" step="0.5" value="-2" oninput="updateQuadratic()">
+              <span id="val-b" class="slider-val">-2.0</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="slider-c">ضریب <bdi dir="ltr">c</bdi> (عرض از مبدا / تقاطع با محور <bdi dir="ltr">y</bdi>):</label>
+            <div class="slider-container">
+              <input type="range" id="slider-c" min="-6" max="6" step="0.5" value="-3" oninput="updateQuadratic()">
+              <span id="val-c" class="slider-val">-3.0</span>
+            </div>
+          </div>
+
+          <!-- Presets for fast classroom demonstrations -->
+          <div style="margin-top: var(--space-md);">
+            <span style="font-weight:600; font-size:0.9rem; display:block; margin-bottom:var(--space-2xs);">حالت‌های پیش‌فرض تدریس کلاسی:</span>
+            <div style="display:flex; gap:var(--space-xs); flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="setPreset(1, -2, -3)">دو ریشه متمایز ($\Delta > 0$)</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="setPreset(1, -4, 4)">ریشه مضاعف ($\Delta = 0$)</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="setPreset(1, 1, 2)">بدون ریشه حقیقی ($\Delta < 0$)</button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="setPreset(-1, 0, 4)">دهانه رو به پایین ($a < 0$)</button>
+            </div>
+          </div>
+
+          <!-- Mathematical Analysis readout -->
+          <div style="margin-top: var(--space-md); padding: var(--space-sm); background: var(--surface-container); border: var(--rule); border-radius: var(--rounded);">
+            <div id="math-analysis-delta" style="margin-bottom: var(--space-2xs); font-weight: bold;"></div>
+            <div id="math-analysis-vertex" style="margin-bottom: var(--space-2xs); font-size: 0.95rem;"></div>
+            <div id="math-analysis-roots" style="font-size: 0.95rem;"></div>
+          </div>
+        </div>
+
+        <!-- Canvas Graph Display Column -->
+        <div>
+          <div class="canvas-wrap">
+            <canvas id="quad-canvas" width="500" height="320" aria-label="نمودار تعاملی سهمی درجه دوم"></canvas>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--on-surface-variant); margin-top: var(--space-xs); display:flex; justify-content:space-between;">
+            <span>مقیاس شبکه: هر خانه برابر ۱ واحد</span>
+            <span style="font-family: var(--font-label);">f(x) = ax² + bx + c</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE & REPO STRUCTURE PLACEHOLDER -->
+    <div class="placeholder-box">
+      <div class="placeholder-header">
+        <span class="placeholder-title">
+          <i data-lucide="code"></i>
+          نمونه کد الگو: فایل <bdi dir="ltr">index.html</bdi> برای انتشار در GitHub Pages
+        </span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="copySnippet('code-ghpages', this)">
+          <i data-lucide="copy"></i>
+          کپی کد
+        </button>
+      </div>
+      <pre id="code-ghpages"><code class="language-html">&lt;!-- ساختار یک‌فایلی استاندارد کاربرگ تعاملی در مخزن GitHub Pages --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="fa" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;کاربرگ تعاملی ریاضی دبیرستان&lt;/title&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.18.2/dist/katex.min.css"&gt;
+  &lt;style&gt;
+    body { font-family: Tahoma, sans-serif; padding: 20px; background: #fafafa; }
+    .card { background: #fff; padding: 20px; border: 1px solid #ddd; max-width: 600px; margin: auto; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="card"&gt;
+    &lt;h2&gt;بررسی شهودی سهمی&lt;/h2&gt;
+    &lt;canvas id="plot" width="500" height="300"&gt;&lt;/canvas&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      <div style="margin-top: var(--space-sm); font-size: 0.85rem; color: var(--on-surface-variant);">
+        نکته استقرار: کافی است این فایل را با نام <code dir="ltr">index.html</code> در مخزن خود بارگذاری کنید و در تنظیمات مخزن، بخش <strong>Pages</strong> را روی شاخه <code dir="ltr">main / root</code> فعال کنید.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: MATH ANIMATIONS WITH MANIM -->
+  <section id="section-2" class="layer">
+    <div class="section-header">
+      <div>
+        <span class="section-number">بخش دوم</span>
+        <h2>انیمیشن‌های ریاضی شگفت‌انگیز با موتور Manim و مخزن teach-math-with-manim</h2>
+      </div>
+      <span class="badge badge-dark">تکنولوژی ۳Blue1Brown</span>
+    </div>
+
+    <p>
+      هر دبیر ریاضی که تا به حال ویدیوهای کانال جهانی <strong>3Blue1Brown</strong> را تماشا کرده باشد، مجذوب روانی، دقت برداری و انتقال عمیق شهود هندسی و جبری آن شده است. این ویدیوها با موتور پایتونی به نام <strong>Manim (Mathematical Animation Engine)</strong> ساخته می‌شوند که توسط گرانت ساندرسون طراحی شده است.
+    </p>
+
+    <p>
+      شاید بپرسید: آیا یک معلم دبیرستان وقت دارد پایتون پیشرفته یاد بگیرد؟ خوشبختانه پاسخ منفی است! مخزن متن‌باز و ارزشمند <strong><bdi dir="ltr">Scorpio69t/teach-math-with-manim</bdi></strong> دقیقاً برای معلمان ریاضی سراسر جهان گردآوری شده است. این مخزن حاوی صدها اسکریپت آماده، موضوعی و تفکیک‌شده برای سرفصل‌های دبیرستان (مشتق، انتگرال، بردارها، قضیه فیثاغورس، ماتریس‌ها و تبدیلات هندسی) است که فقط با تغییر چند عدد آماده رندر می‌شوند.
+    </p>
+
+    <!-- INTERACTIVE ANIMATION SIMULATOR -->
+    <div class="layer-nested">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:var(--space-md); border-bottom:var(--rule); padding-bottom:var(--space-xs);">
+        <h3 style="margin:0;">
+          <i data-lucide="play-circle" style="vertical-align:middle;"></i>
+          شبیه‌ساز پخش زنده انیمیشن Manim در مرورگر
+        </h3>
+        <span class="badge">پویانمایی مفهومی برداری</span>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Scene Selector & Description -->
+        <div>
+          <div class="form-group">
+            <label class="form-label" for="manim-scene-select">انتخاب صحنه آموزشی از مخزن <bdi dir="ltr">teach-math-with-manim</bdi>:</label>
+            <select id="manim-scene-select" class="form-select" onchange="changeManimScene()">
+              <option value="pythagoras">۱. اثبات هندسی قضیه فیثاغورس (Pythagorean Theorem)</option>
+              <option value="derivative">۲. شهود مشتق: تقرب خط قاطع به خط مماس (h → 0)</option>
+              <option value="riemann">۳. مفهوم انتگرال ریمان: افزایش مستطیل‌های تقریب مساحت</option>
+            </select>
+          </div>
+
+          <div id="scene-desc-box" style="padding: var(--space-md); background: var(--surface-container); border: var(--rule); border-radius: var(--rounded); margin-bottom: var(--space-md);">
+            <div id="scene-title" style="font-weight: bold; margin-bottom: 4px;"></div>
+            <div id="scene-explanation" style="font-size: 0.95rem; color: var(--on-surface);"></div>
+          </div>
+
+          <!-- Animation Playback Controls -->
+          <div style="display:flex; gap:var(--space-sm); align-items:center; flex-wrap:wrap;">
+            <button type="button" id="btn-toggle-play" class="btn" onclick="toggleManimPlay()">
+              <i data-lucide="play" id="play-icon"></i>
+              <span id="play-btn-text">شروع پویانمایی</span>
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="resetManimScene()">
+              <i data-lucide="rotate-ccw"></i>
+              بازنشانی فریم
+            </button>
+            <div style="flex-grow:1; display:flex; align-items:center; gap:var(--space-xs);">
+              <label for="manim-progress" style="font-size:0.85rem; font-family:var(--font-label);">فریم:</label>
+              <input type="range" id="manim-progress" min="0" max="100" value="0" style="flex-grow:1;" oninput="onProgressSlider(this.value)">
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas Visualizer Screen -->
+        <div>
+          <div class="canvas-wrap" style="background: var(--surface-dark); border-color: var(--outline-strong);">
+            <canvas id="manim-canvas" width="500" height="320" aria-label="بوم نمایش انیمیشن مَنیم"></canvas>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--on-surface-variant); margin-top: var(--space-xs); display:flex; justify-content:space-between;">
+            <span style="font-family: var(--font-label); color: var(--outline);">Render Mode: 60FPS Vector Canvas</span>
+            <span id="scene-math-label" style="font-weight: bold;"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE PLACEHOLDER FOR PYTHON MANIM -->
+    <div class="placeholder-box">
+      <div class="placeholder-header">
+        <span class="placeholder-title">
+          <i data-lucide="file-code-2"></i>
+          کد آماده پایتون از مخزن <bdi dir="ltr">Scorpio69t/teach-math-with-manim</bdi>
+        </span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="copySnippet('code-manim-py', this)">
+          <i data-lucide="copy"></i>
+          کپی کد پایتون
+        </button>
+      </div>
+      <pre id="code-manim-py"><code class="language-python"># برگرفته از مخزن Scorpio69t/teach-math-with-manim
+# صحنه پویانمایی مفهوم مشتق و خط مماس برای دبیرستان
+from manim import *
+
+class TangentLineDerivative(Scene):
+    def construct(self):
+        # ۱. ساخت محورهای مختصات ریاضی
+        axes = Axes(x_range=[-1, 5, 1], y_range=[-1, 9, 2], x_length=7, y_length=5)
+        curve = axes.plot(lambda x: 0.5 * x**2, color=BLUE)
+        curve_label = MathTex("f(x) = \\frac{1}{2}x^2").next_to(curve, UP)
+
+        self.play(Create(axes), Create(curve), Write(curve_label))
+        self.wait(1)
+
+        # ۲. متغیر نقطه ثابت و نقطه متحرک (h -> 0)
+        t = ValueTracker(2.5) # مقدار اولیه فاصله h
+        x0 = 1.5              # نقطه تماس
+
+        dot_fixed = Dot(axes.c2p(x0, 0.5 * x0**2), color=YELLOW)
+        dot_moving = always_redraw(lambda: Dot(axes.c2p(x0 + t.get_value(), 0.5 * (x0 + t.get_value())**2), color=RED))
+        secant_line = always_redraw(lambda: axes.get_secant_slope_group(
+            x = x0, dx = t.get_value(), func = lambda x: 0.5 * x**2,
+            dx_line_color=GREEN, dy_line_color=ORANGE, secant_line_color=YELLOW
+        ))
+
+        self.play(FadeIn(dot_fixed), FadeIn(dot_moving), Create(secant_line))
+        # ۳. پویانمایی میل کردن h به سمت صفر برای تشکیل خط مماس
+        self.play(t.animate.set_value(0.01), run_time=4, rate_func=smooth)
+        self.wait(2)</code></pre>
+      <div style="margin-top: var(--space-sm); font-size: 0.85rem; color: var(--on-surface-variant);">
+        راهنمای اجرای دبیر: این کد را مستقیماً در Google Colab یا یک نوت‌بوک Jupyter کپی کنید؛ ویدیو با کیفیت <bdi dir="ltr">1080p</bdi> بدون نیاز به نصب هیچ نرم‌افزار اضافی تولید می‌شود.
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: PROFESSIONAL LATEX TEMPLATES -->
+  <section id="section-3" class="layer">
+    <div class="section-header">
+      <div>
+        <span class="section-number">بخش سوم</span>
+        <h2>قالب‌های حرفه‌ای LaTeX برای آزمون‌ها و کاربرگ‌ها (مخزن worksheet-generator)</h2>
+      </div>
+      <span class="badge badge-dark">چاپ با استانداردهای رسمی</span>
+    </div>
+
+    <p>
+      هر معلم ریاضی تجربه تلخ کار با نرم‌افزار مایکروسافت ورد (Word) را چشیده است: با اضافه کردن یک خط یا یک فرمول کسری، تمام چیدمان صفحه، شماره سوالات و شکل‌های هندسی به طرز غیرقابل کنترلی به هم می‌ریزند! راه‌حل علمی و بین‌المللی این معضل، سیستم حروف‌چینی <strong>LaTeX</strong> (به ویژه بسته پرتوان <em>XePersian</em> برای زبان فارسی) است.
+    </p>
+
+    <p>
+      مخزن گیت‌هاب <strong><bdi dir="ltr">KelvinSHWong/worksheet-generator</bdi></strong> نمونه‌ای درخشان از کاربرد گیت‌هاب در تولید انبوه کاربرگ‌ها و نمونه‌سوالات امتحانی تصادفی است. با استفاده از قالب‌های آماده این مخزن، معلمان می‌توانند برای هر دانش‌آموز کاربرگی با داده‌های عددی متفاوت اما سطح دشواری یکسان و همراه با کلید پاسخ تشریحی تولید کنند!
+    </p>
+
+    <!-- LIVE HIGH SCHOOL EXAM BUILDER -->
+    <div class="layer-nested">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:var(--space-md); border-bottom:var(--rule); padding-bottom:var(--space-xs);">
+        <h3 style="margin:0;">
+          <i data-lucide="file-check" style="vertical-align:middle;"></i>
+          آزمون‌ساز تعاملی دبیرستان با خروجی استاندارد
+        </h3>
+        <div style="display:flex; gap:var(--space-xs);">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="window.print()">
+            <i data-lucide="printer"></i>
+            چاپ / خروجی PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="grid-2col" style="margin-bottom: var(--space-md);">
+        <!-- Form Controls -->
+        <div>
+          <div class="form-group">
+            <label class="form-label" for="exam-school">نام دبیرستان / آموزشگاه:</label>
+            <input type="text" id="exam-school" class="form-input" value="دبیرستان استعدادهای درخشان علامه حلی" oninput="renderExamPaper()">
+          </div>
+
+          <div class="grid-2col" style="gap:var(--space-sm);">
+            <div class="form-group">
+              <label class="form-label" for="exam-subject">عنوان درس و رشته:</label>
+              <select id="exam-subject" class="form-select" onchange="renderExamPaper()">
+                <option value="حسابان ۱ - پایه یازدهم ریاضی">حسابان ۱ (پایه یازدهم ریاضی)</option>
+                <option value="ریاضی ۳ - پایه دوازدهم تجربی">ریاضی ۳ (پایه دوازدهم تجربی)</option>
+                <option value="هندسه ۲ - پایه یازدهم ریاضی">هندسه ۲ (پایه یازدهم ریاضی)</option>
+                <option value="آمار و احتمال - پایه یازدهم ریاضی">آمار و احتمال (یازدهم ریاضی)</option>
+                <option value="ریاضی و آمار ۳ - پایه دوازدهم انسانی">ریاضی و آمار ۳ (دوازدهم انسانی)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="exam-term">نوبت امتحانی:</label>
+              <select id="exam-term" class="form-select" onchange="renderExamPaper()">
+                <option value="آزمون پایانی نوبت اول (دی‌ماه)">آزمون پایانی نوبت اول (دی‌ماه)</option>
+                <option value="آزمون مستمر میان‌ترم">آزمون مستمر میان‌ترم</option>
+                <option value="آزمون هماهنگ نوبت دوم (خرداد)">آزمون هماهنگ نوبت دوم (خرداد)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2col" style="gap:var(--space-sm);">
+            <div class="form-group">
+              <label class="form-label" for="exam-teacher">نام دبیر طراح:</label>
+              <input type="text" id="exam-teacher" class="form-input" value="استاد میرزایی" oninput="renderExamPaper()">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="exam-duration">زمان آزمون (دقیقه):</label>
+              <input type="text" id="exam-duration" class="form-input" value="۸۰ دقیقه" oninput="renderExamPaper()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Guidance Box -->
+        <div style="background:var(--surface-container); padding:var(--space-md); border-radius:var(--rounded); border:var(--rule); display:flex; flex-direction:column; justify-content:center;">
+          <h4 style="margin-top:0;">
+            <i data-lucide="info" style="vertical-align:middle;"></i>
+            مزیت فرمول‌بندی LaTeX در مخزن
+          </h4>
+          <p style="font-size:0.9rem; margin-bottom:var(--space-xs);">
+            این سربرگ و سوالات با موتور حروف‌چینی KaTeX مستقیماً رندر می‌شوند. در گیت‌هاب، فایل‌های <code dir="ltr">.tex</code> به دلیل متنی بودن (Plain Text)، امکان مقایسه دو نسخه از سوالات (Diff View) را به راحتی فراهم می‌کنند تا ببینید کدام عدد یا گزینه در نگارش جدید تصحیح شده است.
+          </p>
+        </div>
+      </div>
+
+      <!-- PREVIEW OF EXAM SHEET -->
+      <div class="exam-paper" id="exam-preview-container">
+        <!-- Header Table Generated by JS -->
+        <div id="exam-live-header"></div>
+
+        <!-- Questions List -->
+        <div id="exam-live-questions">
+          <!-- Question 1 -->
+          <div class="exam-question-item">
+            <div class="question-num">۱</div>
+            <div class="question-text">
+              معادله مثلثاتی <span class="katex-render" data-expr="2\sin^2(x) - 3\sin(x) + 1 = 0"></span> را در بازه <span class="katex-render" data-expr="[0, 2\pi]"></span> به طور دقیق حل نموده و مجموع جواب‌ها را بیابید.
+            </div>
+            <div class="question-score">۱.۵ نمره</div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="exam-question-item">
+            <div class="question-num">۲</div>
+            <div class="question-text">
+              حد مقابل را در صورت وجود محاسبه نمایید:
+              <div style="margin: var(--space-xs) 0;" class="katex-render" data-expr="\lim_{x \to 2} \frac{\sqrt{x+2} - 2}{x^3 - 8}"></div>
+            </div>
+            <div class="question-score">۱.۵ نمره</div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="exam-question-item" style="border-bottom:none;">
+            <div class="question-num">۳</div>
+            <div class="question-text">
+              تابع <span class="katex-render" data-expr="f(x) = x^3 - 3x + 2"></span> مفروض است:
+              <br>
+              الف) نقاط بحرانی و اکسترمم‌های نسبی تابع را بیابید.
+              <br>
+              ب) معادله خط مماس بر منحنی در نقطه به طول <span class="katex-render" data-expr="x = 2"></span> را بنویسید.
+            </div>
+            <div class="question-score">۲.۰ نمره</div>
+          </div>
+        </div>
+
+        <!-- Footer note -->
+        <div style="margin-top:var(--space-md); border-top:1px solid var(--outline-strong); padding-top:var(--space-xs); display:flex; justify-content:space-between; font-size:0.85rem;">
+          <span>موفقیت شما آرزوی ماست | گروه ریاضی دبیرستان</span>
+          <span>جمع بارم صفحه: ۵ نمره</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE PLACEHOLDER FOR LATEX TEMPLATE -->
+    <div class="placeholder-box">
+      <div class="placeholder-header">
+        <span class="placeholder-title">
+          <i data-lucide="file-text"></i>
+          الگوی کامل کد LaTeX (XePersian) از مخزن <bdi dir="ltr">worksheet-generator</bdi>
+        </span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="copySnippet('code-latex-sample', this)">
+          <i data-lucide="copy"></i>
+          کپی کد TeX
+        </button>
+      </div>
+      <pre id="code-latex-sample"><code class="language-latex">% قالب رسمی برگه آزمون دبیرستان با بسته زی‌پرشین
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{tikz}
+\usepackage{xepersian}
+\settextfont{B Nazanin}
+
+\begin{document}
+\noindent
+\begin{tabular}{|p{4cm}|c|p{4cm}|}
+\hline
+نام و نام‌خانوادگی: & آزمون هماهنگ حسابان ۱ & تاریخ: دی‌ماه ۱۴۰۵ \\
+پایه: یازدهم ریاضی & طراح: دبیران گروه ریاضی & مدت زمان: ۸۰ دقیقه \\
+\hline
+\end{tabular}
+
+\vspace{0.5cm}
+\begin{enumerate}
+  \item معادله مثلثاتی $2\sin^2(x) - 3\sin(x) + 1 = 0$ را حل کنید. \hfill (۱.۵ نمره)
+  \item حد تابع $\lim_{x \to 2} \frac{\sqrt{x+2}-2}{x^3-8}$ را محاسبه نمایید. \hfill (۱.۵ نمره)
+\end{enumerate}
+\end{document}</code></pre>
+    </div>
+  </section>
+
+  <!-- SECTION 4: CURATED MATH REPOSITORIES -->
+  <section id="section-4" class="layer">
+    <div class="section-header">
+      <div>
+        <span class="section-number">بخش چهارم</span>
+        <h2>مخازن منتخب منابع ریاضی: گنجینه عظیم مخزن awesome-math</h2>
+      </div>
+      <span class="badge badge-dark">بزرگترین دایرکتوری رایگان ریاضی</span>
+    </div>
+
+    <p>
+      در جامعه گیت‌هاب، اصطلاح <strong>Awesome Lists</strong> به مخازن گلچین‌شده و پالایش‌شده‌ای گفته می‌شود که توسط پیشگامان هر علم مدیریت می‌شوند. مخزن مشهور <strong><bdi dir="ltr">rossant/awesome-math</bdi></strong> یکی از برجسته‌ترین گنجینه‌های رایگان در تاریخ اینترنت است که هزاران منبع ناب، کتاب درسی آزاد، پلتفرم‌های تعاملی، نرم‌افزارهای محاسباتی نمادین و منابع المپیاد ریاضی را در یکجا گرد آورده است.
+    </p>
+
+    <!-- INTERACTIVE CATALOG & SEARCH FILTER -->
+    <div class="layer-nested">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:var(--space-md); border-bottom:var(--rule); padding-bottom:var(--space-xs);">
+        <h3 style="margin:0;">
+          <i data-lucide="compass" style="vertical-align:middle;"></i>
+          کاوشگر موضوعی منابع مخزن awesome-math برای دبیران
+        </h3>
+        <span id="catalog-count-badge" class="badge">نمایش ۶ منبع برگزیده</span>
+      </div>
+
+      <!-- Filter Controls -->
+      <div class="grid-2col" style="margin-bottom:var(--space-md);">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label" for="catalog-search">جستجوی موضوعی در منابع:</label>
+          <input type="text" id="catalog-search" class="form-input" placeholder="مثال: حسابان، هندسه، جبر، SymPy، آمار..." oninput="filterCatalog()">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label" for="catalog-category">دسته‌بندی موضوعی:</label>
+          <select id="catalog-category" class="form-select" onchange="filterCatalog()">
+            <option value="all">همه شاخه‌های ریاضیات</option>
+            <option value="calculus">حسابان، حد و مشتق (Calculus)</option>
+            <option value="geometry">هندسه و مثلثات (Geometry)</option>
+            <option value="algebra">جبر خطی، ماتریس و ترکیبیات (Algebra)</option>
+            <option value="software">نرم‌افزارها و ابزارهای تدریس (Software)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Resource Grid -->
+      <div class="grid-cards" id="catalog-grid">
+        <!-- Resource cards rendered by JavaScript -->
+      </div>
+    </div>
+
+    <!-- REPO STRUCTURE PLACEHOLDER -->
+    <div class="placeholder-box">
+      <div class="placeholder-header">
+        <span class="placeholder-title">
+          <i data-lucide="folder-tree"></i>
+          نمای ساختار دسته‌بندی موضوعی مخزن <bdi dir="ltr">awesome-math</bdi> در گیت‌هاب
+        </span>
+        <span class="badge">Directory Taxonomy</span>
+      </div>
+      <div style="background:var(--background); padding:var(--space-md); border-radius:var(--rounded); font-family:var(--font-label); font-size:0.9rem; line-height:1.7;">
+        <div>📁 <strong style="color:var(--on-surface-dark);">awesome-math/</strong></div>
+        <div style="padding-inline-start: 1.5rem;">├── 📄 README.md (فهرست جامع بیش از ۵۰۰ منبع آموزشی)</div>
+        <div style="padding-inline-start: 1.5rem;">├── 📂 <span style="font-weight:600;">calculus-and-analysis/</span> (کتاب‌های حسابان، هندسه دیفرانسیل، آنالیز ریاضی)</div>
+        <div style="padding-inline-start: 1.5rem;">├── 📂 <span style="font-weight:600;">algebra-and-number-theory/</span> (جبر خطی، نظریه گروه‌ها، نظریه اعداد کنکور)</div>
+        <div style="padding-inline-start: 1.5rem;">├── 📂 <span style="font-weight:600;">geometry-and-topology/</span> (هندسه مسطحه، تحلیلی، تبدیلات و توپولوژی)</div>
+        <div style="padding-inline-start: 1.5rem;">├── 📂 <span style="font-weight:600;">probability-and-statistics/</span> (آمار توصیفی، احتمال شرطی، متغیرهای تصادفی)</div>
+        <div style="padding-inline-start: 1.5rem;">└── 📂 <span style="font-weight:600;">open-source-software/</span> (معرفی GeoGebra، SymPy، SageMath و Manim)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: GITHUB AS A DIGITAL MATH NOTEBOOK -->
+  <section id="section-5" class="layer">
+    <div class="section-header">
+      <div>
+        <span class="section-number">بخش پنجم</span>
+        <h2>گیت‌هاب به‌عنوان دفترچه یادداشت دیجیتال و تعامل مشارکتی</h2>
+      </div>
+      <span class="badge badge-dark">مارک‌داون + همفکری همکاران</span>
+    </div>
+
+    <p>
+      یکی از جذاب‌ترین کارکردهای گیت‌هاب برای معلمان، استفاده از فایل‌های <strong>مارک‌داون (Markdown با پسوند <code dir="ltr">.md</code>)</strong> است. مارک‌داون به شما اجازه می‌دهد متنی ساده و تمیز بنویسید که در عرض چند ثانیه به یک سند زیبا با جدول‌ها، چک‌لیست‌ها و فرمول‌های ریاضی رندرشده با لاتک (<bdi dir="ltr">$\LaTeX$</bdi>) تبدیل می‌شود.
+    </p>
+
+    <p>
+      علاوه بر این، با ابزار <strong>GitHub Issues</strong> و <strong>Pull Requests</strong>، معلمان می‌توانند اشکالات تایپی یا روش‌های حل مختلف یک مسئله را مورد بحث قرار دهند. همچنین با نرم‌افزارهای رایگانی مانند <em>Obsidian</em> یا <em>VS Code</em>، تمام یادداشت‌ها و طرح درس‌های معلم به شکل خودکار با مخزن شخصی در گیت‌هاب همگام‌سازی (Sync) می‌شوند.
+    </p>
+
+    <!-- INTERACTIVE MARKDOWN & MATH LIVE WORKSPACE -->
+    <div class="layer-nested">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:var(--space-md); border-bottom:var(--rule); padding-bottom:var(--space-xs);">
+        <h3 style="margin:0;">
+          <i data-lucide="edit-3" style="vertical-align:middle;"></i>
+          دفترچه یادداشت زنده ریاضی (ویرایشگر مارک‌داون و فرمول)
+        </h3>
+        <div style="display:flex; gap:var(--space-xs); flex-wrap:wrap;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="loadNoteTemplate('lesson_plan')">الگوی طرح درس</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="loadNoteTemplate('step_solution')">حل گام‌به‌گام مسئله</button>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="loadNoteTemplate('correction_checklist')">چک‌لیست تصحیح اوراق</button>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Input Markdown Area -->
+        <div>
+          <label class="form-label" for="md-editor">ویرایشگر مارک‌داون و فرمول‌های ریاضی (قابل تایپ و ویرایش):</label>
+          <textarea id="md-editor" class="form-textarea" style="height: 260px; font-family: var(--font-label); font-size: 0.9rem; line-height: 1.6;" oninput="renderMarkdownLive()" placeholder="یادداشت ریاضی خود را بنویسید..."></textarea>
+          <div style="margin-top:var(--space-xs); font-size:0.8rem; color:var(--on-surface-variant);">
+            راهنمای سریع: برای فرمول‌های درون‌متنی از <code>$x^2$</code> و برای فرمول‌های مستقل از <code>$$...$$</code> استفاده کنید.
+          </div>
+        </div>
+
+        <!-- Rendered Output Area -->
+        <div>
+          <label class="form-label">پیش‌نمایش رندر زنده مارک‌داون در گیت‌هاب:</label>
+          <div id="md-preview-pane" style="height: 260px; overflow-y: auto; background: var(--background); border: 1px solid var(--outline); padding: var(--space-md); border-radius: var(--rounded);">
+            <!-- Rendered by JavaScript -->
+          </div>
+          <div style="margin-top:var(--space-xs); font-size:0.8rem; color:var(--on-surface-variant); display:flex; justify-content:space-between;">
+            <span>موتور رندر: KaTeX + Markdown Parser</span>
+            <span style="font-family:var(--font-label);">auto-synced</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER FOR COLLABORATION WORKFLOW -->
+    <div class="placeholder-box">
+      <div class="placeholder-header">
+        <span class="placeholder-title">
+          <i data-lucide="git-pull-request"></i>
+          نمونه گفتگوی مشارکتی دبیران در GitHub Pull Request
+        </span>
+        <span class="badge">نمونه واقعی همکاری گروه ریاضی</span>
+      </div>
+      <div style="background:var(--background); border:var(--rule); padding:var(--space-md); border-radius:var(--rounded);">
+        <div style="display:flex; gap:var(--space-sm); align-items:flex-start; margin-bottom:var(--space-sm);">
+          <div style="width:36px; height:36px; background:var(--primary); color:var(--on-primary); border-radius:var(--rounded-full); display:flex; align-items:center; justify-content:center; font-weight:bold;">م</div>
+          <div style="flex-grow:1; background:var(--surface-container); padding:var(--space-sm); border-radius:var(--rounded);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+              <strong>دبیر میرزایی (طراح سوال ۵):</strong>
+              <span style="font-size:0.8rem; color:var(--on-surface-variant); font-family:var(--font-label);">دیروز، ساعت ۱۸:۳۰</span>
+            </div>
+            <p style="margin:0; font-size:0.95rem;">
+              در سوال ۳ آزمون حسابان، اگر مقدار دامنه را به بازه <span class="katex-render" data-expr="[0, \pi]"></span> محدود نکنیم، دانش‌آموزان به بینهایت ریشه برخورد می‌کنند و در تصحیح با سلیقه‌های متفاوت روبرو می‌شویم. پیشنهاد می‌کنم بازه را اضافه کنیم.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:var(--space-sm); align-items:flex-start; margin-inline-start: var(--space-xl);">
+          <div style="width:36px; height:36px; background:var(--secondary); color:var(--on-primary); border-radius:var(--rounded-full); display:flex; align-items:center; justify-content:center; font-weight:bold;">ر</div>
+          <div style="flex-grow:1; background:var(--background); border:var(--rule); padding:var(--space-sm); border-radius:var(--rounded);">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+              <strong>سرگروه ریاضی منطقه (دبیر رضایی):</strong>
+              <span style="font-size:0.8rem; color:var(--on-surface-variant); font-family:var(--font-label);">دیروز، ساعت ۲۰:۱۵</span>
+            </div>
+            <p style="margin:0; font-size:0.95rem;">
+              کاملاً موافقم. تغییر را در شاخه <code dir="ltr">exam-january</code> اعمال و ادغام (Merge) کردم. نسخه نهایی در مخزن به‌روزرسانی شد.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONCLUSION & TIME SAVINGS CALCULATOR -->
+  <section id="conclusion" class="layer">
+    <div class="section-header">
+      <div>
+        <span class="section-number">نتیجه‌گیری کارگاه</span>
+        <h2>صرفه‌جویی چشمگیر در زمان و جهش کیفی در تدریس ریاضی</h2>
+      </div>
+      <span class="badge badge-dark">بهره‌وری آموزشی</span>
+    </div>
+
+    <p>
+      استفاده از گیت‌هاب در فرآیند تدریس دبیران ریاضی، صرفاً یک نوآوری تزئینی نیست؛ بلکه یک <strong>راهبرد زمان‌ساز</strong> است. معلمان ریاضی همواره بیشترین زمان را برای تایپ فرمول‌ها، تنظیم شکل‌ها، پاسخ به اشکالات تکراری و تصحیح اوراق امتحانی صرف می‌کنند. استفاده اصولی از گیت‌هاب این زمان هدررفته را به حداقل می‌رساند و انرژی معلم را برای «تعامل انسانی، آموزش مفهومی و هدایت فردی دانش‌آموزان» آزاد می‌سازد.
+    </p>
+
+    <!-- COMPARISON TABLE: TRADITIONAL VS GITHUB -->
+    <div style="overflow-x:auto; margin-bottom:var(--space-lg);">
+      <table style="width:100%; border-collapse:collapse; background:var(--background); border:var(--rule); font-size:0.95rem;">
+        <thead>
+          <tr style="background:var(--surface-container-high); border-bottom:var(--rule-strong);">
+            <th style="padding:var(--space-sm) var(--space-md); text-align:right;">محور فعالیت معلم ریاضی</th>
+            <th style="padding:var(--space-sm) var(--space-md); text-align:right;">روش سنتی (Word و پوشه‌های کامپیوتر)</th>
+            <th style="padding:var(--space-sm) var(--space-md); text-align:right;">روش نوین مبتنی بر گیت‌هاب</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:var(--rule);">
+            <td style="padding:var(--space-sm) var(--space-md); font-weight:bold;">مدیریت نسخه‌های آزمون</td>
+            <td style="padding:var(--space-sm) var(--space-md); color:var(--error);">فایل‌های تکراری و سردرگمی در آخرین ویرایش</td>
+            <td style="padding:var(--space-sm) var(--space-md); color:var(--positive);">تاریخچه شفاف با امکان بازگشت به هر ویرایش دلخواه</td>
+          </tr>
+          <tr style="border-bottom:var(--rule); background:var(--surface-card-subtle);">
+            <td style="padding:var(--space-sm) var(--space-md); font-weight:bold;">ارائه کاربرگ تعاملی</td>
+            <td style="padding:var(--space-sm) var(--space-md); color:var(--error);">فایل‌های ثابت کاغذی یا PDF بی‌روح</td>
+            <td style="padding:var(--space-sm) var(--space-md); color:var(--positive);">شبیه‌سازهای زنده آنلاین تحت وب با GitHub Pages</td>
+          </tr>
+          <tr style="border-bottom:var(--rule);">
+            <td style="padding:var(--space-sm) var(--space-md); font-weight:bold;">تصحیح و بهبود طرح درس</td>
+            <td style="padding:var(--space-sm) var(--space-md); color:var(--error);">جزیره‌ای و محصور در رایانه شخصی دبیر</td>
+            <td style="padding:var(--space-sm) var(--space-md); color:var(--positive);">همکاری سراسری دبیران با Pull Request و اشتراک الگوها</td>
+          </tr>
+          <tr>
+            <td style="padding:var(--space-sm) var(--space-md); font-weight:bold;">امنیت و پایداری محتوا</td>
+            <td style="padding:var(--space-sm) var(--space-md); color:var(--error);">خطر پاک‌شدن با خرابی هارد یا ویروس فلش‌مموری</td>
+            <td style="padding:var(--space-sm) var(--space-md); color:var(--positive);">ذخیره امن ابری تا ابد با دسترسی از هر دستگاه</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TEACHER TIME SAVINGS CALCULATOR -->
+    <div class="layer-nested">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:var(--space-md); border-bottom:var(--rule); padding-bottom:var(--space-xs);">
+        <h3 style="margin:0;">
+          <i data-lucide="calculator" style="vertical-align:middle;"></i>
+          ماشین‌حساب تخمین زمان صرفه‌جویی‌شده دبیر ریاضی در سال تحصیلی
+        </h3>
+        <span class="badge">برآورد بازدهی تدریس</span>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Inputs -->
+        <div>
+          <div class="form-group">
+            <label class="form-label" for="calc-students">مجموع تعداد دانش‌آموزان در تمام کلاس‌ها:</label>
+            <div class="slider-container">
+              <input type="range" id="calc-students" min="20" max="250" step="10" value="90" oninput="calculateSavings()">
+              <span id="calc-students-val" class="slider-val">90</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="calc-hours">ساعات تدریس هفتگی دبیر در مدرسه:</label>
+            <div class="slider-container">
+              <input type="range" id="calc-hours" min="6" max="36" step="2" value="24" oninput="calculateSavings()">
+              <span id="calc-hours-val" class="slider-val">24</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="calc-exams">تعداد آزمون‌ها و کاربرگ‌های برگزار شده در طول ترم:</label>
+            <div class="slider-container">
+              <input type="range" id="calc-exams" min="2" max="20" step="1" value="8" oninput="calculateSavings()">
+              <span id="calc-exams-val" class="slider-val">8</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculated Metrics -->
+        <div style="background:var(--background); border:var(--rule); padding:var(--space-md); border-radius:var(--rounded); display:flex; flex-direction:column; justify-content:space-around;">
+          <div style="border-bottom:var(--rule); padding-bottom:var(--space-xs);">
+            <div style="font-size:0.85rem; color:var(--on-surface-variant); font-family:var(--font-label); text-transform:uppercase;">زمان ذخیره شده در تایپ و صفحه‌بندی آزمون‌ها</div>
+            <div id="stat-typing-hours" style="font-size:1.8rem; font-weight:700; color:var(--on-surface-dark); font-family:var(--font-label);">۳۲ ساعت / ترم</div>
+          </div>
+
+          <div style="border-bottom:var(--rule); padding:var(--space-xs) 0;">
+            <div style="font-size:0.85rem; color:var(--on-surface-variant); font-family:var(--font-label); text-transform:uppercase;">زمان ذخیره شده با کاربرگ‌های خودکار و تعاملی</div>
+            <div id="stat-interactive-hours" style="font-size:1.8rem; font-weight:700; color:var(--positive); font-family:var(--font-label);">۴۵ ساعت / ترم</div>
+          </div>
+
+          <div style="padding-top:var(--space-xs);">
+            <div style="font-size:0.9rem; font-weight:600; color:var(--on-surface-dark);">کل زمان آزاد شده برای استراحت و بهبود کیفیت آموزش:</div>
+            <div id="stat-total-savings" style="font-size:2.2rem; font-weight:800; color:var(--on-surface-dark); font-family:var(--font-label);">۷۷ ساعت</div>
+            <div style="font-size:0.85rem; color:var(--on-surface-variant);">معادل بیش از ۳ هفته کاری تدریس یک دبیر تمام‌وقت!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESOURCES & USEFUL LINKS SECTION -->
+  <section id="resources" class="layer">
+    <div class="section-header">
+      <div>
+        <span class="section-number">بخش پایانی و مستندات</span>
+        <h2>منابع و لینکهای مفید</h2>
+      </div>
+      <span class="badge badge-dark">مخازن و پیوندهای مرجع</span>
+    </div>
+
+    <p>
+      تمام مخازن و لینک‌های معرفی شده در این کارگاه به همراه راهنمای فارسی و دکمه کپی فوری نشانی در اختیار شما قرار دارند. می‌توانید نشانی هر مخزن را تنها با یک کلیک کپی کرده و در نوار آدرس مرورگر خود یا در دستور <bdi dir="ltr">git clone</bdi> استفاده نمایید:
+    </p>
+
+    <div class="grid-cards">
+
+      <!-- Resource Card 1: awesome-math -->
+      <div class="layer-nested" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-xs);">
+            <span class="badge">دایرکتوری مرجع</span>
+            <span style="font-family:var(--font-label); font-size:0.8rem; color:var(--on-surface-variant);">GitHub Repository</span>
+          </div>
+          <h3 style="font-size:1.2rem; margin-bottom:var(--space-xs);">مخزن awesome-math</h3>
+          <p style="font-size:0.95rem; margin-bottom:var(--space-sm);">
+            فهرست دست‌چین شده از برترین کتاب‌ها، جزوات آزاد، مقالات و نرم‌افزارهای جامع ریاضی در تمام شاخه‌ها؛ مناسب دبیران برای یافتن مسئله‌های چالش‌برانگیز و کتب منبع.
+          </p>
+          <div style="margin-bottom:var(--space-sm);">
+            <code dir="ltr" style="display:block; word-break:break-all; padding:var(--space-xs); font-size:0.8rem;">https://github.com/rossant/awesome-math</code>
+          </div>
+        </div>
+        <div style="display:flex; gap:var(--space-xs);">
+          <button type="button" class="btn btn-secondary btn-sm" style="flex-grow:1;" data-url="https://github.com/rossant/awesome-math" onclick="copyResourceUrl(this)">
+            <i data-lucide="copy"></i>
+            کپی نشانی مخزن
+          </button>
+          <button type="button" class="btn btn-sm" onclick="toggleDetails('details-res-1')">
+            <i data-lucide="terminal"></i>
+            دستور کلون
+          </button>
+        </div>
+        <div id="details-res-1" style="display:none; margin-top:var(--space-sm); padding-top:var(--space-xs); border-top:var(--rule); font-size:0.85rem; font-family:var(--font-label);">
+          <code>git clone https://github.com/rossant/awesome-math.git</code>
+        </div>
+      </div>
+
+      <!-- Resource Card 2: teach-math-with-manim -->
+      <div class="layer-nested" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-xs);">
+            <span class="badge">پویانمایی پایتون</span>
+            <span style="font-family:var(--font-label); font-size:0.8rem; color:var(--on-surface-variant);">GitHub Repository</span>
+          </div>
+          <h3 style="font-size:1.2rem; margin-bottom:var(--space-xs);">مخزن teach-math-with-manim</h3>
+          <p style="font-size:0.95rem; margin-bottom:var(--space-sm);">
+            مجموعه اسکریپت‌های آماده Manim به زبان پایتون با هدف تدریس مفاهیم ریاضی دبیرستان، الگوبرداری شده از سبک ۳Blue1Brown برای تولید ویدیوهای خیره‌کننده کلاسی.
+          </p>
+          <div style="margin-bottom:var(--space-sm);">
+            <code dir="ltr" style="display:block; word-break:break-all; padding:var(--space-xs); font-size:0.8rem;">https://github.com/Scorpio69t/teach-math-with-manim</code>
+          </div>
+        </div>
+        <div style="display:flex; gap:var(--space-xs);">
+          <button type="button" class="btn btn-secondary btn-sm" style="flex-grow:1;" data-url="https://github.com/Scorpio69t/teach-math-with-manim" onclick="copyResourceUrl(this)">
+            <i data-lucide="copy"></i>
+            کپی نشانی مخزن
+          </button>
+          <button type="button" class="btn btn-sm" onclick="toggleDetails('details-res-2')">
+            <i data-lucide="terminal"></i>
+            دستور کلون
+          </button>
+        </div>
+        <div id="details-res-2" style="display:none; margin-top:var(--space-sm); padding-top:var(--space-xs); border-top:var(--rule); font-size:0.85rem; font-family:var(--font-label);">
+          <code>git clone https://github.com/Scorpio69t/teach-math-with-manim.git</code>
+        </div>
+      </div>
+
+      <!-- Resource Card 3: worksheet-generator -->
+      <div class="layer-nested" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-xs);">
+            <span class="badge">تولید خودکار آزمون</span>
+            <span style="font-family:var(--font-label); font-size:0.8rem; color:var(--on-surface-variant);">GitHub Repository</span>
+          </div>
+          <h3 style="font-size:1.2rem; margin-bottom:var(--space-xs);">مخزن worksheet-generator</h3>
+          <p style="font-size:0.95rem; margin-bottom:var(--space-sm);">
+            ابزار ساخت خودکار کاربرگ‌ها و سوالات امتحانی با فرمت استاندارد LaTeX و خروجی PDF شکیل؛ دارای قابلیت ایجاد سوالات با پارامترهای عددی تصادفی و برگه پاسخنامه.
+          </p>
+          <div style="margin-bottom:var(--space-sm);">
+            <code dir="ltr" style="display:block; word-break:break-all; padding:var(--space-xs); font-size:0.8rem;">https://github.com/KelvinSHWong/worksheet-generator</code>
+          </div>
+        </div>
+        <div style="display:flex; gap:var(--space-xs);">
+          <button type="button" class="btn btn-secondary btn-sm" style="flex-grow:1;" data-url="https://github.com/KelvinSHWong/worksheet-generator" onclick="copyResourceUrl(this)">
+            <i data-lucide="copy"></i>
+            کپی نشانی مخزن
+          </button>
+          <button type="button" class="btn btn-sm" onclick="toggleDetails('details-res-3')">
+            <i data-lucide="terminal"></i>
+            دستور کلون
+          </button>
+        </div>
+        <div id="details-res-3" style="display:none; margin-top:var(--space-sm); padding-top:var(--space-xs); border-top:var(--rule); font-size:0.85rem; font-family:var(--font-label);">
+          <code>git clone https://github.com/KelvinSHWong/worksheet-generator.git</code>
+        </div>
+      </div>
+
+      <!-- Resource Card 4: Shane Page LinkedIn Guide -->
+      <div class="layer-nested" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-xs);">
+            <span class="badge">تجربه معلمان</span>
+            <span style="font-family:var(--font-label); font-size:0.8rem; color:var(--on-surface-variant);">LinkedIn Article</span>
+          </div>
+          <h3 style="font-size:1.2rem; margin-bottom:var(--space-xs);">مقاله راهنمای شین پیج (Shane Page)</h3>
+          <p style="font-size:0.95rem; margin-bottom:var(--space-sm);">
+            راهنمای کاربردی برای معلمان مدارس: چگونه با کمترین زمان و با تکیه بر وب تعاملی، کاربرگ‌های زنده ریاضی برای دانش‌آموزان بسازیم و کلاس را متحول کنیم.
+          </p>
+          <div style="margin-bottom:var(--space-sm);">
+            <code dir="ltr" style="display:block; word-break:break-all; padding:var(--space-xs); font-size:0.8rem;">https://www.linkedin.com/posts/shane-page-721a9021_teachers-build-an-interactive-math-worksheet-activity-7416211226021642240-bZaT</code>
+          </div>
+        </div>
+        <div style="display:flex; gap:var(--space-xs);">
+          <button type="button" class="btn btn-secondary btn-sm" style="flex-grow:1;" data-url="https://www.linkedin.com/posts/shane-page-721a9021_teachers-build-an-interactive-math-worksheet-activity-7416211226021642240-bZaT" onclick="copyResourceUrl(this)">
+            <i data-lucide="copy"></i>
+            کپی نشانی مقاله
+          </button>
+        </div>
+      </div>
+
+      <!-- Resource Card 5: OnlineWebFonts B Nazanin -->
+      <div class="layer-nested" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-xs);">
+            <span class="badge">قلم استاندارد کتب درسی</span>
+            <span style="font-family:var(--font-label); font-size:0.8rem; color:var(--on-surface-variant);">Web Font CDN</span>
+          </div>
+          <h3 style="font-size:1.2rem; margin-bottom:var(--space-xs);">پایگاه فونت آنلاین: قلم B Nazanin</h3>
+          <p style="font-size:0.95rem; margin-bottom:var(--space-sm);">
+            منبع دریافت و بارگذاری فونت بی نازنین (قلم رسمی کتاب‌های درسی ریاضی آموزش و پرورش ایران) برای استفاده در صفحات وب و آزمون‌سازهای الکترونیکی.
+          </p>
+          <div style="margin-bottom:var(--space-sm);">
+            <code dir="ltr" style="display:block; word-break:break-all; padding:var(--space-xs); font-size:0.8rem;">https://www.onlinewebfonts.com/download/3671adca6f650c92b83f906e49656986</code>
+          </div>
+        </div>
+        <div style="display:flex; gap:var(--space-xs);">
+          <button type="button" class="btn btn-secondary btn-sm" style="flex-grow:1;" data-url="https://www.onlinewebfonts.com/download/3671adca6f650c92b83f906e49656986" onclick="copyResourceUrl(this)">
+            <i data-lucide="copy"></i>
+            کپی نشانی فونت
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WORKSHOP FOOTER -->
+  <footer style="border-top:var(--rule-strong); padding-top:var(--space-lg); margin-top:var(--space-xl); text-align:center; color:var(--on-surface-variant); font-size:0.95rem;">
+    <p>
+      کارگاه توسعه حرفه‌ای دبیران ریاضی دبیرستان | طراحی شده با اصول سامانه طراحی کاربُن (Carbon) | پاییز ۱۴۰۵
+    </p>
+    <div style="display:flex; justify-content:center; gap:var(--space-md); flex-wrap:wrap; font-family:var(--font-label); font-size:0.85rem;">
+      <span>GitHub for Math Teachers</span>
+      <span>•</span>
+      <span>Interactive STEM Pedagogy</span>
+      <span>•</span>
+      <span>Open Educational Resources (OER)</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- TOAST ALERT ELEMENT -->
+<div id="toast-notification">
+  <i data-lucide="check-circle" style="color:var(--tertiary);"></i>
+  <span id="toast-message">نشانی با موفقیت در حافظه کپی شد!</span>
+</div>
+
+<!-- API Shim for Gemini Notebook host state persistence -->
+<api-shim></api-shim>
+
+<!-- External Scripts: KaTeX and Lucide Icons -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.18.2/dist/katex.min.js"></script>
+<script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+
+<script>
+/* =========================================================================
+   PERSISTENT STATE MANAGEMENT & INITIALIZATION
+   ========================================================================= */
+let appState = {
+  quadA: 1.0,
+  quadB: -2.0,
+  quadC: -3.0,
+  manimScene: 'pythagoras',
+  manimProgress: 0,
+  catalogSearch: '',
+  catalogCategory: 'all',
+  bookmarkedResources: [],
+  calcStudents: 90,
+  calcHours: 24,
+  calcExams: 8,
+  examSchool: 'دبیرستان استعدادهای درخشان علامه حلی',
+  examSubject: 'حسابان ۱ - پایه یازدهم ریاضی',
+  examTerm: 'آزمون پایانی نوبت اول (دی‌ماه)',
+  examTeacher: 'استاد میرزایی',
+  examDuration: '۸۰ دقیقه',
+  mdContent: ''
+};
+
+// Preset catalog resources from awesome-math
+const awesomeCatalogData = [
+  {
+    id: 'res-calc-openstax',
+    title: 'کتاب‌های حسابان بازمتن (OpenStax Calculus)',
+    category: 'calculus',
+    desc: 'مجموعه ۳ جلدی کامل حسابان و دیفرانسیل همراه با هزاران تمرین طبقه‌بندی‌شده و کاربردی برای دوره دبیرستان.',
+    tags: ['حسابان', 'کتاب درسی', 'تمرین'],
+    level: 'دوازدهم و کنکور'
+  },
+  {
+    id: 'res-sympy',
+    title: 'کتابخانه محاسبات نمادین SymPy',
+    category: 'software',
+    desc: 'بسته پایتونی آزاد برای محاسبه حد، مشتق، انتگرال و فاکتورگیری جبری دقیق؛ عالی برای تصحیح خودکار پاسخ‌ها.',
+    tags: ['نرم‌افزار', 'محاسبات جبری', 'پایتون'],
+    level: 'همه پایه‌ها'
+  },
+  {
+    id: 'res-euclidean-geom',
+    title: 'هندسه تعاملی اقلیدسی (Interactive Euclid)',
+    category: 'geometry',
+    desc: 'بازسازی دیجیتال و پویا از اصول هندسه اقلیدس با شبیه‌سازی اثبات قضایای زاویه‌ها، تشابه و تجانس.',
+    tags: ['هندسه', 'اثبات پویا', 'تشابه'],
+    level: 'دهم و یازدهم'
+  },
+  {
+    id: 'res-linear-algebra',
+    title: 'ماتریس و جبر خطی شهودی (Immersive Linear Algebra)',
+    category: 'algebra',
+    desc: 'کتاب آنلاین و تعاملی جبر خطی با نمایش ۳بعدی دترمینان، ماتریس تبدیل و ضرب خارجی بردارها.',
+    tags: ['جبر خطی', 'ماتریس', 'سه بعدی'],
+    level: 'دوازدهم ریاضی'
+  },
+  {
+    id: 'res-geogebra-oer',
+    title: 'مخزن رسمی مدل‌های GeoGebra',
+    category: 'software',
+    desc: 'هزاران اپلت و مدل آماده جئوجبرا برای ترسیم مقاطع مخروطی، نمودار توابع مثلثاتی و بردارها.',
+    tags: ['جئوجبرا', 'شبیه‌سازی', 'ابزار تدریس'],
+    level: 'همه پایه‌ها'
+  },
+  {
+    id: 'res-prob-stats',
+    title: 'آمار و شبیه‌سازی احتمال تجربی (Seeing Theory)',
+    category: 'calculus',
+    desc: 'پروژه وب تجسمی برای درک احتمال شرطی، قضیه بیز و متغیرهای تصادفی با شبیه‌ساز پرتاب تاس و سکه.',
+    tags: ['آمار', 'احتمال شرطی', 'تجسمی'],
+    level: 'یازدهم و دوازدهم'
+  }
+];
+
+// Markdown Preset Templates
+const noteTemplates = {
+  lesson_plan: `# طرح درس جلسه: مشتق و شیب خط مماس
+## پایه دوازدهم ریاضی | درس حسابان ۲
+- **مدت جلسه:** ۹۰ دقیقه
+- **هدف آموزشی:** درک شهودی مفهوم مشتق به عنوان حد شیب خطوط قاطع ($h \\to 0$)
+
+### مراحل تدریس در کلاس:
+1. یادآوری شیب خط راست: $m = \\frac{y_2 - y_1}{x_2 - x_1}$
+2. نمایش انیمیشن Manim ساخته شده در کارگاه برای میل کردن $h \\to 0$
+3. فرمول اصلی مشتق در نقطه $x_0$:
+$$f'(x_0) = \\lim_{h \\to 0} \\frac{f(x_0 + h) - f(x_0)}{h}$$
+4. حل مثال کلاسی: محاسبه مشتق تابع $f(x) = x^2$ در نقطه $x = 3$`,
+
+  step_solution: `# حل تشریحی و گام‌به‌گام مسئله هندسه تحلیلی
+**مسئله:** معادله دایره‌ای را بنویسید که مرکز آن $O(2, -1)$ بوده و بر خط $3x - 4y + 5 = 0$ مماس باشد.
+
+### گام اول: محاسبه شعاع ($R$)
+شعاع دایره برابر فاصله مرکز از خط مماس است:
+$$R = \\frac{|a x_0 + b y_0 + c|}{\\sqrt{a^2 + b^2}}$$
+
+جایگذاری مختصات:
+$$R = \\frac{|3(2) - 4(-1) + 5|}{\\sqrt{3^2 + (-4)^2}} = \\frac{|6 + 4 + 5|}{5} = \\frac{15}{5} = 3$$
+
+### گام دوم: نوشتن معادله استاندارد دایره
+$$(x - h)^2 + (y - k)^2 = R^2 \\implies (x - 2)^2 + (y + 1)^2 = 9$$`,
+
+  correction_checklist: `# چک‌لیست تصحیح اوراق آزمون ریاضی دی‌ماه
+- [ ] بررسی درج واحد اندازه‌گیری در سوال هندسه
+- [ ] کنترل شرایط وجود جواب در معادلات گنگ و رادیکالی
+- [ ] بررسی علامت‌های منفی در ضرب ماتریس‌ها
+- [ ] ثبت نمرات در سامانه آموزشی سیدا تا تاریخ ۲۵ دی
+- [ ] بارگذاری کلید تشریحی در مخزن GitHub Pages برای دانش‌آموزان`
+};
+
+/* =========================================================================
+   INITIALIZATION & KONTROL
+   ========================================================================= */
+window.addEventListener('DOMContentLoaded', function() {
+  // Render Lucide icons
+  if (window.lucide && typeof lucide.createIcons === 'function') {
+    lucide.createIcons();
+  }
+
+  // Render static KaTeX math expressions
+  renderAllKaTeX();
+
+  // Initialize Quadratic Worksheet
+  updateQuadratic();
+
+  // Initialize Manim Animation Scene
+  initManim();
+
+  // Initialize Exam Preview
+  renderExamPaper();
+
+  // Initialize Catalog
+  filterCatalog();
+
+  // Initialize Note Editor
+  loadNoteTemplate('lesson_plan');
+
+  // Initialize Calculator
+  calculateSavings();
+});
+
+/* =========================================================================
+   KATEX MATH HELPER
+   ========================================================================= */
+function renderAllKaTeX() {
+  if (typeof katex === 'undefined') return;
+
+  const elements = document.querySelectorAll('.katex-render');
+  elements.forEach(function(el) {
+    const expr = el.getAttribute('data-expr');
+    if (expr) {
+      try {
+        katex.render(expr, el, {
+          throwOnError: false,
+          displayMode: el.tagName === 'DIV'
+        });
+      } catch (err) {
+        console.error('KaTeX render error:', err);
+      }
+    }
+  });
+
+  const formulaBadge = document.getElementById('formula-katex');
+  if (formulaBadge) {
+    try {
+      katex.render("f(x) = ax^2 + bx + c", formulaBadge, { throwOnError: false });
+    } catch (err) {}
+  }
+}
+
+/* =========================================================================
+   SECTION 1: QUADRATIC EXPLORER & CANVAS
+   ========================================================================= */
+function updateQuadratic() {
+  const sliderA = document.getElementById('slider-a');
+  const sliderB = document.getElementById('slider-b');
+  const sliderC = document.getElementById('slider-c');
+
+  if (!sliderA || !sliderB || !sliderC) return;
+
+  const a = parseFloat(sliderA.value);
+  const b = parseFloat(sliderB.value);
+  const c = parseFloat(sliderC.value);
+
+  appState.quadA = a;
+  appState.quadB = b;
+  appState.quadC = c;
+
+  const valA = document.getElementById('val-a');
+  const valB = document.getElementById('val-b');
+  const valC = document.getElementById('val-c');
+
+  if (valA) valA.textContent = a.toFixed(1);
+  if (valB) valB.textContent = b.toFixed(1);
+  if (valC) valC.textContent = c.toFixed(1);
+
+  // Analysis Calculations
+  const delta = (b * b) - (4 * a * c);
+  const vertexX = -b / (2 * a);
+  const vertexY = -delta / (4 * a);
+
+  const deltaEl = document.getElementById('math-analysis-delta');
+  const vertexEl = document.getElementById('math-analysis-vertex');
+  const rootsEl = document.getElementById('math-analysis-roots');
+
+  if (deltaEl && typeof katex !== 'undefined') {
+    let deltaText = "\\Delta = b^2 - 4ac = (" + b + ")^2 - 4(" + a + ")(" + c + ") = " + delta.toFixed(2);
+    if (delta > 0) deltaText += " > 0 \\quad \\text{(دو ریشه حقیقی متمایز)}";
+    else if (Math.abs(delta) < 0.0001) deltaText += " = 0 \\quad \\text{(یک ریشه مضاعف)}";
+    else deltaText += " < 0 \\quad \\text{(فاقد ریشه حقیقی)}";
+
+    katex.render(deltaText, deltaEl, { throwOnError: false });
+  }
+
+  if (vertexEl && typeof katex !== 'undefined') {
+    const vText = "\\text{مختصات راس سهمی: } S = \\left(-\\frac{b}{2a}, -\\frac{\\Delta}{4a}\\right) = (" + vertexX.toFixed(2) + ", " + vertexY.toFixed(2) + ")";
+    katex.render(vText, vertexEl, { throwOnError: false });
+  }
+
+  if (rootsEl && typeof katex !== 'undefined') {
+    let rText = "";
+    if (delta > 0) {
+      const r1 = (-b + Math.sqrt(delta)) / (2 * a);
+      const r2 = (-b - Math.sqrt(delta)) / (2 * a);
+      rText = "x_1 = " + r1.toFixed(2) + ", \\quad x_2 = " + r2.toFixed(2);
+    } else if (Math.abs(delta) < 0.0001) {
+      rText = "x_1 = x_2 = " + vertexX.toFixed(2);
+    } else {
+      rText = "\\text{نمودار محور xها را قطع نمی‌کند (ریشه در اعداد مختلط)}";
+    }
+    katex.render(rText, rootsEl, { throwOnError: false });
+  }
+
+  drawQuadraticCanvas(a, b, c, vertexX, vertexY, delta);
+}
+
+function setPreset(a, b, c) {
+  const sliderA = document.getElementById('slider-a');
+  const sliderB = document.getElementById('slider-b');
+  const sliderC = document.getElementById('slider-c');
+
+  if (sliderA) sliderA.value = a;
+  if (sliderB) sliderB.value = b;
+  if (sliderC) sliderC.value = c;
+
+  updateQuadratic();
+}
+
+function drawQuadraticCanvas(a, b, c, vx, vy, delta) {
+  const canvas = document.getElementById('quad-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const w = canvas.width;
+  const h = canvas.height;
+
+  // Clear background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, w, h);
+
+  const cx = w / 2;
+  const cy = h / 2;
+  const scale = 25; // 25 pixels per math unit
+
+  // Draw Gridlines
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#f0f0f0';
+
+  for (let x = cx % scale; x < w; x += scale) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, h);
+    ctx.stroke();
+  }
+  for (let y = cy % scale; y < h; y += scale) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(w, y);
+    ctx.stroke();
+  }
+
+  // Draw Axes
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#333333';
+
+  // X axis
+  ctx.beginPath();
+  ctx.moveTo(0, cy);
+  ctx.lineTo(w, cy);
+  ctx.stroke();
+
+  // Y axis
+  ctx.beginPath();
+  ctx.moveTo(cx, 0);
+  ctx.lineTo(cx, h);
+  ctx.stroke();
+
+  // Ticks & labels
+  ctx.fillStyle = '#666666';
+  ctx.font = '10px "IBM Plex Mono", monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('0', cx - 8, cy + 12);
+  ctx.fillText('+5', cx + 5 * scale, cy + 12);
+  ctx.fillText('-5', cx - 5 * scale, cy + 12);
+
+  // Plot Parabola curve
+  ctx.lineWidth = 2.5;
+  ctx.strokeStyle = '#222222';
+  ctx.beginPath();
+
+  let first = true;
+  for (let px = 0; px <= w; px += 2) {
+    const xVal = (px - cx) / scale;
+    const yVal = (a * xVal * xVal) + (b * xVal) + c;
+    const py = cy - (yVal * scale);
+
+    if (first) {
+      ctx.moveTo(px, py);
+      first = false;
+    } else {
+      ctx.lineTo(px, py);
+    }
+  }
+  ctx.stroke();
+
+  // Plot Vertex Point
+  const pvx = cx + (vx * scale);
+  const pvy = cy - (vy * scale);
+
+  if (pvx >= 0 && pvx <= w && pvy >= 0 && pvy <= h) {
+    ctx.fillStyle = '#b71c1c';
+    ctx.beginPath();
+    ctx.arc(pvx, pvy, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#b71c1c';
+    ctx.font = '11px "B Nazanin", Tahoma, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText('راس S', pvx - 8, pvy - 4);
+  }
+
+  // Plot Roots if real
+  if (delta >= 0 && a !== 0) {
+    const r1 = (-b + Math.sqrt(delta)) / (2 * a);
+    const r2 = (-b - Math.sqrt(delta)) / (2 * a);
+
+    const pr1x = cx + (r1 * scale);
+    const pr2x = cx + (r2 * scale);
+
+    ctx.fillStyle = '#1b7340';
+    ctx.beginPath();
+    ctx.arc(pr1x, cy, 4.5, 0, Math.PI * 2);
+    ctx.arc(pr2x, cy, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+/* =========================================================================
+   SECTION 2: MANIM SIMULATOR & VECTOR CANVAS
+   ========================================================================= */
+let manimPlaying = false;
+let manimAnimId = null;
+let currentSceneKey = 'pythagoras';
+
+const manimScenes = {
+  pythagoras: {
+    title: 'اثبات هندسی قضیه فیثاغورس (a² + b² = c²)',
+    math: 'a^2 + b^2 = c^2',
+    explanation: 'در این پویانمایی، مربع‌های بنا شده روی اضلاع قائمه (طول‌های ۳ و ۴ با مساحت‌های ۹ و ۱۶) به تدریج جابجا شده و مساحت دقیق مربع وتر (۵ با مساحت ۲۵) را پوشش می‌دهند.'
+  },
+  derivative: {
+    title: 'مفهوم مشتق: میل کردن فاصله h به صفر و تشکیل خط مماس',
+    math: 'f\'(x_0) = \\lim_{h \\to 0} \\frac{f(x_0+h)-f(x_0)}{h}',
+    explanation: 'خط قاطع بین نقطه ثابت (x₀) و نقطه متحرک (x₀+h) نمایش داده می‌شود. با میل کردن h به سمت صفر، خط قاطع دقیقا بر منحنی مماس می‌شود و شیب آن مشتق تابع است.'
+  },
+  riemann: {
+    title: 'انتگرال معین و مجموع ریمان: تقریب سطح زیر منحنی',
+    math: '\\int_{a}^{b} f(x) dx = \\lim_{n \\to \\infty} \\sum_{i=1}^{n} f(x_i^*) \\Delta x',
+    explanation: 'سطح زیر منحنی به n مستطیل تقسیم می‌شود. با افزایش تعداد تقسیمات n از ۴ به ۶۰ مستطیل، خطای تقریب به صفر میل کرده و انتگرال دقیق حاصل می‌شود.'
+  }
+};
+
+function initManim() {
+  changeManimScene();
+}
+
+function changeManimScene() {
+  const select = document.getElementById('manim-scene-select');
+  if (!select) return;
+
+  currentSceneKey = select.value;
+  const scene = manimScenes[currentSceneKey];
+  if (!scene) return;
+
+  const titleEl = document.getElementById('scene-title');
+  const expEl = document.getElementById('scene-explanation');
+  const mathEl = document.getElementById('scene-math-label');
+
+  if (titleEl) titleEl.textContent = scene.title;
+  if (expEl) expEl.textContent = scene.explanation;
+  if (mathEl && typeof katex !== 'undefined') {
+    katex.render(scene.math, mathEl, { throwOnError: false });
+  }
+
+  resetManimScene();
+}
+
+function toggleManimPlay() {
+  manimPlaying = !manimPlaying;
+  const btnText = document.getElementById('play-btn-text');
+  const icon = document.getElementById('play-icon');
+
+  if (manimPlaying) {
+    if (btnText) btnText.textContent = 'توقف پویانمایی';
+    if (icon) icon.setAttribute('data-lucide', 'pause');
+    runManimLoop();
+  } else {
+    if (btnText) btnText.textContent = 'ادامه پویانمایی';
+    if (icon) icon.setAttribute('data-lucide', 'play');
+    if (manimAnimId) cancelAnimationFrame(manimAnimId);
+  }
+  if (window.lucide) lucide.createIcons();
+}
+
+function resetManimScene() {
+  manimPlaying = false;
+  if (manimAnimId) cancelAnimationFrame(manimAnimId);
+
+  const btnText = document.getElementById('play-btn-text');
+  const icon = document.getElementById('play-icon');
+  if (btnText) btnText.textContent = 'شروع پویانمایی';
+  if (icon) icon.setAttribute('data-lucide', 'play');
+  if (window.lucide) lucide.createIcons();
+
+  const slider = document.getElementById('manim-progress');
+  if (slider) slider.value = 0;
+  appState.manimProgress = 0;
+
+  drawManimFrame(0);
+}
+
+function onProgressSlider(val) {
+  appState.manimProgress = parseFloat(val);
+  drawManimFrame(appState.manimProgress);
+}
+
+function runManimLoop() {
+  if (!manimPlaying) return;
+
+  appState.manimProgress += 0.45;
+  if (appState.manimProgress > 100) {
+    appState.manimProgress = 0;
+  }
+
+  const slider = document.getElementById('manim-progress');
+  if (slider) slider.value = appState.manimProgress;
+
+  drawManimFrame(appState.manimProgress);
+  manimAnimId = requestAnimationFrame(runManimLoop);
+}
+
+function drawManimFrame(progress) {
+  const canvas = document.getElementById('manim-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const w = canvas.width;
+  const h = canvas.height;
+
+  // Dark slate canvas background typical of Manim / 3Blue1Brown
+  ctx.fillStyle = '#141414';
+  ctx.fillRect(0, 0, w, h);
+
+  const t = progress / 100; // 0.0 to 1.0
+
+  if (currentSceneKey === 'pythagoras') {
+    drawPythagorasScene(ctx, w, h, t);
+  } else if (currentSceneKey === 'derivative') {
+    drawDerivativeScene(ctx, w, h, t);
+  } else if (currentSceneKey === 'riemann') {
+    drawRiemannScene(ctx, w, h, t);
+  }
+}
+
+function drawPythagorasScene(ctx, w, h, t) {
+  const ox = w * 0.45;
+  const oy = h * 0.70;
+  const scale = 22;
+
+  const a = 3 * scale;
+  const b = 4 * scale;
+
+  // Right Triangle
+  ctx.fillStyle = '#222222';
+  ctx.strokeStyle = '#555555';
+  ctx.lineWidth = 2;
+
+  ctx.beginPath();
+  ctx.moveTo(ox, oy);
+  ctx.lineTo(ox + b, oy);
+  ctx.lineTo(ox, oy - a);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // Right angle marker
+  ctx.strokeStyle = '#888888';
+  ctx.strokeRect(ox, oy - 12, 12, 12);
+
+  // Square a^2 on vertical side
+  ctx.fillStyle = 'rgba(230, 230, 230, ' + (0.2 + 0.5 * (1 - t)) + ')';
+  ctx.strokeStyle = '#ffffff';
+  ctx.strokeRect(ox - a, oy - a, a, a);
+  ctx.fillRect(ox - a, oy - a, a, a);
+
+  // Square b^2 on horizontal side
+  ctx.fillStyle = 'rgba(200, 200, 200, ' + (0.2 + 0.5 * (1 - t)) + ')';
+  ctx.strokeStyle = '#ffffff';
+  ctx.strokeRect(ox, oy, b, b);
+  ctx.fillRect(ox, oy, b, b);
+
+  // Hypotenuse square c^2 transforming
+  ctx.save();
+  ctx.translate(ox, oy - a);
+  const hypAngle = Math.atan2(a, b);
+  ctx.rotate(-hypAngle);
+
+  const cLen = 5 * scale;
+  ctx.fillStyle = 'rgba(255, 255, 255, ' + (0.1 + 0.7 * t) + ')';
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(0, -cLen, cLen, cLen);
+  ctx.fillRect(0, -cLen, cLen, cLen);
+  ctx.restore();
+
+  // Labels
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '14px "IBM Plex Mono", monospace';
+  ctx.fillText('a = 3  (a²=9)', ox - a - 10, oy - a / 2);
+  ctx.fillText('b = 4  (b²=16)', ox + b / 3, oy + b + 18);
+  ctx.fillText('c = 5  (c²=25)', ox + b / 2 + 10, oy - a / 2 - 20);
+}
+
+function drawDerivativeScene(ctx, w, h, t) {
+  const ox = 60;
+  const oy = h - 50;
+  const sx = 70;
+  const sy = 25;
+
+  // Axes
+  ctx.strokeStyle = '#555555';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(ox, 20);
+  ctx.lineTo(ox, oy);
+  ctx.lineTo(w - 30, oy);
+  ctx.stroke();
+
+  // Curve: f(x) = 0.5 * x^2
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  for (let px = 0; px <= w - ox - 40; px += 2) {
+    const x = px / sx;
+    const y = 0.45 * x * x;
+    const py = oy - (y * sy);
+    if (px === 0) ctx.moveTo(ox + px, py);
+    else ctx.lineTo(ox + px, py);
+  }
+  ctx.stroke();
+
+  // Fixed point x0
+  const x0 = 1.8;
+  const y0 = 0.45 * x0 * x0;
+  const p0x = ox + (x0 * sx);
+  const p0y = oy - (y0 * sy);
+
+  // Moving point x0 + h
+  // As t increases, h approaches 0
+  const hVal = 2.5 * (1 - (t * 0.96)); // h from 2.5 down to 0.1
+  const x1 = x0 + hVal;
+  const y1 = 0.45 * x1 * x1;
+  const p1x = ox + (x1 * sx);
+  const p1y = oy - (y1 * sy);
+
+  // Secant line extended
+  const slope = (y1 - y0) / (x1 - x0);
+  ctx.strokeStyle = '#f5f5f5';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  const lineXStart = x0 - 1.2;
+  const lineYStart = y0 - slope * 1.2;
+  const lineXEnd = x0 + hVal + 1.2;
+  const lineYEnd = y0 + slope * (hVal + 1.2);
+
+  ctx.moveTo(ox + lineXStart * sx, oy - lineYStart * sy);
+  ctx.lineTo(ox + lineXEnd * sx, oy - lineYEnd * sy);
+  ctx.stroke();
+
+  // Draw points
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(p0x, p0y, 5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#aaaaaa';
+  ctx.beginPath();
+  ctx.arc(p1x, p1y, 5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Text labels
+  ctx.font = '12px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('P(x₀, f(x₀))', p0x - 65, p0y - 10);
+  ctx.fillText('Q(x₀+h, f(x₀+h))', p1x + 10, p1y - 10);
+  ctx.fillText('شیب خط قاطع m = ' + slope.toFixed(2), ox + 20, 50);
+  ctx.fillText('فاصله h = ' + hVal.toFixed(2), ox + 20, 70);
+}
+
+function drawRiemannScene(ctx, w, h, t) {
+  const ox = 50;
+  const oy = h - 50;
+  const sx = 80;
+  const sy = 30;
+
+  // Axes
+  ctx.strokeStyle = '#555555';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(ox, 20);
+  ctx.lineTo(ox, oy);
+  ctx.lineTo(w - 30, oy);
+  ctx.stroke();
+
+  const a = 0.5;
+  const b = 4.5;
+  // Rectangles count n increases with t from 4 to 48
+  const n = Math.floor(4 + (44 * t));
+  const dx = (b - a) / n;
+
+  // Draw Riemann Rectangles
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+  ctx.strokeStyle = '#888888';
+  ctx.lineWidth = 1;
+
+  let approxArea = 0;
+  for (let i = 0; i < n; i++) {
+    const rx = a + i * dx;
+    const rHeight = 0.12 * Math.pow(rx, 2.2) + 0.5;
+    approxArea += rHeight * dx;
+
+    const rpx = ox + (rx * sx);
+    const rpy = oy - (rHeight * sy);
+    const rpw = dx * sx;
+    const rph = rHeight * sy;
+
+    ctx.fillRect(rpx, rpy, rpw, rph);
+    ctx.strokeRect(rpx, rpy, rpw, rph);
+  }
+
+  // Draw Function Curve
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  for (let px = 0; px <= w - ox - 40; px += 2) {
+    const x = px / sx;
+    const y = 0.12 * Math.pow(x, 2.2) + 0.5;
+    const py = oy - (y * sy);
+    if (px === 0) ctx.moveTo(ox + px, py);
+    else ctx.lineTo(ox + px, py);
+  }
+  ctx.stroke();
+
+  // Stats Text
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '12px "IBM Plex Mono", monospace';
+  ctx.fillText('تعداد مستطیل‌ها n = ' + n, ox + 20, 45);
+  ctx.fillText('مجموع ریمان (مساحت تقریبی) = ' + approxArea.toFixed(3), ox + 20, 65);
+  ctx.fillText('عرض هر مستطیل Δx = ' + dx.toFixed(3), ox + 20, 85);
+}
+
+/* =========================================================================
+   SECTION 3: EXAM BUILDER & HEADER GENERATOR
+   ========================================================================= */
+function renderExamPaper() {
+  const school = document.getElementById('exam-school') ? document.getElementById('exam-school').value : 'دبیرستان';
+  const subject = document.getElementById('exam-subject') ? document.getElementById('exam-subject').value : 'حسابان';
+  const term = document.getElementById('exam-term') ? document.getElementById('exam-term').value : 'نوبت اول';
+  const teacher = document.getElementById('exam-teacher') ? document.getElementById('exam-teacher').value : 'دبیر';
+  const duration = document.getElementById('exam-duration') ? document.getElementById('exam-duration').value : '۸۰ دقیقه';
+
+  const container = document.getElementById('exam-live-header');
+  if (!container) return;
+
+  container.innerHTML = `
+    <table class="exam-header-table">
+      <tr>
+        <td style="width:25%;"><strong>نام و نام‌خانوادگی:</strong> ..................</td>
+        <td style="text-align:center; font-weight:bold; font-size:1.05rem;" colspan="2">
+          جمهوری اسلامی ایران - وزارت آموزش و پرورش<br>
+          ${school}
+        </td>
+        <td style="width:25%;"><strong>تاریخ آزمون:</strong> دی‌ماه ۱۴۰۵</td>
+      </tr>
+      <tr>
+        <td><strong>نام پدر:</strong> ..................</td>
+        <td style="width:25%;"><strong>عنوان درس:</strong> ${subject}</td>
+        <td style="width:25%;"><strong>نوبت امتحانی:</strong> ${term}</td>
+        <td><strong>شماره داوطلب:</strong> ..................</td>
+      </tr>
+      <tr>
+        <td><strong>نام دبیر طراح:</strong> ${teacher}</td>
+        <td><strong>مدت پاسخگویی:</strong> ${duration}</td>
+        <td><strong>تعداد صفحه:</strong> ۱ صفحه</td>
+        <td><strong>نمره به عدد و حروف:</strong> ..................</td>
+      </tr>
+    </table>
+  `;
+
+  // Re-render questions KaTeX
+  renderAllKaTeX();
+}
+
+/* =========================================================================
+   SECTION 4: CATALOG FILTER & SEARCH
+   ========================================================================= */
+function filterCatalog() {
+  const query = document.getElementById('catalog-search') ? document.getElementById('catalog-search').value.toLowerCase().trim() : '';
+  const category = document.getElementById('catalog-category') ? document.getElementById('catalog-category').value : 'all';
+
+  const container = document.getElementById('catalog-grid');
+  if (!container) return;
+
+  const filtered = awesomeCatalogData.filter(function(item) {
+    const matchCat = (category === 'all' || item.category === category);
+    const matchQuery = (item.title.toLowerCase().includes(query) ||
+                        item.desc.toLowerCase().includes(query) ||
+                        item.tags.some(t => t.toLowerCase().includes(query)));
+    return matchCat && matchQuery;
+  });
+
+  const countBadge = document.getElementById('catalog-count-badge');
+  if (countBadge) countBadge.textContent = 'نمایش ' + filtered.length + ' منبع برگزیده';
+
+  container.innerHTML = '';
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="grid-column:1/-1; padding:var(--space-lg); text-align:center; color:var(--on-surface-variant);">هیچ منبعی مطابق با عبارت جستجو یافت نشد.</div>';
+    return;
+  }
+
+  filtered.forEach(function(item) {
+    const isBookmarked = appState.bookmarkedResources.includes(item.id);
+    const card = document.createElement('div');
+    card.className = 'layer-nested';
+    card.style.display = 'flex';
+    card.style.flexDirection = 'column';
+    card.style.justifyContent = 'space-between';
+
+    card.innerHTML = `
+      <div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:var(--space-xs);">
+          <span class="badge">${item.level}</span>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="toggleBookmark('${item.id}', this)" aria-label="نشانه‌گذاری">
+            <i data-lucide="${isBookmarked ? 'bookmark-check' : 'bookmark'}" style="${isBookmarked ? 'color:var(--tertiary);' : ''}"></i>
+          </button>
+        </div>
+        <h4 style="margin-top:0; margin-bottom:var(--space-2xs); font-size:1.1rem;">${item.title}</h4>
+        <p style="font-size:0.9rem; margin-bottom:var(--space-sm);">${item.desc}</p>
+      </div>
+      <div>
+        <div style="display:flex; gap:var(--space-3xs); flex-wrap:wrap; margin-bottom:var(--space-sm);">
+          ${item.tags.map(t => `<span style="font-size:0.75rem; background:var(--surface-container); padding:2px 6px; border-radius:2px; font-family:var(--font-headline);">${t}</span>`).join('')}
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+
+  if (window.lucide) lucide.createIcons();
+}
+
+function toggleBookmark(id, btn) {
+  const index = appState.bookmarkedResources.indexOf(id);
+  if (index === -1) {
+    appState.bookmarkedResources.push(id);
+    showToast('منبع با موفقیت به فهرست نشانه‌گذاری‌های شما افزوده شد.');
+  } else {
+    appState.bookmarkedResources.splice(index, 1);
+    showToast('منبع از فهرست نشانه‌گذاری‌ها حذف شد.');
+  }
+  filterCatalog();
+}
+
+/* =========================================================================
+   SECTION 5: MARKDOWN LIVE NOTEBOOK
+   ========================================================================= */
+function loadNoteTemplate(type) {
+  const editor = document.getElementById('md-editor');
+  if (!editor) return;
+
+  const text = noteTemplates[type] || '';
+  editor.value = text;
+  renderMarkdownLive();
+}
+
+function renderMarkdownLive() {
+  const editor = document.getElementById('md-editor');
+  const preview = document.getElementById('md-preview-pane');
+  if (!editor || !preview) return;
+
+  const raw = editor.value;
+  appState.mdContent = raw;
+
+  // Simple Markdown & Task List Parser
+  let html = raw
+    .replace(/^# (.*$)/gim, '<h2 style="font-size:1.3rem; border-bottom:1px solid var(--outline-variant); padding-bottom:4px; margin-top:8px;">$1</h2>')
+    .replace(/^## (.*$)/gim, '<h3 style="font-size:1.15rem; margin-top:8px;">$1</h3>')
+    .replace(/^### (.*$)/gim, '<h4 style="font-size:1.05rem; margin-top:6px;">$1</h4>')
+    .replace(/^\- \[ \] (.*$)/gim, '<div style="margin:4px 0;"><input type="checkbox" disabled> <span style="font-size:0.95rem;">$1</span></div>')
+    .replace(/^\- \[x\] (.*$)/gim, '<div style="margin:4px 0;"><input type="checkbox" checked disabled> <span style="font-size:0.95rem; text-decoration:line-through; color:var(--on-surface-variant);">$1</span></div>')
+    .replace(/^\- (.*$)/gim, '<li style="font-size:0.95rem;">$1</li>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+    .replace(/\n\n/gim, '<br>');
+
+  preview.innerHTML = html;
+
+  // Render LaTeX formulas in preview pane
+  renderKaTeXInNode(preview);
+}
+
+function renderKaTeXInNode(node) {
+  if (typeof katex === 'undefined' || !node) return;
+
+  // Block math: $$ ... $$
+  node.innerHTML = node.innerHTML.replace(/\$\$([\s\S]*?)\$\$/g, function(match, expr) {
+    try {
+      return katex.renderToString(expr.trim(), { displayMode: true, throwOnError: false });
+    } catch (e) {
+      return match;
+    }
+  });
+
+  // Inline math: $ ... $
+  node.innerHTML = node.innerHTML.replace(/\$([^\$\n]+?)\$/g, function(match, expr) {
+    try {
+      return katex.renderToString(expr.trim(), { displayMode: false, throwOnError: false });
+    } catch (e) {
+      return match;
+    }
+  });
+}
+
+/* =========================================================================
+   CONCLUSION: TEACHER EFFICIENCY CALCULATOR
+   ========================================================================= */
+function calculateSavings() {
+  const sInput = document.getElementById('calc-students');
+  const hInput = document.getElementById('calc-hours');
+  const eInput = document.getElementById('calc-exams');
+
+  if (!sInput || !hInput || !eInput) return;
+
+  const students = parseInt(sInput.value, 10);
+  const hours = parseInt(hInput.value, 10);
+  const exams = parseInt(eInput.value, 10);
+
+  const sVal = document.getElementById('calc-students-val');
+  const hVal = document.getElementById('calc-hours-val');
+  const eVal = document.getElementById('calc-exams-val');
+
+  if (sVal) sVal.textContent = students;
+  if (hVal) hVal.textContent = hours;
+  if (eVal) eVal.textContent = exams;
+
+  // Formula calculations:
+  // LaTeX & Repo templates save ~4 hours per exam in typing, styling and solution generation
+  const typingSavings = Math.round(exams * 4);
+
+  // Interactive worksheets & automated feedback save ~0.5 hours per student per term
+  const interactiveSavings = Math.round(students * 0.5);
+
+  const total = typingSavings + interactiveSavings;
+
+  const typingEl = document.getElementById('stat-typing-hours');
+  const interEl = document.getElementById('stat-interactive-hours');
+  const totalEl = document.getElementById('stat-total-savings');
+
+  if (typingEl) typingEl.textContent = typingSavings + ' ساعت / ترم';
+  if (interEl) interEl.textContent = interactiveSavings + ' ساعت / ترم';
+  if (totalEl) totalEl.textContent = total + ' ساعت';
+}
+
+/* =========================================================================
+   HELPERS & RESOURCE LINK UTILITIES
+   ========================================================================= */
+function copyResourceUrl(btn) {
+  const url = btn.getAttribute('data-url');
+  if (!url) return;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(function() {
+      showToast('نشانی با موفقیت در حافظه کپی شد: ' + url);
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i data-lucide="check"></i> کپی شد!';
+      if (window.lucide) lucide.createIcons();
+      setTimeout(function() {
+        btn.innerHTML = originalText;
+        if (window.lucide) lucide.createIcons();
+      }, 2000);
+    }).catch(function() {
+      fallbackCopy(url);
+    });
+  } else {
+    fallbackCopy(url);
+  }
+}
+
+function copySnippet(elementId, btn) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  const text = el.innerText || el.textContent;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('کد مورد نظر در حافظه کپی شد.');
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<i data-lucide="check"></i> کپی شد!';
+        if (window.lucide) lucide.createIcons();
+        setTimeout(function() {
+          btn.innerHTML = orig;
+          if (window.lucide) lucide.createIcons();
+        }, 2000);
+      }
+    });
+  }
+}
+
+function fallbackCopy(text) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  textArea.style.left = '-9999px';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    showToast('نشانی در حافظه کپی شد.');
+  } catch (err) {
+    console.error('Fallback copy error:', err);
+  }
+  document.body.removeChild(textArea);
+}
+
+function toggleDetails(elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  if (el.style.display === 'none' || el.style.display === '') {
+    el.style.display = 'block';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast-notification');
+  const msg = document.getElementById('toast-message');
+  if (!toast || !msg) return;
+
+  msg.textContent = message;
+  toast.classList.add('show');
+
+  setTimeout(function() {
+    toast.classList.remove('show');
+  }, 3200);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد اصلی کارگاه ریاضی</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'B Nazanin', 'Vazirmatn', Tahoma, sans-serif;
+            background-color: #0B1F3A; /* سورمه‌ای */
+            color: #FFFFFF;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #FDE047; /* طلایی */
+        }
+        .header p {
+            font-size: 1.2rem;
+            color: #CBD5E1;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1100px;
+            width: 100%;
+        }
+        .card {
+            background-color: #1E3A8A;
+            border-radius: 15px;
+            padding: 25px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border-color: #FDE047;
+        }
+        .card-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: rgba(255,255,255,0.1);
+            margin-bottom: 10px;
+        }
+        .card h2 {
+            font-size: 1.5rem;
+            margin: 0 0 15px 0;
+            color: #FDE047;
+        }
+        .card p {
+            font-size: 1rem;
+            margin: 0;
+            line-height: 1.6;
+            color: #E2E8F0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>کارگاه توانمندسازی دبیران ریاضی</h1>
+        <p>هوش مصنوعی، طراحی و ساخت فایل‌های تعاملی</p>
+    </div>
+
+    <div class="grid">
+        <!-- کارت 1 -->
+        <a href="workshop-main.html" class="card">
+            <div class="card-number">۰۱</div>
+            <div>
+                <h2>پودمان ۱ و ۲: پرامپت و ساختار وب</h2>
+                <p>آموزش مهندسی پرامپت و ساخت صفحات تعاملی وب (شامل دکمه‌ها، تب‌ها و اسلایدر تابع)</p>
+            </div>
+        </a>
+
+        <!-- کارت 2 -->
+        <a href="structure-demo.html" class="card">
+            <div class="card-number">۰۲</div>
+            <div>
+                <h2>آزمایشگاه ساختار HTML</h2>
+                <p>نمایش زنده ساختار کدها و افزودن تصویر، صدا و دکمه به صورت تعاملی</p>
+            </div>
+        </a>
+
+        <!-- کارت 3 -->
+        <a href="canva.html" class="card">
+            <div class="card-number">۰۳</div>
+            <div>
+                <h2>خلاقیت با کانوا و هوش مصنوعی</h2>
+                <p>چرخه‌های کاری تولید تصویر با AI، ویرایش در کانوا و انیمیشن‌سازی ریاضی</p>
+            </div>
+        </a>
+
+        <!-- کارت 4 -->
+        <a href="media-guide.html" class="card">
+            <div class="card-number">۰۴</div>
+            <div>
+                <h2>راهنمای جامع رسانه‌ها</h2>
+                <p>نحوه درج تصویر، صدا و ویدیو (دسترسی محلی، فضای ابری و Base64)</p>
+            </div>
+        </a>
+
+        <!-- کارت 5 -->
+        <a href="github-guide.html" class="card">
+            <div class="card-number">۰۵</div>
+            <div>
+                <h2>کاربردهای عملی گیت‌هاب</h2>
+                <p>انتشار رایگان پروژه‌ها، انیمیشن‌های Manim و قالب‌های استاندارد LaTeX</p>
+            </div>
+        </a>
+    </div>
+
+</body>
+</html>
